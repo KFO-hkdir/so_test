@@ -1,2 +1,3 @@
 # so_test
-nytt test repo for visualisering til iframe for so statistikk
+Dette er en beskjed fra RStudio
+
