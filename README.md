@@ -1,3 +1,2 @@
 # so_test
-Dette er en beskjed fra RStudio
-
+Dette er en beskjed fra GitHub
