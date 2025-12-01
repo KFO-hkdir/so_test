@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["sankey"]});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn("string", "From");
+        data.addColumn("string", "To");
+        data.addColumn("number", "Applicants");
+
+        data.addRows([
+          ['Møtt i hjemfylket', 'Nord-Norge', 311],
+          ['Møtt i hjemfylket', 'Sørlandet', 317],
+          ['Møtt i hjemfylket', 'Trøndelag', 464],
+          ['Møtt i hjemfylket', 'Vestlandet', 937],
+          ['Møtt i hjemfylket', 'Østlandet', 1315],
+          ['Møtt utenfor hjemfylket', 'Nord-Norge', 100],
+          ['Møtt utenfor hjemfylket', 'Sørlandet', 110],
+          ['Møtt utenfor hjemfylket', 'Trøndelag', 456],
+          ['Møtt utenfor hjemfylket', 'Vestlandet', 362],
+          ['Møtt utenfor hjemfylket', 'Østlandet', 1116]
+        ]);
+
+        var options = {
+          width: 1100,
+          height: 700,
+          sankey: {
+            node: {
+              label: { fontSize: 14, color: "black" },
+              interactivity: true,
+              nodePadding: 20
+            },
+            link: {
+              colorMode: "gradient"
+            }
+          }
+        };
+
+        var chart = new google.visualization.Sankey(document.getElementById("sankey_chart"));
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+  <body>
+    <h2 style="text-align:center;font-family:sans-serif;">
+      Møtte til lærerutdanninger i 2025 etter landsdel
+    </h2>
+    <div id="sankey_chart" style="width:1100px; height:700px; margin:auto;"></div>
+  </body>
+</html>
