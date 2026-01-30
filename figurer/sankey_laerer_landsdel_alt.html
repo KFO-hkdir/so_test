@@ -3,9 +3,22 @@
   <head>
     <meta charset="utf-8">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <style>
+      html, body { margin:0; padding:0; }
+      #wrap { max-width:640px; margin:0 auto; font-family:sans-serif; }
+      #sankey_chart { width:100%; height:520px; }
+      h2 { font-size:16px; text-align:center; margin:10px 0 6px 0; }
+    </style>
     <script type="text/javascript">
       google.charts.load("current", {packages:["sankey"]});
       google.charts.setOnLoadCallback(drawChart);
+
+      function getChartSize() {
+        var el = document.getElementById("sankey_chart");
+        var width = el.clientWidth || 640;
+        var height = Math.max(420, Math.round(width * 0.85));
+        return { width: width, height: height };
+      }
 
       function drawChart() {
         var data = new google.visualization.DataTable();
@@ -26,14 +39,16 @@
           ['Møtt utenfor hjemfylket (2144, 39.1%)', 'Østlandet (2431, 44.3%)', 1116]
         ]);
 
+        var size = getChartSize();
+
         var options = {
-          width: 1150,
-          height: 750,
+          width: size.width,
+          height: size.height,
           sankey: {
             node: {
-              label: { fontSize: 14, color: "black" },
-              interactivity: true,
-              nodePadding: 20
+              label: { fontSize: 12, color: "black" },
+              nodePadding: 10,
+              width: 12
             },
             link: {
               colorMode: "gradient"
@@ -44,12 +59,16 @@
         var chart = new google.visualization.Sankey(document.getElementById("sankey_chart"));
         chart.draw(data, options);
       }
+
+      window.addEventListener("resize", function() {
+        drawChart();
+      });
     </script>
   </head>
   <body>
-    <h2 style="text-align:center;font-family:sans-serif;">
-      Møtte til lærerutdanninger i 2025 etter landsdel
-    </h2>
-    <div id="sankey_chart" style="width:1150px; height:750px; margin:auto;"></div>
+    <div id="wrap">
+      <h2>Møtte til lærerutdanninger i 2025 etter landsdel</h2>
+      <div id="sankey_chart"></div>
+    </div>
   </body>
 </html>
