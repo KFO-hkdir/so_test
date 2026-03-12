@@ -33,9 +33,9 @@ library(scales)
 library(glue)
 library(writexl)
 
-dt <- read_fst("data/so_uhg_hoved_master.fst")
+dt <- read_fst("data/so_sokertall_master_red.fst")
 
-
+ 
 
 # Fargeskala
 hkdir_farger <- c("#E72F72", "#0025A0", "#EA591D", "#9B3699", "#FF8C43","#A80037",
@@ -49,14 +49,14 @@ siste_aar <- max(dt$aar, na.rm = TRUE)
 
 
 # Output-folder
-folder_path <- "figurer/side_1_utdanningsomr/sankey/"
+folder_path <- "figurer/side_2_geografi/sankey/"
 dir.create(folder_path, recursive = TRUE, showWarnings = FALSE)
 
 
 
 # Flytter GLU 1-10 på Nord Universitet fra GLU 5-10 til GLU 1-7 (som i DBH)
 dt %>% 
-  filter(inst_navn=="Nord universitet", utd_omr == "Lærerutdanninger", moett=="J") %>% 
+  filter(inst_navn=="Nord universitet", utd_omr == "Lærerutdanninger") %>% 
   group_by(programnavn, utd_type) %>% 
   summarise(n = n_distinct(regnr)) %>% 
   print(n=60)
@@ -70,34 +70,39 @@ dt <- dt %>%
     )
   )
 
+### Lager variablene studiested_fylke og fylke_soker ###
+
+dt <- dt %>%
+  rename(fylke_soker = fylke,
+         studiested_fylke = studsted_fylke)
 
 #############################################
 ### Forbereder datagrunnlaget til figuren ###
 #############################################
 
 
-## Lærerutdanninger 
+## Forbereder dataene
 
-fylker_tilfra_laerer <- dt %>%
-  filter(aar==siste_aar & moett=="J" & !fylke_soker =="UKJENT", utd_omr == "Lærerutdanninger") %>% 
+fylker_tilfra <- dt %>%
+  filter(aar==siste_aar & prioritet==1 & !fylke_soker =="UKJENT") %>% 
   group_by(fylke_soker, studiested_fylke) %>%
   summarise(n_applicants = n_distinct(regnr), .groups = "drop")
 
-fylker_tilfra_laerer
+fylker_tilfra
 
 
 #Legge til filtrering på søking til hjemstedsfylke, eller ut av fylket
-fylker_tilfra_laerer <- fylker_tilfra_laerer %>%
+fylker_tilfra <- fylker_tilfra %>%
   mutate(hjem_ut = case_when(
-    fylke_soker == studiested_fylke ~ "Møtt i hjemfylket",
-    fylke_soker != studiested_fylke ~ "Møtt utenfor hjemfylket"
+    fylke_soker == studiested_fylke ~ "Førstevalg i hjemfylket",
+    fylke_soker != studiested_fylke ~ "Førstevalg utenfor hjemfylket"
   ))
 
 # Sjekker koding
-fylker_tilfra_laerer
+fylker_tilfra
 
 # Legge til kolonne med studiested_landsdel
-fylker_tilfra_laerer <- fylker_tilfra_laerer %>%
+fylker_tilfra <- fylker_tilfra %>%
   mutate(
     studiested_landsdel = case_when(
       studiested_fylke %in% c("Troms", "Finnmark", "Nordland") ~ "Nord-Norge",
@@ -111,7 +116,7 @@ fylker_tilfra_laerer <- fylker_tilfra_laerer %>%
   )
 
 # Sjekker koding
-fylker_tilfra_laerer %>% 
+fylker_tilfra %>% 
   print(n=160)
 
 
@@ -119,24 +124,10 @@ fylker_tilfra_laerer %>%
 ### SANKEY MED GOOGLE CHARTS - MED TALL OG ANDELER ###
 ######################################################
 
-# --- 1. Create the new variable: studiested_landsdel ----------------------
-
-fylker_tilfra_laerer <- fylker_tilfra_laerer %>%
-  mutate(
-    studiested_landsdel = case_when(
-      studiested_fylke %in% c("Troms", "Finnmark", "Nordland") ~ "Nord-Norge",
-      studiested_fylke %in% c("Trøndelag") ~ "Trøndelag",
-      studiested_fylke %in% c("Møre og Romsdal", "Vestland", "Rogaland") ~ "Vestlandet",
-      studiested_fylke %in% c("Østfold", "Akershus", "Buskerud", "Telemark",
-                              "Innlandet", "Vestfold", "Oslo") ~ "Østlandet",
-      studiested_fylke %in% c("Agder") ~ "Sørlandet",
-      TRUE ~ NA_character_
-    )
-  )
 
 # --- 2. Aggregate data for the Sankey diagram -----------------------------
 
-sankey_data <- fylker_tilfra_laerer %>%
+sankey_data <- fylker_tilfra %>%
   group_by(hjem_ut, studiested_landsdel) %>%
   summarise(value = sum(n_applicants, na.rm = TRUE), .groups = "drop") %>%
   filter(!is.na(studiested_landsdel))  # remove rows without a matching region
@@ -248,4 +239,4 @@ html_template <- glue('
 
 # --- 6. Write to file -----------------------------------------------------
 
-writeLines(html_template, "figurer/sankey__landsdel_alt.html")
+writeLines(html_template, file.path(folder_path, "sankey__landsdel_alt.html"))
