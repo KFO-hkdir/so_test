@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+<link href="lib/highcharts-9.3.1/css/motion.css" rel="stylesheet" />
+<script src="lib/highcharts-9.3.1/highcharts.js"></script>
+<script src="lib/highcharts-9.3.1/highcharts-3d.js"></script>
+<script src="lib/highcharts-9.3.1/highcharts-more.js"></script>
+<script src="lib/highcharts-9.3.1/modules/stock.js"></script>
+<script src="lib/highcharts-9.3.1/modules/map.js"></script>
+<script src="lib/highcharts-9.3.1/modules/data.js"></script>
+<script src="lib/highcharts-9.3.1/modules/exporting.js"></script>
+<script src="lib/highcharts-9.3.1/modules/offline-exporting.js"></script>
+<script src="lib/highcharts-9.3.1/modules/drilldown.js"></script>
+<script src="lib/highcharts-9.3.1/modules/item-series.js"></script>
+<script src="lib/highcharts-9.3.1/modules/overlapping-datalabels.js"></script>
+<script src="lib/highcharts-9.3.1/modules/annotations.js"></script>
+<script src="lib/highcharts-9.3.1/modules/export-data.js"></script>
+<script src="lib/highcharts-9.3.1/modules/funnel.js"></script>
+<script src="lib/highcharts-9.3.1/modules/heatmap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/treemap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/sankey.js"></script>
+<script src="lib/highcharts-9.3.1/modules/dependency-wheel.js"></script>
+<script src="lib/highcharts-9.3.1/modules/organization.js"></script>
+<script src="lib/highcharts-9.3.1/modules/solid-gauge.js"></script>
+<script src="lib/highcharts-9.3.1/modules/streamgraph.js"></script>
+<script src="lib/highcharts-9.3.1/modules/sunburst.js"></script>
+<script src="lib/highcharts-9.3.1/modules/vector.js"></script>
+<script src="lib/highcharts-9.3.1/modules/wordcloud.js"></script>
+<script src="lib/highcharts-9.3.1/modules/xrange.js"></script>
+<script src="lib/highcharts-9.3.1/modules/tilemap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/venn.js"></script>
+<script src="lib/highcharts-9.3.1/modules/gantt.js"></script>
+<script src="lib/highcharts-9.3.1/modules/timeline.js"></script>
+<script src="lib/highcharts-9.3.1/modules/parallel-coordinates.js"></script>
+<script src="lib/highcharts-9.3.1/modules/bullet.js"></script>
+<script src="lib/highcharts-9.3.1/modules/coloraxis.js"></script>
+<script src="lib/highcharts-9.3.1/modules/dumbbell.js"></script>
+<script src="lib/highcharts-9.3.1/modules/lollipop.js"></script>
+<script src="lib/highcharts-9.3.1/modules/series-label.js"></script>
+<script src="lib/highcharts-9.3.1/plugins/motion.js"></script>
+<script src="lib/highcharts-9.3.1/custom/reset.js"></script>
+<script src="lib/highcharts-9.3.1/modules/boost.js"></script>
+
+</head>
+<body>
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; font-size: 13px;
+           background: #fff; padding: 10px; }
+    #controls { margin-bottom: 12px; }
+    #grp-select { padding: 5px 10px; font-size: 13px; border: 1px solid #ccc;
+                  border-radius: 4px; min-width: 220px; cursor: pointer; }
+    #chart-container { width: 100%; height: 520px; }
+  </style>
+<div id="controls">
+  <label for="grp-select">utd_omr:</label>
+  <select id="grp-select"></select>
+</div>
+<div id="chart-container"></div>
+<script>
+    const allData = [{"label":"Estetiske fag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"kvinner":[1664,1587,1703,1868,1882,2168,2180,1972,1953,1968,1859],"menn":[993,1020,1108,1238,1137,1243,1162,1031,1034,970,893]},{"label":"Helsefag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"kvinner":[25082,27956,29301,30114,28733,30068,30263,25524,23662,24888,27490],"menn":[6881,8302,8794,9458,8970,9186,9126,7326,6718,7289,7755]},{"label":"Historiefag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"kvinner":[1651,1502,1701,1727,1781,2200,2169,1864,1786,2081,1793],"menn":[1869,1743,1848,1993,1897,2304,2224,1954,1840,2023,1969]},{"label":"Idrettsfag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"kvinner":[1524,1287,1457,1589,1541,1532,1345,1295,1272,1260,1222],"menn":[1990,1740,1964,2216,2043,2083,1890,1600,1643,1660,1612]},{"label":"Informasjonsteknologi","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"kvinner":[645,743,1103,1417,1646,2090,2098,2066,2489,2618,1940],"menn":[2957,3052,3812,4535,4613,5005,5112,4699,4743,4581,3658]},{"label":"Juridiske fag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"kvinner":[5334,5178,4960,4795,4793,4818,6604,5761,6562,6614,6635],"menn":[4307,4469,4068,3788,3264,3125,4311,3364,3542,3368,3511]},{"label":"Land- og havbruk","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"kvinner":[255,331,378,381,434,539,619,546,551,582,602],"menn":[358,402,502,497,510,579,574,525,496,466,493]},{"label":"Lærerutdanninger","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"kvinner":[7838,7745,7815,9105,9382,8756,8307,7404,5884,5546,5368],"menn":[4078,4384,4535,4882,4740,4218,4114,3601,2716,2689,2661]},{"label":"Mediefag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"kvinner":[2010,1954,1968,2072,2146,2661,3005,2556,2755,2824,2639],"menn":[1525,1511,1457,1521,1521,1900,1866,1575,1509,1521,1387]},{"label":"Pedagogiske fag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"kvinner":[1661,1837,1950,2084,2178,2162,2209,1662,1793,1763,1679],"menn":[669,713,711,761,753,771,717,566,568,603,544]},{"label":"Realfag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"kvinner":[2176,2037,2136,2056,1977,2226,2210,2029,1947,2028,1974],"menn":[2125,2294,2139,1998,1838,2029,2084,1786,1618,1853,1845]},{"label":"Reiselivsfag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"kvinner":[479,452,469,356,297,299,243,221,254,221,252],"menn":[227,230,236,211,211,159,113,131,171,112,158]},{"label":"Samfunnsfag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"kvinner":[9451,9935,9909,10679,10597,13225,12276,10468,11151,12280,12189],"menn":[4661,4926,5102,5290,5350,6154,5631,4579,4472,4745,4430]},{"label":"Språkfag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"kvinner":[3359,3838,4080,4054,3593,3786,3912,3050,3026,3071,3019],"menn":[1642,1763,1904,1874,1755,1801,1937,1524,1385,1479,1609]},{"label":"Teknologiske fag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"kvinner":[3905,3526,3607,3828,4006,4291,4749,4673,4977,5071,4841],"menn":[10143,10009,9723,10231,9894,10337,10564,9823,10022,10413,9869]},{"label":"Økonomisk-administrative fag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"kvinner":[8242,7352,7007,7161,7117,8652,9543,9638,11827,12721,12960],"menn":[8228,8203,8140,8225,8133,10417,10931,10141,11614,13108,13148]}];
+    const select  = document.getElementById("grp-select");
+    let chart = null;
+
+    allData.forEach(function(d, i) {
+      const opt = document.createElement("option");
+      opt.value = i;
+      opt.textContent = d.label;
+      select.appendChild(opt);
+    });
+
+    function renderChart(index) {
+      const d = allData[index];
+      if (chart) { chart.destroy(); }
+      chart = Highcharts.chart("chart-container", {
+        chart: { type: "column", height: 520, reflow: true },
+        title: { text: "" },
+        xAxis: { categories: d.categories, title: { text: "" } },
+        yAxis: { min: 0, max: 100, title: { text: "" },
+                 labels: { format: "{value}%" }, reversedStacks: false },
+        plotOptions: {
+          series: { stacking: "percent", borderWidth: 0 }
+        },
+        series: [
+          { name: "Kvinne", data: d.kvinner, color: "#E91E63" },
+          { name: "Mann",   data: d.menn,   color: "#0D47A1" }
+        ],
+        credits: { enabled: false }
+      });
+    }
+
+    select.addEventListener("change", function() {
+      renderChart(parseInt(this.value));
+    });
+
+    renderChart(0);
+  </script>
+</body>
+</html>

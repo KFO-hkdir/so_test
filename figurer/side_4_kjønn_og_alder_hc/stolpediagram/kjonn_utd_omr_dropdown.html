@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+<link href="lib/highcharts-9.3.1/css/motion.css" rel="stylesheet" />
+<script src="lib/highcharts-9.3.1/highcharts.js"></script>
+<script src="lib/highcharts-9.3.1/highcharts-3d.js"></script>
+<script src="lib/highcharts-9.3.1/highcharts-more.js"></script>
+<script src="lib/highcharts-9.3.1/modules/stock.js"></script>
+<script src="lib/highcharts-9.3.1/modules/map.js"></script>
+<script src="lib/highcharts-9.3.1/modules/data.js"></script>
+<script src="lib/highcharts-9.3.1/modules/exporting.js"></script>
+<script src="lib/highcharts-9.3.1/modules/offline-exporting.js"></script>
+<script src="lib/highcharts-9.3.1/modules/drilldown.js"></script>
+<script src="lib/highcharts-9.3.1/modules/item-series.js"></script>
+<script src="lib/highcharts-9.3.1/modules/overlapping-datalabels.js"></script>
+<script src="lib/highcharts-9.3.1/modules/annotations.js"></script>
+<script src="lib/highcharts-9.3.1/modules/export-data.js"></script>
+<script src="lib/highcharts-9.3.1/modules/funnel.js"></script>
+<script src="lib/highcharts-9.3.1/modules/heatmap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/treemap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/sankey.js"></script>
+<script src="lib/highcharts-9.3.1/modules/dependency-wheel.js"></script>
+<script src="lib/highcharts-9.3.1/modules/organization.js"></script>
+<script src="lib/highcharts-9.3.1/modules/solid-gauge.js"></script>
+<script src="lib/highcharts-9.3.1/modules/streamgraph.js"></script>
+<script src="lib/highcharts-9.3.1/modules/sunburst.js"></script>
+<script src="lib/highcharts-9.3.1/modules/vector.js"></script>
+<script src="lib/highcharts-9.3.1/modules/wordcloud.js"></script>
+<script src="lib/highcharts-9.3.1/modules/xrange.js"></script>
+<script src="lib/highcharts-9.3.1/modules/tilemap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/venn.js"></script>
+<script src="lib/highcharts-9.3.1/modules/gantt.js"></script>
+<script src="lib/highcharts-9.3.1/modules/timeline.js"></script>
+<script src="lib/highcharts-9.3.1/modules/parallel-coordinates.js"></script>
+<script src="lib/highcharts-9.3.1/modules/bullet.js"></script>
+<script src="lib/highcharts-9.3.1/modules/coloraxis.js"></script>
+<script src="lib/highcharts-9.3.1/modules/dumbbell.js"></script>
+<script src="lib/highcharts-9.3.1/modules/lollipop.js"></script>
+<script src="lib/highcharts-9.3.1/modules/series-label.js"></script>
+<script src="lib/highcharts-9.3.1/plugins/motion.js"></script>
+<script src="lib/highcharts-9.3.1/custom/reset.js"></script>
+<script src="lib/highcharts-9.3.1/modules/boost.js"></script>
+
+</head>
+<body>
+<style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: Arial, sans-serif; font-size: 13px;
+             background: #fff; padding: 10px; }
+      #controls { margin-bottom: 12px; }
+      #controls label { font-weight: bold; margin-right: 8px; }
+      #grp-select {
+        padding: 5px 10px; font-size: 13px; border: 1px solid #ccc;
+        border-radius: 4px; min-width: 220px; cursor: pointer;
+      }
+      #chart-container { width: 100%; height: 520px; }
+    </style>
+<div id="controls">
+  <label for="grp-select">utd_omr:</label>
+  <select id="grp-select"></select>
+</div>
+<div id="chart-container" style="width:100%; height:520px; display:block;"></div>
+<script>
+      const COLORS          = {"Mann":"#0D47A1","Kvinne":"#E91E63"};
+      const CHART_TYPE      = "column";
+      const CHART_HEIGHT    = 520;
+      const BAR_WIDTH       = 40;
+      const LABEL_THRESHOLD = 8;
+      const LABEL_FONT_SIZE = "10px";
+      const allData         = [{"label":"Estetiske fag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"stack_levels":["Kvinne","Mann"],"series":[{"name":"Kvinne","data":[1664,1587,1703,1868,1882,2168,2180,1972,1953,1968,1859],"pcts":[62.627,60.8746,60.5834,60.1417,62.3385,63.5591,65.2304,65.6677,65.3833,66.9843,67.5509],"labels":["1 664 (62,6 %)","1 587 (60,9 %)","1 703 (60,6 %)","1 868 (60,1 %)","1 882 (62,3 %)","2 168 (63,6 %)","2 180 (65,2 %)","1 972 (65,7 %)","1 953 (65,4 %)","1 968 (67,0 %)","1 859 (67,6 %)"]},{"name":"Mann","data":[993,1020,1108,1238,1137,1243,1162,1031,1034,970,893],"pcts":[37.373,39.1254,39.4166,39.8583,37.6615,36.4409,34.7696,34.3323,34.6167,33.0157,32.4491],"labels":["993 (37,4 %)","1 020 (39,1 %)","1 108 (39,4 %)","1 238 (39,9 %)","1 137 (37,7 %)","1 243 (36,4 %)","1 162 (34,8 %)","1 031 (34,3 %)","1 034 (34,6 %)","970 (33,0 %)","893 (32,4 %)"]}]},{"label":"Helsefag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"stack_levels":["Kvinne","Mann"],"series":[{"name":"Kvinne","data":[25082,27956,29301,30114,28733,30068,30263,25524,23662,24888,27490],"pcts":[78.472,77.103,76.9156,76.0993,76.2088,76.5986,76.8311,77.6986,77.8868,77.3472,77.9969],"labels":["25 082 (78,5 %)","27 956 (77,1 %)","29 301 (76,9 %)","30 114 (76,1 %)","28 733 (76,2 %)","30 068 (76,6 %)","30 263 (76,8 %)","25 524 (77,7 %)","23 662 (77,9 %)","24 888 (77,3 %)","27 490 (78,0 %)"]},{"name":"Mann","data":[6881,8302,8794,9458,8970,9186,9126,7326,6718,7289,7755],"pcts":[21.528,22.897,23.0844,23.9007,23.7912,23.4014,23.1689,22.3014,22.1132,22.6528,22.0031],"labels":["6 881 (21,5 %)","8 302 (22,9 %)","8 794 (23,1 %)","9 458 (23,9 %)","8 970 (23,8 %)","9 186 (23,4 %)","9 126 (23,2 %)","7 326 (22,3 %)","6 718 (22,1 %)","7 289 (22,7 %)","7 755 (22,0 %)"]}]},{"label":"Historiefag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"stack_levels":["Kvinne","Mann"],"series":[{"name":"Kvinne","data":[1651,1502,1701,1727,1781,2200,2169,1864,1786,2081,1793],"pcts":[46.9034,46.2866,47.929,46.4247,48.4231,48.8455,49.374,48.8214,49.2554,50.7066,47.6608],"labels":["1 651 (46,9 %)","1 502 (46,3 %)","1 701 (47,9 %)","1 727 (46,4 %)","1 781 (48,4 %)","2 200 (48,8 %)","2 169 (49,4 %)","1 864 (48,8 %)","1 786 (49,3 %)","2 081 (50,7 %)","1 793 (47,7 %)"]},{"name":"Mann","data":[1869,1743,1848,1993,1897,2304,2224,1954,1840,2023,1969],"pcts":[53.0966,53.7134,52.071,53.5753,51.5769,51.1545,50.626,51.1786,50.7446,49.2934,52.3392],"labels":["1 869 (53,1 %)","1 743 (53,7 %)","1 848 (52,1 %)","1 993 (53,6 %)","1 897 (51,6 %)","2 304 (51,2 %)","2 224 (50,6 %)","1 954 (51,2 %)","1 840 (50,7 %)","2 023 (49,3 %)","1 969 (52,3 %)"]}]},{"label":"Idrettsfag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"stack_levels":["Kvinne","Mann"],"series":[{"name":"Kvinne","data":[1524,1287,1457,1589,1541,1532,1345,1295,1272,1260,1222],"pcts":[43.3694,42.5173,42.5899,41.7608,42.9967,42.379,41.5765,44.7323,43.6364,43.1507,43.1193],"labels":["1 524 (43,4 %)","1 287 (42,5 %)","1 457 (42,6 %)","1 589 (41,8 %)","1 541 (43,0 %)","1 532 (42,4 %)","1 345 (41,6 %)","1 295 (44,7 %)","1 272 (43,6 %)","1 260 (43,2 %)","1 222 (43,1 %)"]},{"name":"Mann","data":[1990,1740,1964,2216,2043,2083,1890,1600,1643,1660,1612],"pcts":[56.6306,57.4827,57.4101,58.2392,57.0033,57.621,58.4235,55.2677,56.3636,56.8493,56.8807],"labels":["1 990 (56,6 %)","1 740 (57,5 %)","1 964 (57,4 %)","2 216 (58,2 %)","2 043 (57,0 %)","2 083 (57,6 %)","1 890 (58,4 %)","1 600 (55,3 %)","1 643 (56,4 %)","1 660 (56,8 %)","1 612 (56,9 %)"]}]},{"label":"Informasjonsteknologi","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"stack_levels":["Kvinne","Mann"],"series":[{"name":"Kvinne","data":[645,743,1103,1417,1646,2090,2098,2066,2489,2618,1940],"pcts":[17.9067,19.5784,22.4415,23.8071,26.2981,29.4574,29.0985,30.5395,34.4165,36.3662,34.6552],"labels":["645 (17,9 %)","743 (19,6 %)","1 103 (22,4 %)","1 417 (23,8 %)","1 646 (26,3 %)","2 090 (29,5 %)","2 098 (29,1 %)","2 066 (30,5 %)","2 489 (34,4 %)","2 618 (36,4 %)","1 940 (34,7 %)"]},{"name":"Mann","data":[2957,3052,3812,4535,4613,5005,5112,4699,4743,4581,3658],"pcts":[82.0933,80.4216,77.5585,76.1929,73.7019,70.5426,70.9015,69.4605,65.5835,63.6338,65.3448],"labels":["2 957 (82,1 %)","3 052 (80,4 %)","3 812 (77,6 %)","4 535 (76,2 %)","4 613 (73,7 %)","5 005 (70,5 %)","5 112 (70,9 %)","4 699 (69,5 %)","4 743 (65,6 %)","4 581 (63,6 %)","3 658 (65,3 %)"]}]},{"label":"Juridiske fag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"stack_levels":["Kvinne","Mann"],"series":[{"name":"Kvinne","data":[5334,5178,4960,4795,4793,4818,6604,5761,6562,6614,6635],"pcts":[55.3262,53.6747,54.9402,55.8662,59.4886,60.6572,60.5039,63.1342,64.9446,66.2593,65.3952],"labels":["5 334 (55,3 %)","5 178 (53,7 %)","4 960 (54,9 %)","4 795 (55,9 %)","4 793 (59,5 %)","4 818 (60,7 %)","6 604 (60,5 %)","5 761 (63,1 %)","6 562 (64,9 %)","6 614 (66,3 %)","6 635 (65,4 %)"]},{"name":"Mann","data":[4307,4469,4068,3788,3264,3125,4311,3364,3542,3368,3511],"pcts":[44.6738,46.3253,45.0598,44.1338,40.5114,39.3428,39.4961,36.8658,35.0554,33.7407,34.6048],"labels":["4 307 (44,7 %)","4 469 (46,3 %)","4 068 (45,1 %)","3 788 (44,1 %)","3 264 (40,5 %)","3 125 (39,3 %)","4 311 (39,5 %)","3 364 (36,9 %)","3 542 (35,1 %)","3 368 (33,7 %)","3 511 (34,6 %)"]}]},{"label":"Land- og havbruk","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"stack_levels":["Kvinne","Mann"],"series":[{"name":"Kvinne","data":[255,331,378,381,434,539,619,546,551,582,602],"pcts":[41.5987,45.1569,42.9545,43.3941,45.9746,48.2111,51.886,50.9804,52.6266,55.5344,54.9772],"labels":["255 (41,6 %)","331 (45,2 %)","378 (43,0 %)","381 (43,4 %)","434 (46,0 %)","539 (48,2 %)","619 (51,9 %)","546 (51,0 %)","551 (52,6 %)","582 (55,5 %)","602 (55,0 %)"]},{"name":"Mann","data":[358,402,502,497,510,579,574,525,496,466,493],"pcts":[58.4013,54.8431,57.0455,56.6059,54.0254,51.7889,48.114,49.0196,47.3734,44.4656,45.0228],"labels":["358 (58,4 %)","402 (54,8 %)","502 (57,0 %)","497 (56,6 %)","510 (54,0 %)","579 (51,8 %)","574 (48,1 %)","525 (49,0 %)","496 (47,4 %)","466 (44,5 %)","493 (45,0 %)"]}]},{"label":"Lærerutdanninger","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"stack_levels":["Kvinne","Mann"],"series":[{"name":"Kvinne","data":[7838,7745,7815,9105,9382,8756,8307,7404,5884,5546,5368],"pcts":[65.7771,63.8552,63.2794,65.0962,66.4353,67.4888,66.8787,67.2785,68.4186,67.3467,66.8576],"labels":["7 838 (65,8 %)","7 745 (63,9 %)","7 815 (63,3 %)","9 105 (65,1 %)","9 382 (66,4 %)","8 756 (67,5 %)","8 307 (66,9 %)","7 404 (67,3 %)","5 884 (68,4 %)","5 546 (67,3 %)","5 368 (66,9 %)"]},{"name":"Mann","data":[4078,4384,4535,4882,4740,4218,4114,3601,2716,2689,2661],"pcts":[34.2229,36.1448,36.7206,34.9038,33.5647,32.5112,33.1213,32.7215,31.5814,32.6533,33.1424],"labels":["4 078 (34,2 %)","4 384 (36,1 %)","4 535 (36,7 %)","4 882 (34,9 %)","4 740 (33,6 %)","4 218 (32,5 %)","4 114 (33,1 %)","3 601 (32,7 %)","2 716 (31,6 %)","2 689 (32,7 %)","2 661 (33,1 %)"]}]},{"label":"Mediefag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"stack_levels":["Kvinne","Mann"],"series":[{"name":"Kvinne","data":[2010,1954,1968,2072,2146,2661,3005,2556,2755,2824,2639],"pcts":[56.86,56.3925,57.4599,57.6677,58.522,58.3425,61.6916,61.8736,64.6107,64.9942,65.5489],"labels":["2 010 (56,9 %)","1 954 (56,4 %)","1 968 (57,5 %)","2 072 (57,7 %)","2 146 (58,5 %)","2 661 (58,3 %)","3 005 (61,7 %)","2 556 (61,9 %)","2 755 (64,6 %)","2 824 (65,0 %)","2 639 (65,5 %)"]},{"name":"Mann","data":[1525,1511,1457,1521,1521,1900,1866,1575,1509,1521,1387],"pcts":[43.14,43.6075,42.5401,42.3323,41.478,41.6575,38.3084,38.1264,35.3893,35.0058,34.4511],"labels":["1 525 (43,1 %)","1 511 (43,6 %)","1 457 (42,5 %)","1 521 (42,3 %)","1 521 (41,5 %)","1 900 (41,7 %)","1 866 (38,3 %)","1 575 (38,1 %)","1 509 (35,4 %)","1 521 (35,0 %)","1 387 (34,5 %)"]}]},{"label":"Pedagogiske fag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"stack_levels":["Kvinne","Mann"],"series":[{"name":"Kvinne","data":[1661,1837,1950,2084,2178,2162,2209,1662,1793,1763,1679],"pcts":[71.2876,72.0392,73.2807,73.2513,74.3091,73.7129,75.4956,74.5961,75.9424,74.5139,75.5286],"labels":["1 661 (71,3 %)","1 837 (72,0 %)","1 950 (73,3 %)","2 084 (73,3 %)","2 178 (74,3 %)","2 162 (73,7 %)","2 209 (75,5 %)","1 662 (74,6 %)","1 793 (75,9 %)","1 763 (74,5 %)","1 679 (75,5 %)"]},{"name":"Mann","data":[669,713,711,761,753,771,717,566,568,603,544],"pcts":[28.7124,27.9608,26.7193,26.7487,25.6909,26.2871,24.5044,25.4039,24.0576,25.4861,24.4714],"labels":["669 (28,7 %)","713 (28,0 %)","711 (26,7 %)","761 (26,7 %)","753 (25,7 %)","771 (26,3 %)","717 (24,5 %)","566 (25,4 %)","568 (24,1 %)","603 (25,5 %)","544 (24,5 %)"]}]},{"label":"Realfag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"stack_levels":["Kvinne","Mann"],"series":[{"name":"Kvinne","data":[2176,2037,2136,2056,1977,2226,2210,2029,1947,2028,1974],"pcts":[50.5929,47.033,49.9649,50.7153,51.8218,52.3149,51.4672,53.1848,54.6143,52.2546,51.6889],"labels":["2 176 (50,6 %)","2 037 (47,0 %)","2 136 (50,0 %)","2 056 (50,7 %)","1 977 (51,8 %)","2 226 (52,3 %)","2 210 (51,5 %)","2 029 (53,2 %)","1 947 (54,6 %)","2 028 (52,3 %)","1 974 (51,7 %)"]},{"name":"Mann","data":[2125,2294,2139,1998,1838,2029,2084,1786,1618,1853,1845],"pcts":[49.4071,52.967,50.0351,49.2847,48.1782,47.6851,48.5328,46.8152,45.3857,47.7454,48.3111],"labels":["2 125 (49,4 %)","2 294 (53,0 %)","2 139 (50,0 %)","1 998 (49,3 %)","1 838 (48,2 %)","2 029 (47,7 %)","2 084 (48,5 %)","1 786 (46,8 %)","1 618 (45,4 %)","1 853 (47,7 %)","1 845 (48,3 %)"]}]},{"label":"Reiselivsfag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"stack_levels":["Kvinne","Mann"],"series":[{"name":"Kvinne","data":[479,452,469,356,297,299,243,221,254,221,252],"pcts":[67.847,66.2757,66.5248,62.7866,58.4646,65.2838,68.2584,62.7841,59.7647,66.3664,61.4634],"labels":["479 (67,8 %)","452 (66,3 %)","469 (66,5 %)","356 (62,8 %)","297 (58,5 %)","299 (65,3 %)","243 (68,3 %)","221 (62,8 %)","254 (59,8 %)","221 (66,4 %)","252 (61,5 %)"]},{"name":"Mann","data":[227,230,236,211,211,159,113,131,171,112,158],"pcts":[32.153,33.7243,33.4752,37.2134,41.5354,34.7162,31.7416,37.2159,40.2353,33.6336,38.5366],"labels":["227 (32,2 %)","230 (33,7 %)","236 (33,5 %)","211 (37,2 %)","211 (41,5 %)","159 (34,7 %)","113 (31,7 %)","131 (37,2 %)","171 (40,2 %)","112 (33,6 %)","158 (38,5 %)"]}]},{"label":"Samfunnsfag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"stack_levels":["Kvinne","Mann"],"series":[{"name":"Kvinne","data":[9451,9935,9909,10679,10597,13225,12276,10468,11151,12280,12189],"pcts":[66.9714,66.8528,66.0116,66.8733,66.4514,68.244,68.5542,69.5687,71.3755,72.1292,73.3438],"labels":["9 451 (67,0 %)","9 935 (66,9 %)","9 909 (66,0 %)","10 679 (66,9 %)","10 597 (66,5 %)","13 225 (68,2 %)","12 276 (68,6 %)","10 468 (69,6 %)","11 151 (71,4 %)","12 280 (72,1 %)","12 189 (73,3 %)"]},{"name":"Mann","data":[4661,4926,5102,5290,5350,6154,5631,4579,4472,4745,4430],"pcts":[33.0286,33.1472,33.9884,33.1267,33.5486,31.756,31.4458,30.4313,28.6245,27.8708,26.6562],"labels":["4 661 (33,0 %)","4 926 (33,1 %)","5 102 (34,0 %)","5 290 (33,1 %)","5 350 (33,5 %)","6 154 (31,8 %)","5 631 (31,4 %)","4 579 (30,4 %)","4 472 (28,6 %)","4 745 (27,9 %)","4 430 (26,7 %)"]}]},{"label":"Språkfag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"stack_levels":["Kvinne","Mann"],"series":[{"name":"Kvinne","data":[3359,3838,4080,4054,3593,3786,3912,3050,3026,3071,3019],"pcts":[67.1666,68.5235,68.1818,68.3873,67.184,67.7645,66.8832,66.6812,68.6012,67.4945,65.2334],"labels":["3 359 (67,2 %)","3 838 (68,5 %)","4 080 (68,2 %)","4 054 (68,4 %)","3 593 (67,2 %)","3 786 (67,8 %)","3 912 (66,9 %)","3 050 (66,7 %)","3 026 (68,6 %)","3 071 (67,5 %)","3 019 (65,2 %)"]},{"name":"Mann","data":[1642,1763,1904,1874,1755,1801,1937,1524,1385,1479,1609],"pcts":[32.8334,31.4765,31.8182,31.6127,32.816,32.2355,33.1168,33.3188,31.3988,32.5055,34.7666],"labels":["1 642 (32,8 %)","1 763 (31,5 %)","1 904 (31,8 %)","1 874 (31,6 %)","1 755 (32,8 %)","1 801 (32,2 %)","1 937 (33,1 %)","1 524 (33,3 %)","1 385 (31,4 %)","1 479 (32,5 %)","1 609 (34,8 %)"]}]},{"label":"Teknologiske fag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"stack_levels":["Kvinne","Mann"],"series":[{"name":"Kvinne","data":[3905,3526,3607,3828,4006,4291,4749,4673,4977,5071,4841],"pcts":[27.7976,26.051,27.0593,27.2281,28.8201,29.3342,31.0129,32.2365,33.1822,32.7499,32.9096],"labels":["3 905 (27,8 %)","3 526 (26,1 %)","3 607 (27,1 %)","3 828 (27,2 %)","4 006 (28,8 %)","4 291 (29,3 %)","4 749 (31,0 %)","4 673 (32,2 %)","4 977 (33,2 %)","5 071 (32,7 %)","4 841 (32,9 %)"]},{"name":"Mann","data":[10143,10009,9723,10231,9894,10337,10564,9823,10022,10413,9869],"pcts":[72.2024,73.949,72.9407,72.7719,71.1799,70.6658,68.9871,67.7635,66.8178,67.2501,67.0904],"labels":["10 143 (72,2 %)","10 009 (73,9 %)","9 723 (72,9 %)","10 231 (72,8 %)","9 894 (71,2 %)","10 337 (70,7 %)","10 564 (69,0 %)","9 823 (67,8 %)","10 022 (66,8 %)","10 413 (67,3 %)","9 869 (67,1 %)"]}]},{"label":"Økonomisk-administrative fag","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"stack_levels":["Kvinne","Mann"],"series":[{"name":"Kvinne","data":[8242,7352,7007,7161,7117,8652,9543,9638,11827,12721,12960],"pcts":[50.0425,47.2645,46.26,46.5423,46.6689,45.3721,46.6103,48.7284,50.4543,49.2508,49.64],"labels":["8 242 (50,0 %)","7 352 (47,3 %)","7 007 (46,3 %)","7 161 (46,5 %)","7 117 (46,7 %)","8 652 (45,4 %)","9 543 (46,6 %)","9 638 (48,7 %)","11 827 (50,5 %)","12 721 (49,3 %)","12 960 (49,6 %)"]},{"name":"Mann","data":[8228,8203,8140,8225,8133,10417,10931,10141,11614,13108,13148],"pcts":[49.9575,52.7355,53.74,53.4577,53.3311,54.6279,53.3897,51.2716,49.5457,50.7492,50.36],"labels":["8 228 (50,0 %)","8 203 (52,7 %)","8 140 (53,7 %)","8 225 (53,5 %)","8 133 (53,3 %)","10 417 (54,6 %)","10 931 (53,4 %)","10 141 (51,3 %)","11 614 (49,5 %)","13 108 (50,7 %)","13 148 (50,4 %)"]}]}];
+
+      console.log("allData length:", allData.length);
+      console.log("First group label:", allData[0].label);
+      console.log("First group categories:", allData[0].categories);
+      console.log("First group series count:", allData[0].series.length);
+      console.log("First series name:", allData[0].series[0].name);
+      console.log("First series data:", allData[0].series[0].data);
+      console.log("First series pcts:", allData[0].series[0].pcts);
+      console.log("First series labels:", allData[0].series[0].labels);
+
+      const select = document.getElementById("grp-select");
+      let chart = null;
+
+      allData.forEach(function(d, i) {
+        const opt = document.createElement("option");
+        opt.value = i;
+        opt.textContent = d.label;
+        select.appendChild(opt);
+      });
+
+      function renderChart(index) {
+        const d = allData[index];
+        if (!d) { console.log("No data for index", index); return; }
+        if (chart) { chart.destroy(); }
+
+        const series = d.series.map(function(s) {
+          console.log("Building series:", s.name, "data length:", s.data.length);
+          return {
+            name:  s.name,
+            color: COLORS[s.name] || undefined,
+            data:  s.data.map(function(val, i) {
+              return {
+                y:     val,
+                pct:   s.pcts[i],
+                label: s.labels[i]
+              };
+            })
+          };
+        });
+
+        console.log("Calling Highcharts.chart, series:", series.length);
+        try {
+          chart = Highcharts.chart("chart-container", {
+            chart: { type: CHART_TYPE, height: CHART_HEIGHT, reflow: true },
+            title: { text: "" },
+            xAxis: {
+              categories: d.categories,
+              title: { text: "" },
+              labels: {
+                rotation: (CHART_TYPE === "column" && d.categories.length > 6) ? -35 : 0,
+                style: { fontSize: "11px" }
+              }
+            },
+            yAxis: {
+              min: 0, max: 100,
+              title: { text: "" },
+              labels: { format: "{value}%" },
+              reversedStacks: false
+            },
+            tooltip: {
+              useHTML: true,
+              formatter: function() {
+                return "aar: " + this.x +
+                       "<br>kjonn: " + this.series.name +
+                       "<br>Antall / andel: " + this.point.label;
+              }
+            },
+            plotOptions: {
+              series: {
+                stacking: "percent",
+                borderWidth: 0,
+                dataLabels: {
+                  enabled: true,
+                  crop: false,
+                  overflow: "none",
+                  style: {
+                    color: "white",
+                    fontWeight: "normal",
+                    textOutline: "none",
+                    fontSize: LABEL_FONT_SIZE
+                  },
+                  formatter: function() {
+                    if (this.percentage < LABEL_THRESHOLD) return null;
+                    return Highcharts.numberFormat(this.percentage, 1, ",", " ") + " %";
+                  }
+                }
+              },
+              bar:    { pointWidth: BAR_WIDTH, pointPadding: 0.05, groupPadding: 0.08 },
+              column: { pointWidth: BAR_WIDTH, pointPadding: 0.05, groupPadding: 0.08 }
+            },
+            legend: {
+              layout: "horizontal", align: "center", verticalAlign: "bottom",
+              itemStyle: { fontSize: "11px", fontWeight: "normal" }
+            },
+            credits: { enabled: false },
+            exporting: { enabled: true }
+          });
+          console.log("Highcharts.chart call succeeded");
+        } catch(e) {
+          console.error("Highcharts.chart error:", e);
+        }
+      }
+
+      select.addEventListener("change", function() {
+        renderChart(parseInt(this.value));
+      });
+
+      console.log("container dimensions:", document.getElementById("chart-container").offsetWidth, "x", document.getElementById("chart-container").offsetHeight);
+      renderChart(0);;
+    </script>
+</body>
+</html>
