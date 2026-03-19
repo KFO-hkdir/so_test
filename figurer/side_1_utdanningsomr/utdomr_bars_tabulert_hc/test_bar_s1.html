@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+<link href="lib/highcharts-9.3.1/css/motion.css" rel="stylesheet" />
+<script src="lib/highcharts-9.3.1/highcharts.js"></script>
+<script src="lib/highcharts-9.3.1/highcharts-3d.js"></script>
+<script src="lib/highcharts-9.3.1/highcharts-more.js"></script>
+<script src="lib/highcharts-9.3.1/modules/stock.js"></script>
+<script src="lib/highcharts-9.3.1/modules/map.js"></script>
+<script src="lib/highcharts-9.3.1/modules/data.js"></script>
+<script src="lib/highcharts-9.3.1/modules/exporting.js"></script>
+<script src="lib/highcharts-9.3.1/modules/offline-exporting.js"></script>
+<script src="lib/highcharts-9.3.1/modules/drilldown.js"></script>
+<script src="lib/highcharts-9.3.1/modules/item-series.js"></script>
+<script src="lib/highcharts-9.3.1/modules/overlapping-datalabels.js"></script>
+<script src="lib/highcharts-9.3.1/modules/annotations.js"></script>
+<script src="lib/highcharts-9.3.1/modules/export-data.js"></script>
+<script src="lib/highcharts-9.3.1/modules/funnel.js"></script>
+<script src="lib/highcharts-9.3.1/modules/heatmap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/treemap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/sankey.js"></script>
+<script src="lib/highcharts-9.3.1/modules/dependency-wheel.js"></script>
+<script src="lib/highcharts-9.3.1/modules/organization.js"></script>
+<script src="lib/highcharts-9.3.1/modules/solid-gauge.js"></script>
+<script src="lib/highcharts-9.3.1/modules/streamgraph.js"></script>
+<script src="lib/highcharts-9.3.1/modules/sunburst.js"></script>
+<script src="lib/highcharts-9.3.1/modules/vector.js"></script>
+<script src="lib/highcharts-9.3.1/modules/wordcloud.js"></script>
+<script src="lib/highcharts-9.3.1/modules/xrange.js"></script>
+<script src="lib/highcharts-9.3.1/modules/tilemap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/venn.js"></script>
+<script src="lib/highcharts-9.3.1/modules/gantt.js"></script>
+<script src="lib/highcharts-9.3.1/modules/timeline.js"></script>
+<script src="lib/highcharts-9.3.1/modules/parallel-coordinates.js"></script>
+<script src="lib/highcharts-9.3.1/modules/bullet.js"></script>
+<script src="lib/highcharts-9.3.1/modules/coloraxis.js"></script>
+<script src="lib/highcharts-9.3.1/modules/dumbbell.js"></script>
+<script src="lib/highcharts-9.3.1/modules/lollipop.js"></script>
+<script src="lib/highcharts-9.3.1/modules/series-label.js"></script>
+<script src="lib/highcharts-9.3.1/plugins/motion.js"></script>
+<script src="lib/highcharts-9.3.1/custom/reset.js"></script>
+<script src="lib/highcharts-9.3.1/modules/boost.js"></script>
+
+</head>
+<body>
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; font-size: 13px; background: #fff; padding: 10px; }
+    #chart-container { width: 100%; height: 520px; }
+  </style>
+<div id="chart-container"></div>
+<script>
+    const chartData = {"categories":["Helsefag","Økonomisk-administrative fag","Lærerutdanninger","Teknologiske fag","Samfunnsfag","Informasjonsteknologi","Historiefag","Språkfag","Realfag","Juridiske fag","Estetiske fag","Idrettsfag","Mediefag","Pedagogiske fag","Land- og havbruk","Reiselivsfag"],"values":[12426,10248,7389,6954,6312,3108,3071,2978,2395,2150,1616,1607,1587,1571,900,230]};
+
+    Highcharts.chart("chart-container", {
+      chart: {
+        type: "bar",
+        reflow: true,
+        margin: [20, 60, 40, 180]
+      },
+      title:    { text: "" },
+      subtitle: { text: "" },
+      xAxis: {
+        categories: chartData.categories,
+        title: { text: "" },
+        labels: { style: { fontSize: "11px" } }
+      },
+      yAxis: {
+        min: 0,
+        title: { text: "" },
+        labels: {
+          formatter: function() {
+            return Highcharts.numberFormat(this.value, 0, ",", " ");
+          }
+        }
+      },
+      legend:   { enabled: false },
+      tooltip: {
+        formatter: function() {
+          return "<b>" + this.x + "</b><br/>Studieplasser: " +
+                 Highcharts.numberFormat(this.y, 0, ",", " ");
+        }
+      },
+      plotOptions: {
+        bar: {
+          colorByPoint: false,
+          dataLabels: { enabled: false },
+          label:       { enabled: false }
+        }
+      },
+      series: [{
+        name:  "Studieplasser",
+        data:  chartData.values,
+        color: "#E72F72"
+      }],
+      credits:   { enabled: false },
+      exporting: {
+        enabled: true,
+        csv: {
+          columnHeaderFormatter: function(item, key) {
+            if (!item || item.isXAxis) { return "Utdanningsområde"; }
+            return item.name;
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

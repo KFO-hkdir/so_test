@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+
+  <meta charset="utf-8"/>
+  <script src="https://cdn.jsdelivr.net/npm/@highcharts/grid-lite/grid-lite.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@highcharts/grid-lite/css/grid-lite.css"/>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <style>
+        /* ── Page layout ── */
+        body {
+          font-family: sans-serif;
+          max-width: 640px;
+          margin: 20px auto;
+          padding: 0 12px;
+          font-size: 12px;
+          box-sizing: border-box;
+        }
+
+        h4 {
+          font-size: 14px;
+          margin: 0 0 10px 0;
+          line-height: 1.25;
+        }
+
+        /* ── Controls row (dropdown + export button) ── */
+        .hc-table-controls {
+          display: flex;
+          align-items: center;
+          gap: 7px;
+          margin-bottom: 12px;
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        .hc-table-select-wrap {
+          flex: 1 1 auto;
+          min-width: 0;
+        }
+
+        .hc-table-select-wrap select {
+          font-size: 12px;
+          padding: 5px 8px;
+          margin-bottom: 0;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          width: 100%;
+          box-sizing: border-box;
+          background: white;
+        }
+
+        .hc-table-export-wrap {
+          flex: 0 0 auto;
+        }
+
+        /* ── Export burger button ── */
+        .hc-export-wrap {
+          position: relative;
+          display: inline-block;
+        }
+
+        .hc-export-btn {
+          width: 28px;
+          height: 28px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          background: white;
+          cursor: pointer;
+          font-size: 12px;
+          line-height: 1;
+          padding: 0;
+        }
+
+        .hc-export-btn:hover { background: #f6f6f6; }
+
+        .hc-export-menu {
+          display: none;
+          position: absolute;
+          right: 0;
+          top: calc(100% + 4px);
+          min-width: 140px;
+          background: white;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+          z-index: 9999;
+          overflow: hidden;
+        }
+
+        .hc-export-menu.open { display: block; }
+
+        .hc-export-item {
+          display: block;
+          width: 100%;
+          border: 0;
+          background: white;
+          text-align: left;
+          padding: 8px 10px;
+          cursor: pointer;
+          font-size: 12px;
+        }
+
+        .hc-export-item:hover { background: #f6f6f6; }
+
+        /* ── Grid container ── */
+        #datagrid-container {
+          width: 100%;
+        }
+
+        .hcg-container {
+          width: 100% !important;
+        }
+
+        /* ── Grid Lite CSS-variable theme ──
+           Variables cascade: table → header / body → rows / cells
+           --hcg-font-size        : all cell text size
+           --hcg-padding          : all cell padding (overridden per section)
+           --hcg-header-background: header bg colour
+           --hcg-header-color     : header text colour
+           --hcg-header-font-size : header text size  (= body size, bold handles emphasis)
+           --hcg-row-odd-background / --hcg-row-even-background : stripe colours
+        */
+        .hcg-custom-theme {
+          --hcg-font-size:              12px;
+          --hcg-font-family:            sans-serif;
+          --hcg-padding:                4px 8px;
+          --hcg-header-background:      #F58220;
+          --hcg-header-color:           #ffffff;
+          --hcg-header-font-size:       12px;
+          --hcg-header-font-weight:     bold;
+          --hcg-header-padding:         4px 8px;
+          --hcg-row-odd-background:     #ffffff;
+          --hcg-row-even-background:    #fde9d9;
+          width: 100% !important;
+        }
+
+        /* ── Column alignment: right-align all except first ── */
+        .hcg-custom-theme th:not(:first-child),
+        .hcg-custom-theme td:not(:first-child) {
+          text-align: right !important;
+          white-space: nowrap;
+        }
+
+        .hcg-custom-theme th:first-child,
+        .hcg-custom-theme td:first-child {
+          text-align: left !important;
+          white-space: nowrap;
+        }
+
+        /* right-align the sort button/span inside non-first headers */
+        .hcg-custom-theme th:not(:first-child) > *,
+        .hcg-custom-theme th:not(:first-child) button,
+        .hcg-custom-theme th:not(:first-child) span {
+          text-align: right !important;
+          justify-content: flex-end !important;
+        }
+
+        
+      .hcg-container th:first-child,
+      .hcg-container td:first-child {
+        width: 340px !important;
+        min-width: 340px !important;
+      }
+    
+      </style>
+</head>
+<html>
+  <body>
+    <h4>Søkere til institusjoner</h4>
+    <div class="hc-table-controls">
+      <div class="hc-table-export-wrap">
+        <div class="hc-export-wrap">
+          <button id="hc-export-btn" class="hc-export-btn" type="button" aria-label="Last ned XLSX">&#9776;</button>
+          <div id="hc-export-menu" class="hc-export-menu">
+            <button id="hc-export-xlsx" class="hc-export-item" type="button">Last ned XLSX</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="datagrid-container"></div>
+    <script>
+      const allData = {"default":[{"Institusjon":"Norges teknisk-naturvitenskapelige universitet","Antall":"24 279","Andel":"17,1 %"},{"Institusjon":"Universitetet i Oslo","Antall":"18 585","Andel":"13,1 %"},{"Institusjon":"OsloMet - storbyuniversitetet","Antall":"14 129","Andel":"9,9 %"},{"Institusjon":"Universitetet i Bergen","Antall":"10 588","Andel":"7,5 %"},{"Institusjon":"Høgskulen på Vestlandet","Antall":"9 139","Andel":"6,4 %"},{"Institusjon":"Universitetet i Innlandet","Antall":"8 590","Andel":"6,0 %"},{"Institusjon":"UiT Norges arktiske universitet","Antall":"8 417","Andel":"5,9 %"},{"Institusjon":"Universitetet i Sørøst-Norge","Antall":"7 681","Andel":"5,4 %"},{"Institusjon":"Universitetet i Stavanger","Antall":"6 513","Andel":"4,6 %"},{"Institusjon":"Universitetet i Agder","Antall":"6 327","Andel":"4,5 %"},{"Institusjon":"Nord universitet","Antall":"5 062","Andel":"3,6 %"},{"Institusjon":"Norges miljø- og biovitenskapelige universitet","Antall":"3 783","Andel":"2,7 %"},{"Institusjon":"Høgskolen i Østfold","Antall":"3 222","Andel":"2,3 %"},{"Institusjon":"Norges Handelshøyskole","Antall":"2 407","Andel":"1,7 %"},{"Institusjon":"VID vitenskapelige høgskole","Antall":"2 252","Andel":"1,6 %"},{"Institusjon":"NLA Høgskolen","Antall":"2 175","Andel":"1,5 %"},{"Institusjon":"Høgskolen i Molde, Vitenskaplig høgskole i logistikk","Antall":"2 115","Andel":"1,5 %"},{"Institusjon":"Politihøgskolen","Antall":"1 834","Andel":"1,3 %"},{"Institusjon":"Norges idrettshøgskole","Antall":"1 192","Andel":"0,8 %"},{"Institusjon":"Arkitektur- og designhøgskolen i Oslo","Antall":"972","Andel":"0,7 %"},{"Institusjon":"Høgskulen i Volda","Antall":"950","Andel":"0,7 %"},{"Institusjon":"Lovisenberg diakonale høgskole","Antall":"871","Andel":"0,6 %"},{"Institusjon":"Dronning Mauds Minne Høgskole for barnehagelærerutdanning","Antall":"291","Andel":"0,2 %"},{"Institusjon":"Ansgar høyskole","Antall":"264","Andel":"0,2 %"},{"Institusjon":"Fjellhaug Internasjonale Høgskole","Antall":"157","Andel":"0,1 %"},{"Institusjon":"MF vitenskapelig høyskole","Antall":"154","Andel":"0,1 %"},{"Institusjon":"Sámi allaskuvla / Sámi University of Applied Sciences","Antall":"55","Andel":"0,0 %"}]};
+      let grid = null;
+      
+    function renderTable(key) {
+      const rows = allData[key] || [];
+      const cols = {
+        'col_1': rows.map(r => r['Institusjon']),
+            'col_2': rows.map(r => r['Antall']),
+            'col_3': rows.map(r => r['Andel'])
+      };
+
+      if (grid) {
+        grid.update({
+          dataTable: { columns: cols }
+        });
+      } else {
+        grid = Grid.grid('datagrid-container', {
+          dataTable: { columns: cols },
+          columnDefaults: { resizable: true },
+          columns: [
+            { id: 'col_1', header: { format: 'Institusjon' } },
+                  { id: 'col_2', header: { format: 'Antall' } },
+                  { id: 'col_3', header: { format: 'Andel' } }
+          ],
+          rendering: {
+            theme: 'hcg-theme-default hcg-custom-theme'
+          }
+        });
+      }
+    }
+  
+      renderTable('default');
+      
+      const exportColLabels = ["Institusjon","Antall","Andel"];
+
+      function sanitizeFilePart(x) {
+        return String(x)
+          .trim()
+          .replace(/[\\/:*?"<>|]+/g, '-')
+          .replace(/\s+/g, '_');
+      }
+
+      function fileNameForExport(ext) {
+        if (false) {
+          return 'søkere_til_inst_' + sanitizeFilePart(document.getElementById('grp-select').value) + '.' + ext;
+        }
+        return 'søkere_til_inst.' + ext;
+      }
+
+      function getCurrentVisibleRows() {
+        const key = false ? document.getElementById('grp-select').value : 'default';
+        return allData[key] || [];
+      }
+
+      function downloadXLSX() {
+        const rows = getCurrentVisibleRows();
+        const aoa = [
+          exportColLabels,
+          ...rows.map(r => exportColLabels.map(lbl => r[lbl]))
+        ];
+        const ws = XLSX.utils.aoa_to_sheet(aoa);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Tabell');
+        XLSX.writeFile(wb, fileNameForExport('xlsx'));
+      }
+
+      const exportBtn     = document.getElementById('hc-export-btn');
+      const exportMenu    = document.getElementById('hc-export-menu');
+      const exportXlsxBtn = document.getElementById('hc-export-xlsx');
+
+      exportBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        exportMenu.classList.toggle('open');
+      });
+
+      exportXlsxBtn.addEventListener('click', function() {
+        downloadXLSX();
+        exportMenu.classList.remove('open');
+      });
+
+      document.addEventListener('click', function(e) {
+        if (!document.getElementById('hc-export-btn').contains(e.target) &&
+            !document.getElementById('hc-export-menu').contains(e.target)) {
+          exportMenu.classList.remove('open');
+        }
+      });
+    
+    </script>
+  </body>
+</html>
+</html>

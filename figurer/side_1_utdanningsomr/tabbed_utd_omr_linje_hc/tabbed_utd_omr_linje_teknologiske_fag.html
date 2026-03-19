@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+<link href="lib/highcharts-9.3.1/css/motion.css" rel="stylesheet" />
+<script src="lib/highcharts-9.3.1/highcharts.js"></script>
+<script src="lib/highcharts-9.3.1/highcharts-3d.js"></script>
+<script src="lib/highcharts-9.3.1/highcharts-more.js"></script>
+<script src="lib/highcharts-9.3.1/modules/stock.js"></script>
+<script src="lib/highcharts-9.3.1/modules/map.js"></script>
+<script src="lib/highcharts-9.3.1/modules/data.js"></script>
+<script src="lib/highcharts-9.3.1/modules/exporting.js"></script>
+<script src="lib/highcharts-9.3.1/modules/offline-exporting.js"></script>
+<script src="lib/highcharts-9.3.1/modules/drilldown.js"></script>
+<script src="lib/highcharts-9.3.1/modules/item-series.js"></script>
+<script src="lib/highcharts-9.3.1/modules/overlapping-datalabels.js"></script>
+<script src="lib/highcharts-9.3.1/modules/annotations.js"></script>
+<script src="lib/highcharts-9.3.1/modules/export-data.js"></script>
+<script src="lib/highcharts-9.3.1/modules/funnel.js"></script>
+<script src="lib/highcharts-9.3.1/modules/heatmap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/treemap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/sankey.js"></script>
+<script src="lib/highcharts-9.3.1/modules/dependency-wheel.js"></script>
+<script src="lib/highcharts-9.3.1/modules/organization.js"></script>
+<script src="lib/highcharts-9.3.1/modules/solid-gauge.js"></script>
+<script src="lib/highcharts-9.3.1/modules/streamgraph.js"></script>
+<script src="lib/highcharts-9.3.1/modules/sunburst.js"></script>
+<script src="lib/highcharts-9.3.1/modules/vector.js"></script>
+<script src="lib/highcharts-9.3.1/modules/wordcloud.js"></script>
+<script src="lib/highcharts-9.3.1/modules/xrange.js"></script>
+<script src="lib/highcharts-9.3.1/modules/tilemap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/venn.js"></script>
+<script src="lib/highcharts-9.3.1/modules/gantt.js"></script>
+<script src="lib/highcharts-9.3.1/modules/timeline.js"></script>
+<script src="lib/highcharts-9.3.1/modules/parallel-coordinates.js"></script>
+<script src="lib/highcharts-9.3.1/modules/bullet.js"></script>
+<script src="lib/highcharts-9.3.1/modules/coloraxis.js"></script>
+<script src="lib/highcharts-9.3.1/modules/dumbbell.js"></script>
+<script src="lib/highcharts-9.3.1/modules/lollipop.js"></script>
+<script src="lib/highcharts-9.3.1/modules/series-label.js"></script>
+<script src="lib/highcharts-9.3.1/plugins/motion.js"></script>
+<script src="lib/highcharts-9.3.1/custom/reset.js"></script>
+<script src="lib/highcharts-9.3.1/modules/boost.js"></script>
+
+</head>
+<body>
+<style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: Arial, sans-serif; font-size: 13px; background: #fff; padding: 10px; }
+      #controls { margin-bottom: 12px; }
+      #controls label { font-weight: bold; margin-right: 8px; }
+      #omr-select {
+        padding: 5px 10px; font-size: 13px; border: 1px solid #ccc;
+        border-radius: 4px; min-width: 220px; cursor: pointer;
+      }
+      #chart-container { width: 100%; height: 420px; }
+    </style>
+<div id="controls">
+  <label for="omr-select">Utdanningstype:</label>
+  <select id="omr-select"></select>
+</div>
+<div id="chart-container"></div>
+<script>
+      const COLORS = ["#E72F72", "#0025A0"];
+      const allData = [{"label":"Ingeniør","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"sokere":[5762,5567,5151,5247,5101,5439,5541,5373,5185,5923,5876],"plasser":[3067,3390,3423,3763,3691,3388,3451,3428,3467,3573,3600]},{"label":"Sivilingeniør","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"sokere":[5325,4892,4912,5269,5377,5622,5739,5262,5820,5948,5683],"plasser":[1807,1853,2074,2096,2115,2100,2378,2317,2191,2431,2433]},{"label":"Arkitekt","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"sokere":[1233,1224,1320,1293,1374,1498,1672,1488,1550,1231,1021],"plasser":[140,140,140,140,140,140,160,160,140,144,153]},{"label":"Annet","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"sokere":[1267,1366,1499,1768,1417,1407,1479,1489,1424,1399,1033],"plasser":[523,515,500,576,481,456,466,526,447,453,493]},{"label":"Maritime","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"sokere":[461,384,448,482,631,662,882,884,1020,983,1097],"plasser":[168,158,203,218,230,238,230,230,232,245,275]},{"label":"Økonomisk-administrative fag","categories":"2016","sokere":102,"plasser":45}];
+      const select = document.getElementById("omr-select");
+      let chart = null;
+      allData.forEach(function(d, i) {
+        const opt = document.createElement("option");
+        opt.value = i;
+        opt.textContent = d.label;
+        select.appendChild(opt);
+      });
+      function renderChart(index) {
+        const d = allData[index];
+        if (chart) { chart.destroy(); }
+        chart = Highcharts.chart("chart-container", {
+          chart: { type: "line", reflow: true, margin: [50, 20, 60, 80] },
+          title: { text: "" }, subtitle: { text: "" },
+          xAxis: { categories: d.categories, title: { text: "" } },
+          yAxis: {
+            min: 0, title: { text: "" },
+            labels: { formatter: function() { return Highcharts.numberFormat(this.value, 0, ",", " "); } }
+          },
+          legend: {
+            enabled: true, align: "center", verticalAlign: "bottom",
+            layout: "horizontal", itemStyle: { fontSize: "11px", fontWeight: "normal" }
+          },
+          tooltip: {
+            shared: true,
+            formatter: function() {
+              var s = "<b>" + this.x + "</b>";
+              this.points.forEach(function(p) {
+                s += "<br/>" + p.series.name + ": " + Highcharts.numberFormat(p.y, 0, ",", " ");
+              });
+              return s;
+            }
+          },
+          plotOptions: { line: { lineWidth: 1.5 } },
+          series: [
+            { name: "Søkere", data: d.sokere, color: COLORS[0], marker: { enabled: true, radius: 4 }, dataLabels: { enabled: false }, label: { enabled: false } },
+            { name: "Studieplasser", data: d.plasser, color: COLORS[1], marker: { enabled: true, radius: 4 }, dataLabels: { enabled: false }, label: { enabled: false } }
+          ],
+          credits: { enabled: false },
+          exporting: {
+            enabled: true,
+            csv: {
+              columnHeaderFormatter: function(item, key) {
+                if (!item || item.isXAxis) { return "År"; }
+                return item.name;
+              }
+            }
+          }
+        });
+      }
+      select.addEventListener("change", function() { renderChart(parseInt(this.value)); });
+      renderChart(0);
+    </script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+<link href="lib/highcharts-9.3.1/css/motion.css" rel="stylesheet" />
+<script src="lib/highcharts-9.3.1/highcharts.js"></script>
+<script src="lib/highcharts-9.3.1/highcharts-3d.js"></script>
+<script src="lib/highcharts-9.3.1/highcharts-more.js"></script>
+<script src="lib/highcharts-9.3.1/modules/stock.js"></script>
+<script src="lib/highcharts-9.3.1/modules/map.js"></script>
+<script src="lib/highcharts-9.3.1/modules/data.js"></script>
+<script src="lib/highcharts-9.3.1/modules/exporting.js"></script>
+<script src="lib/highcharts-9.3.1/modules/offline-exporting.js"></script>
+<script src="lib/highcharts-9.3.1/modules/drilldown.js"></script>
+<script src="lib/highcharts-9.3.1/modules/item-series.js"></script>
+<script src="lib/highcharts-9.3.1/modules/overlapping-datalabels.js"></script>
+<script src="lib/highcharts-9.3.1/modules/annotations.js"></script>
+<script src="lib/highcharts-9.3.1/modules/export-data.js"></script>
+<script src="lib/highcharts-9.3.1/modules/funnel.js"></script>
+<script src="lib/highcharts-9.3.1/modules/heatmap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/treemap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/sankey.js"></script>
+<script src="lib/highcharts-9.3.1/modules/dependency-wheel.js"></script>
+<script src="lib/highcharts-9.3.1/modules/organization.js"></script>
+<script src="lib/highcharts-9.3.1/modules/solid-gauge.js"></script>
+<script src="lib/highcharts-9.3.1/modules/streamgraph.js"></script>
+<script src="lib/highcharts-9.3.1/modules/sunburst.js"></script>
+<script src="lib/highcharts-9.3.1/modules/vector.js"></script>
+<script src="lib/highcharts-9.3.1/modules/wordcloud.js"></script>
+<script src="lib/highcharts-9.3.1/modules/xrange.js"></script>
+<script src="lib/highcharts-9.3.1/modules/tilemap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/venn.js"></script>
+<script src="lib/highcharts-9.3.1/modules/gantt.js"></script>
+<script src="lib/highcharts-9.3.1/modules/timeline.js"></script>
+<script src="lib/highcharts-9.3.1/modules/parallel-coordinates.js"></script>
+<script src="lib/highcharts-9.3.1/modules/bullet.js"></script>
+<script src="lib/highcharts-9.3.1/modules/coloraxis.js"></script>
+<script src="lib/highcharts-9.3.1/modules/dumbbell.js"></script>
+<script src="lib/highcharts-9.3.1/modules/lollipop.js"></script>
+<script src="lib/highcharts-9.3.1/modules/series-label.js"></script>
+<script src="lib/highcharts-9.3.1/plugins/motion.js"></script>
+<script src="lib/highcharts-9.3.1/custom/reset.js"></script>
+<script src="lib/highcharts-9.3.1/modules/boost.js"></script>
+
+</head>
+<body>
+<style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: Arial, sans-serif; font-size: 13px; background: #fff; padding: 10px; }
+      #controls { margin-bottom: 12px; }
+      #controls label { font-weight: bold; margin-right: 8px; }
+      #omr-select {
+        padding: 5px 10px; font-size: 13px; border: 1px solid #ccc;
+        border-radius: 4px; min-width: 220px; cursor: pointer;
+      }
+      #chart-container { width: 100%; height: 420px; }
+    </style>
+<div id="controls">
+  <label for="omr-select">Utdanningstype:</label>
+  <select id="omr-select"></select>
+</div>
+<div id="chart-container"></div>
+<script>
+      const COLORS = ["#E72F72", "#0025A0"];
+      const allData = [{"label":"Barnehage","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"sokere":[3215,3330,3589,4251,4542,4212,4116,3061,2557,2557,2153],"plasser":[2627,2458,2604,2531,2702,2690,2864,2730,2773,2695,2505]},{"label":"GLU1-7","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"sokere":[2672,2377,2291,2650,2630,2494,2272,2419,1878,1676,1918],"plasser":[1574,1557,1503,1450,1537,1537,1539,1579,1646,1628,1492]},{"label":"GLU 5-10","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"sokere":[2510,2583,2440,2746,2633,2294,1999,1925,1245,1099,1260],"plasser":[1399,1429,1445,1613,1675,1634,1642,1642,1614,1560,1509]},{"label":"LUPE 1-13","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"sokere":[503,610,619,617,700,724,758,594,375,395,394],"plasser":[322,362,317,332,317,309,322,332,347,317,307]},{"label":"Annet","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"sokere":[629,701,637,521,601,392,559,444,525,455,436],"plasser":[160,160,160,120,155,120,125,135,160,140,159]},{"label":"Yrkesfaglærer","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"sokere":[435,442,366,461,458,537,565,564,482,539,453],"plasser":[226,205,210,199,315,315,325,335,285,315,320]},{"label":"Lektor","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"sokere":[1952,2086,2408,2741,2558,2321,2152,1998,1538,1514,1415],"plasser":[936,941,999,1093,1188,1187,1305,1284,1219,1189,1092]}];
+      const select = document.getElementById("omr-select");
+      let chart = null;
+      allData.forEach(function(d, i) {
+        const opt = document.createElement("option");
+        opt.value = i;
+        opt.textContent = d.label;
+        select.appendChild(opt);
+      });
+      function renderChart(index) {
+        const d = allData[index];
+        if (chart) { chart.destroy(); }
+        chart = Highcharts.chart("chart-container", {
+          chart: { type: "line", reflow: true, margin: [50, 20, 60, 80] },
+          title: { text: "" }, subtitle: { text: "" },
+          xAxis: { categories: d.categories, title: { text: "" } },
+          yAxis: {
+            min: 0, title: { text: "" },
+            labels: { formatter: function() { return Highcharts.numberFormat(this.value, 0, ",", " "); } }
+          },
+          legend: {
+            enabled: true, align: "center", verticalAlign: "bottom",
+            layout: "horizontal", itemStyle: { fontSize: "11px", fontWeight: "normal" }
+          },
+          tooltip: {
+            shared: true,
+            formatter: function() {
+              var s = "<b>" + this.x + "</b>";
+              this.points.forEach(function(p) {
+                s += "<br/>" + p.series.name + ": " + Highcharts.numberFormat(p.y, 0, ",", " ");
+              });
+              return s;
+            }
+          },
+          plotOptions: { line: { lineWidth: 1.5 } },
+          series: [
+            { name: "Søkere", data: d.sokere, color: COLORS[0], marker: { enabled: true, radius: 4 }, dataLabels: { enabled: false }, label: { enabled: false } },
+            { name: "Studieplasser", data: d.plasser, color: COLORS[1], marker: { enabled: true, radius: 4 }, dataLabels: { enabled: false }, label: { enabled: false } }
+          ],
+          credits: { enabled: false },
+          exporting: {
+            enabled: true,
+            csv: {
+              columnHeaderFormatter: function(item, key) {
+                if (!item || item.isXAxis) { return "År"; }
+                return item.name;
+              }
+            }
+          }
+        });
+      }
+      select.addEventListener("change", function() { renderChart(parseInt(this.value)); });
+      renderChart(0);
+    </script>
+</body>
+</html>

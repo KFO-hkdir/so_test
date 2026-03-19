@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+
+  <meta charset="utf-8"/>
+  <script src="https://code.highcharts.com/dashboards/datagrid.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <link rel="stylesheet" href="https://code.highcharts.com/dashboards/css/datagrid.css"/>
+  <style>
+        body {
+          font-family: sans-serif;
+          max-width: 640px;
+          margin: 20px auto;
+          padding: 0 12px;
+          font-size: 13px;
+          box-sizing: border-box;
+        }
+
+        h4 {
+          font-size: 16px;
+          margin: 0 0 10px 0;
+          line-height: 1.25;
+        }
+
+        .hc-table-controls {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin-bottom: 12px;
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        .hc-table-select-wrap {
+          flex: 1 1 auto;
+          min-width: 0;
+        }
+
+        .hc-table-select-wrap select {
+          font-size: 13px;
+          padding: 6px 10px;
+          margin-bottom: 0;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          width: 100%;
+          box-sizing: border-box;
+          background: white;
+        }
+
+        .hc-table-export-wrap {
+          flex: 0 0 auto;
+        }
+
+        .hc-export-wrap {
+          position: relative;
+          display: inline-block;
+        }
+
+        .hc-export-btn {
+          width: 30px;
+          height: 30px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          background: white;
+          cursor: pointer;
+          font-size: 13px;
+          line-height: 1;
+          padding: 0;
+        }
+
+        .hc-export-btn:hover {
+          background: #f6f6f6;
+        }
+
+        .hc-export-menu {
+          display: none;
+          position: absolute;
+          right: 0;
+          top: calc(100% + 4px);
+          min-width: 140px;
+          background: white;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+          z-index: 9999;
+          overflow: hidden;
+        }
+
+        .hc-export-menu.open {
+          display: block;
+        }
+
+        .hc-export-item {
+          display: block;
+          width: 100%;
+          border: 0;
+          background: white;
+          text-align: left;
+          padding: 8px 10px;
+          cursor: pointer;
+          font-size: 13px;
+        }
+
+        .hc-export-item:hover {
+          background: #f6f6f6;
+        }
+
+        .highcharts-datagrid {
+          width: 100% !important;
+        }
+
+        .highcharts-datagrid-container {
+          width: 100% !important;
+        }
+
+        .highcharts-datagrid-table {
+          width: 100% !important;
+          font-size: 13px !important;
+          table-layout: auto;
+        }
+
+        .highcharts-datagrid-table thead th {
+          background-color: #F58220 !important;
+          color: white !important;
+          font-weight: bold;
+          padding: 7px 10px !important;
+          line-height: 1.2;
+        }
+
+        .highcharts-datagrid-table tbody td {
+          padding: 6px 10px !important;
+          line-height: 1.2;
+        }
+
+        .highcharts-datagrid-row:nth-child(even) td {
+          background-color: #fde9d9;
+        }
+
+        .highcharts-datagrid-table th:not(:first-child),
+        .highcharts-datagrid-table td:not(:first-child) {
+          text-align: right !important;
+          white-space: nowrap;
+        }
+
+        .highcharts-datagrid-table th:first-child,
+        .highcharts-datagrid-table td:first-child {
+          text-align: left !important;
+          white-space: nowrap;
+        }
+
+        .highcharts-datagrid-table th:not(:first-child) *,
+        .highcharts-datagrid-table th:not(:first-child) > div,
+        .highcharts-datagrid-table th:not(:first-child) span,
+        .highcharts-datagrid-table th:not(:first-child) button {
+          text-align: right !important;
+          justify-content: flex-end !important;
+        }
+
+        
+      .highcharts-datagrid-table th:first-child,
+      .highcharts-datagrid-table td:first-child {
+        width: 240px !important;
+        min-width: 240px !important;
+      }
+    
+      </style>
+</head>
+<html>
+  <body>
+    <h4>Gjennomsnittsalder per utdanningsområde</h4>
+    <div class="hc-table-controls">
+      <div class="hc-table-export-wrap">
+        <div class="hc-export-wrap">
+          <button id="hc-export-btn" class="hc-export-btn" type="button" aria-label="Last ned XLSX">&#9776;</button>
+          <div id="hc-export-menu" class="hc-export-menu">
+            <button id="hc-export-xlsx" class="hc-export-item" type="button">Last ned XLSX</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="datagrid-container"></div>
+    <script>
+          const allData = {"default":[{"Utdanningsområde":"Juridiske fag","2019":23.1,"2020":23.5,"2021":23.7,"2022":23.2,"2023":23,"2024":23.1,"2025":23.1},{"Utdanningsområde":"Reiselivsfag","2019":22.6,"2020":23,"2021":24.1,"2022":23.2,"2023":24.4,"2024":23.1,"2025":27.1},{"Utdanningsområde":"Teknologiske fag","2019":23.1,"2020":23.3,"2021":23.6,"2022":23.2,"2023":23.1,"2024":23.2,"2025":23.2},{"Utdanningsområde":"Idrettsfag","2019":22.8,"2020":22.5,"2021":23.2,"2022":22.9,"2023":23.5,"2024":23.8,"2025":24.1},{"Utdanningsområde":"Realfag","2019":23.9,"2020":23.9,"2021":24.3,"2022":23.8,"2023":23.4,"2024":23.8,"2025":23.8},{"Utdanningsområde":"Samfunnsfag","2019":24,"2020":24.2,"2021":24.9,"2022":24.4,"2023":24.3,"2024":24.5,"2025":24.6},{"Utdanningsområde":"Helsefag","2019":24.7,"2020":24.8,"2021":25.2,"2022":25.1,"2023":25,"2024":25.3,"2025":25.8},{"Utdanningsområde":"Mediefag","2019":23.9,"2020":25.1,"2021":25.9,"2022":25.1,"2023":25,"2024":25.3,"2025":25.3},{"Utdanningsområde":"Totalt","2019":24.6,"2020":24.8,"2021":25.2,"2022":25,"2023":25.1,"2024":25.3,"2025":25.5},{"Utdanningsområde":"Lærerutdanninger","2019":24.6,"2020":24.6,"2021":25.2,"2022":24.9,"2023":25.5,"2024":25.9,"2025":25.8},{"Utdanningsområde":"Pedagogiske fag","2019":25.7,"2020":25.6,"2021":26.2,"2022":25.4,"2023":26.5,"2024":25.9,"2025":26.3},{"Utdanningsområde":"Informasjonsteknologi","2019":24.9,"2020":25.2,"2021":25.5,"2022":25.1,"2023":25.5,"2024":26,"2025":25.9},{"Utdanningsområde":"Estetiske fag","2019":25.7,"2020":25.8,"2021":26.3,"2022":25.8,"2023":26.2,"2024":26.2,"2025":26.9},{"Utdanningsområde":"Økonomisk-administrative fag","2019":25.4,"2020":25.5,"2021":25.9,"2022":26,"2023":26.3,"2024":26.2,"2025":26.3},{"Utdanningsområde":"Land- og havbruk","2019":23.9,"2020":25.3,"2021":26.9,"2022":26.6,"2023":26.8,"2024":27.4,"2025":28.4},{"Utdanningsområde":"Historiefag","2019":26.9,"2020":26.6,"2021":27.4,"2022":27.1,"2023":27.6,"2024":28.3,"2025":28.5},{"Utdanningsområde":"Språkfag","2019":29.1,"2020":28.9,"2021":29.8,"2022":29.7,"2023":29.6,"2024":29.9,"2025":30.4}]};
+          let grid = null;
+
+          function renderTable(key) {
+            const rows = allData[key];
+            const cols = {
+              'col_1': rows.map(r => r['Utdanningsområde']),
+            'col_2': rows.map(r => r['2019']),
+            'col_3': rows.map(r => r['2020']),
+            'col_4': rows.map(r => r['2021']),
+            'col_5': rows.map(r => r['2022']),
+            'col_6': rows.map(r => r['2023']),
+            'col_7': rows.map(r => r['2024']),
+            'col_8': rows.map(r => r['2025'])
+            };
+
+            if (grid) {
+              grid.update({
+                dataTable: { columns: cols }
+              });
+            } else {
+              grid = new DataGrid.DataGrid('datagrid-container', {
+                dataTable: { columns: cols },
+                columnDefaults: { resizable: true },
+                columns: [
+                  { id: 'col_1', header: { format: 'Utdanningsområde' } },
+                  { id: 'col_2', header: { format: '2019' } },
+                  { id: 'col_3', header: { format: '2020' } },
+                  { id: 'col_4', header: { format: '2021' } },
+                  { id: 'col_5', header: { format: '2022' } },
+                  { id: 'col_6', header: { format: '2023' } },
+                  { id: 'col_7', header: { format: '2024' } },
+                  { id: 'col_8', header: { format: '2025' } }
+                ]
+              });
+            }
+          }
+
+          renderTable('default');
+          
+      const exportColLabels = ["Utdanningsområde","2019","2020","2021","2022","2023","2024","2025"];
+
+      function sanitizeFilePart(x) {
+        return String(x)
+          .trim()
+          .replace(/[\\/:*?"<>|]+/g, '-')
+          .replace(/\s+/g, '_');
+      }
+
+      function fileNameForExport(ext) {
+        if (false) {
+          return 'alder_utdanningsomraade_' + sanitizeFilePart(document.getElementById('grp-select').value) + '.' + ext;
+        }
+        return 'alder_utdanningsomraade.' + ext;
+      }
+
+      function getCurrentVisibleRows() {
+        const key = false ? document.getElementById('grp-select').value : 'default';
+        return allData[key] || [];
+      }
+
+      function downloadXLSX() {
+        const rows = getCurrentVisibleRows();
+
+        const aoa = [
+          exportColLabels,
+          ...rows.map(r => exportColLabels.map(lbl => r[lbl]))
+        ];
+
+        const ws = XLSX.utils.aoa_to_sheet(aoa);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Tabell');
+        XLSX.writeFile(wb, fileNameForExport('xlsx'));
+      }
+
+      const exportBtn = document.getElementById('hc-export-btn');
+      const exportMenu = document.getElementById('hc-export-menu');
+      const exportXlsxBtn = document.getElementById('hc-export-xlsx');
+
+      exportBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        exportMenu.classList.toggle('open');
+      });
+
+      exportXlsxBtn.addEventListener('click', function() {
+        downloadXLSX();
+        exportMenu.classList.remove('open');
+      });
+
+      document.addEventListener('click', function(e) {
+        if (!document.getElementById('hc-export-btn').contains(e.target) &&
+            !document.getElementById('hc-export-menu').contains(e.target)) {
+          exportMenu.classList.remove('open');
+        }
+      });
+    
+        </script>
+  </body>
+</html>
+</html>

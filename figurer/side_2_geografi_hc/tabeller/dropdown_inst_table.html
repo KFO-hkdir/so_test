@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+
+  <meta charset="utf-8"/>
+  <script src="https://cdn.jsdelivr.net/npm/@highcharts/grid-lite/grid-lite.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@highcharts/grid-lite/css/grid-lite.css"/>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <style>
+        /* ── Page layout ── */
+        body {
+          font-family: sans-serif;
+          max-width: 640px;
+          margin: 20px auto;
+          padding: 0 12px;
+          font-size: 13px;
+          box-sizing: border-box;
+        }
+
+        h4 {
+          font-size: 16px;
+          margin: 0 0 10px 0;
+          line-height: 1.25;
+        }
+
+        /* ── Controls row (dropdown + export button) ── */
+        .hc-table-controls {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin-bottom: 12px;
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        .hc-table-select-wrap {
+          flex: 1 1 auto;
+          min-width: 0;
+        }
+
+        .hc-table-select-wrap select {
+          font-size: 13px;
+          padding: 6px 10px;
+          margin-bottom: 0;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          width: 100%;
+          box-sizing: border-box;
+          background: white;
+        }
+
+        .hc-table-export-wrap {
+          flex: 0 0 auto;
+        }
+
+        /* ── Export burger button ── */
+        .hc-export-wrap {
+          position: relative;
+          display: inline-block;
+        }
+
+        .hc-export-btn {
+          width: 30px;
+          height: 30px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          background: white;
+          cursor: pointer;
+          font-size: 13px;
+          line-height: 1;
+          padding: 0;
+        }
+
+        .hc-export-btn:hover { background: #f6f6f6; }
+
+        .hc-export-menu {
+          display: none;
+          position: absolute;
+          right: 0;
+          top: calc(100% + 4px);
+          min-width: 140px;
+          background: white;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+          z-index: 9999;
+          overflow: hidden;
+        }
+
+        .hc-export-menu.open { display: block; }
+
+        .hc-export-item {
+          display: block;
+          width: 100%;
+          border: 0;
+          background: white;
+          text-align: left;
+          padding: 8px 10px;
+          cursor: pointer;
+          font-size: 13px;
+        }
+
+        .hc-export-item:hover { background: #f6f6f6; }
+
+        /* ── Grid container ── */
+        #datagrid-container {
+          width: 100%;
+        }
+
+        .hcg-container {
+          width: 100% !important;
+        }
+
+        /* ── Grid Lite CSS-variable theme ──
+           Variables cascade: table → header / body → rows / cells
+           --hcg-font-size        : all cell text size
+           --hcg-padding          : all cell padding (overridden per section)
+           --hcg-header-background: header bg colour
+           --hcg-header-color     : header text colour
+           --hcg-header-font-size : header text size  (= body size, bold handles emphasis)
+           --hcg-row-odd-background / --hcg-row-even-background : stripe colours
+        */
+        .hcg-custom-theme {
+          --hcg-font-size:              13px;
+          --hcg-font-family:            sans-serif;
+          --hcg-padding:                6px 10px;
+          --hcg-header-background:      #F58220;
+          --hcg-header-color:           #ffffff;
+          --hcg-header-font-size:       13px;
+          --hcg-header-font-weight:     bold;
+          --hcg-header-padding:         6px 10px;
+          --hcg-row-odd-background:     #ffffff;
+          --hcg-row-even-background:    #fde9d9;
+          width: 100% !important;
+        }
+        .hcg-custom-theme th {
+          padding-left: 14px !important;
+          padding-right: 14px !important;
+        }
+
+        /* ── Column alignment: right-align all except first ── */
+        .hcg-custom-theme th:not(:first-child),
+        .hcg-custom-theme td:not(:first-child) {
+          text-align: right !important;
+          white-space: nowrap;
+        }
+
+        .hcg-custom-theme th:first-child,
+        .hcg-custom-theme td:first-child {
+          text-align: left !important;
+          white-space: nowrap;
+        }
+
+        /* right-align the sort button/span inside non-first headers */
+        .hcg-custom-theme th:not(:first-child) > *,
+        .hcg-custom-theme th:not(:first-child) button,
+        .hcg-custom-theme th:not(:first-child) span {
+          text-align: right !important;
+          justify-content: flex-end !important;
+        }
+
+        
+      .hcg-container th:first-child,
+      .hcg-container td:first-child {
+        width: 400px !important;
+        min-width: 400px !important;
+      }
+    
+      </style>
+</head>
+<html>
+  <body>
+    <h4>Søkere til institusjoner</h4>
+    <div class="hc-table-controls">
+      <div class="hc-table-select-wrap">
+        <select id="grp-select"><option value="Agder">Agder</option>
+<option value="Akershus">Akershus</option>
+<option value="Buskerud">Buskerud</option>
+<option value="Finnmark">Finnmark</option>
+<option value="Innlandet">Innlandet</option>
+<option value="Møre og Romsdal">Møre og Romsdal</option>
+<option value="Nordland">Nordland</option>
+<option value="Oslo">Oslo</option>
+<option value="Rogaland">Rogaland</option>
+<option value="Telemark">Telemark</option>
+<option value="Troms">Troms</option>
+<option value="Trøndelag">Trøndelag</option>
+<option value="Vestfold">Vestfold</option>
+<option value="Vestland">Vestland</option>
+<option value="Østfold">Østfold</option></select>
+      </div>
+      <div class="hc-table-export-wrap">
+        <div class="hc-export-wrap">
+          <button id="hc-export-btn" class="hc-export-btn" type="button" aria-label="Last ned XLSX">&#9776;</button>
+          <div id="hc-export-menu" class="hc-export-menu">
+            <button id="hc-export-xlsx" class="hc-export-item" type="button">Last ned XLSX</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="datagrid-container"></div>
+    <script>
+      const allData = {"Agder":[{"Studiested":"Universitetet i Agder","Antall":"6 327","Andel":"92,3 %"},{"Studiested":"Ansgar høyskole","Antall":"264","Andel":"3,9 %"},{"Studiested":"NLA Høgskolen","Antall":"261","Andel":"3,8 %"}],"Akershus":[{"Studiested":"Norges miljø- og biovitenskapelige universitet","Antall":"3 783","Andel":"63,8 %"},{"Studiested":"OsloMet - storbyuniversitetet","Antall":"1 624","Andel":"27,4 %"},{"Studiested":"VID vitenskapelige høgskole","Antall":"520","Andel":"8,8 %"}],"Buskerud":[{"Studiested":"Universitetet i Sørøst-Norge","Antall":"2 300","Andel":"100,0 %"}],"Finnmark":[{"Studiested":"UiT Norges arktiske universitet","Antall":"2 505","Andel":"90,6 %"},{"Studiested":"Politihøgskolen","Antall":"206","Andel":"7,4 %"},{"Studiested":"Sámi allaskuvla / Sámi University of Applied Sciences","Antall":"55","Andel":"2,0 %"}],"Innlandet":[{"Studiested":"Universitetet i Innlandet","Antall":"8 590","Andel":"72,3 %"},{"Studiested":"Norges teknisk-naturvitenskapelige universitet","Antall":"3 285","Andel":"27,7 %"}],"Møre og Romsdal":[{"Studiested":"Høgskolen i Molde, Vitenskaplig høgskole i logistikk","Antall":"2 115","Andel":"43,3 %"},{"Studiested":"Norges teknisk-naturvitenskapelige universitet","Antall":"1 771","Andel":"36,3 %"},{"Studiested":"Høgskulen i Volda","Antall":"950","Andel":"19,5 %"},{"Studiested":"Dronning Mauds Minne Høgskole for barnehagelærerutdanning","Antall":"48","Andel":"1,0 %"}],"Nordland":[{"Studiested":"Nord universitet","Antall":"2 696","Andel":"76,5 %"},{"Studiested":"UiT Norges arktiske universitet","Antall":"462","Andel":"13,1 %"},{"Studiested":"Politihøgskolen","Antall":"304","Andel":"8,6 %"},{"Studiested":"VID vitenskapelige høgskole","Antall":"63","Andel":"1,8 %"}],"Oslo":[{"Studiested":"Universitetet i Oslo","Antall":"18 585","Andel":"50,1 %"},{"Studiested":"OsloMet - storbyuniversitetet","Antall":"12 505","Andel":"33,7 %"},{"Studiested":"Norges idrettshøgskole","Antall":"1 192","Andel":"3,2 %"},{"Studiested":"VID vitenskapelige høgskole","Antall":"985","Andel":"2,7 %"},{"Studiested":"Arkitektur- og designhøgskolen i Oslo","Antall":"972","Andel":"2,6 %"},{"Studiested":"Lovisenberg diakonale høgskole","Antall":"871","Andel":"2,3 %"},{"Studiested":"Politihøgskolen","Antall":"837","Andel":"2,3 %"},{"Studiested":"NLA Høgskolen","Antall":"829","Andel":"2,2 %"},{"Studiested":"Fjellhaug Internasjonale Høgskole","Antall":"157","Andel":"0,4 %"},{"Studiested":"MF vitenskapelig høyskole","Antall":"154","Andel":"0,4 %"}],"Rogaland":[{"Studiested":"Universitetet i Stavanger","Antall":"6 513","Andel":"84,2 %"},{"Studiested":"Høgskulen på Vestlandet","Antall":"811","Andel":"10,5 %"},{"Studiested":"VID vitenskapelige høgskole","Antall":"348","Andel":"4,5 %"},{"Studiested":"NLA Høgskolen","Antall":"64","Andel":"0,8 %"}],"Telemark":[{"Studiested":"Universitetet i Sørøst-Norge","Antall":"3 566","Andel":"100,0 %"}],"Troms":[{"Studiested":"UiT Norges arktiske universitet","Antall":"5 450","Andel":"100,0 %"}],"Trøndelag":[{"Studiested":"Norges teknisk-naturvitenskapelige universitet","Antall":"19 223","Andel":"88,0 %"},{"Studiested":"Nord universitet","Antall":"2 366","Andel":"10,8 %"},{"Studiested":"Dronning Mauds Minne Høgskole for barnehagelærerutdanning","Antall":"243","Andel":"1,1 %"},{"Studiested":"NLA Høgskolen","Antall":"13","Andel":"0,1 %"}],"Vestfold":[{"Studiested":"Universitetet i Sørøst-Norge","Antall":"1 815","Andel":"78,8 %"},{"Studiested":"Politihøgskolen","Antall":"487","Andel":"21,2 %"}],"Vestland":[{"Studiested":"Universitetet i Bergen","Antall":"10 588","Andel":"46,7 %"},{"Studiested":"Høgskulen på Vestlandet","Antall":"8 328","Andel":"36,7 %"},{"Studiested":"Norges Handelshøyskole","Antall":"2 407","Andel":"10,6 %"},{"Studiested":"NLA Høgskolen","Antall":"1 008","Andel":"4,4 %"},{"Studiested":"VID vitenskapelige høgskole","Antall":"336","Andel":"1,5 %"}],"Østfold":[{"Studiested":"Høgskolen i Østfold","Antall":"3 222","Andel":"100,0 %"}]};
+      let grid = null;
+      
+    function renderTable(key) {
+      const rows = allData[key] || [];
+      const cols = {
+        'col_1': rows.map(r => r['Studiested']),
+            'col_2': rows.map(r => r['Antall']),
+            'col_3': rows.map(r => r['Andel'])
+      };
+
+      if (grid) {
+        grid.update({
+          dataTable: { columns: cols }
+        });
+      } else {
+        grid = Grid.grid('datagrid-container', {
+          dataTable: { columns: cols },
+          columnDefaults: { resizable: true },
+          columns: [
+            { id: 'col_1', header: { format: 'Studiested' } },
+                  { id: 'col_2', header: { format: 'Antall' } },
+                  { id: 'col_3', header: { format: 'Andel' } }
+          ],
+          rendering: {
+            theme: 'hcg-theme-default hcg-custom-theme'
+          }
+        });
+      }
+    }
+  
+      const sel = document.getElementById('grp-select');
+      renderTable(sel.value);
+      sel.addEventListener('change', () => renderTable(sel.value));
+      
+      const exportColLabels = ["Studiested","Antall","Andel"];
+
+      function sanitizeFilePart(x) {
+        return String(x)
+          .trim()
+          .replace(/[\\/:*?"<>|]+/g, '-')
+          .replace(/\s+/g, '_');
+      }
+
+      function fileNameForExport(ext) {
+        if (true) {
+          return 'fylker_tilfra_inst_' + sanitizeFilePart(document.getElementById('grp-select').value) + '.' + ext;
+        }
+        return 'fylker_tilfra_inst.' + ext;
+      }
+
+      function getCurrentVisibleRows() {
+        const key = true ? document.getElementById('grp-select').value : 'Agder';
+        return allData[key] || [];
+      }
+
+      function downloadXLSX() {
+        const rows = getCurrentVisibleRows();
+        const aoa = [
+          exportColLabels,
+          ...rows.map(r => exportColLabels.map(lbl => r[lbl]))
+        ];
+        const ws = XLSX.utils.aoa_to_sheet(aoa);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Tabell');
+        XLSX.writeFile(wb, fileNameForExport('xlsx'));
+      }
+
+      const exportBtn     = document.getElementById('hc-export-btn');
+      const exportMenu    = document.getElementById('hc-export-menu');
+      const exportXlsxBtn = document.getElementById('hc-export-xlsx');
+
+      exportBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        exportMenu.classList.toggle('open');
+      });
+
+      exportXlsxBtn.addEventListener('click', function() {
+        downloadXLSX();
+        exportMenu.classList.remove('open');
+      });
+
+      document.addEventListener('click', function(e) {
+        if (!document.getElementById('hc-export-btn').contains(e.target) &&
+            !document.getElementById('hc-export-menu').contains(e.target)) {
+          exportMenu.classList.remove('open');
+        }
+      });
+    
+    </script>
+  </body>
+</html>
+</html>

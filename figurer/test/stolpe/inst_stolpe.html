@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+<link href="lib/highcharts-9.3.1/css/motion.css" rel="stylesheet" />
+<script src="lib/highcharts-9.3.1/highcharts.js"></script>
+<script src="lib/highcharts-9.3.1/highcharts-3d.js"></script>
+<script src="lib/highcharts-9.3.1/highcharts-more.js"></script>
+<script src="lib/highcharts-9.3.1/modules/stock.js"></script>
+<script src="lib/highcharts-9.3.1/modules/map.js"></script>
+<script src="lib/highcharts-9.3.1/modules/data.js"></script>
+<script src="lib/highcharts-9.3.1/modules/exporting.js"></script>
+<script src="lib/highcharts-9.3.1/modules/offline-exporting.js"></script>
+<script src="lib/highcharts-9.3.1/modules/drilldown.js"></script>
+<script src="lib/highcharts-9.3.1/modules/item-series.js"></script>
+<script src="lib/highcharts-9.3.1/modules/overlapping-datalabels.js"></script>
+<script src="lib/highcharts-9.3.1/modules/annotations.js"></script>
+<script src="lib/highcharts-9.3.1/modules/export-data.js"></script>
+<script src="lib/highcharts-9.3.1/modules/funnel.js"></script>
+<script src="lib/highcharts-9.3.1/modules/heatmap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/treemap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/sankey.js"></script>
+<script src="lib/highcharts-9.3.1/modules/dependency-wheel.js"></script>
+<script src="lib/highcharts-9.3.1/modules/organization.js"></script>
+<script src="lib/highcharts-9.3.1/modules/solid-gauge.js"></script>
+<script src="lib/highcharts-9.3.1/modules/streamgraph.js"></script>
+<script src="lib/highcharts-9.3.1/modules/sunburst.js"></script>
+<script src="lib/highcharts-9.3.1/modules/vector.js"></script>
+<script src="lib/highcharts-9.3.1/modules/wordcloud.js"></script>
+<script src="lib/highcharts-9.3.1/modules/xrange.js"></script>
+<script src="lib/highcharts-9.3.1/modules/tilemap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/venn.js"></script>
+<script src="lib/highcharts-9.3.1/modules/gantt.js"></script>
+<script src="lib/highcharts-9.3.1/modules/timeline.js"></script>
+<script src="lib/highcharts-9.3.1/modules/parallel-coordinates.js"></script>
+<script src="lib/highcharts-9.3.1/modules/bullet.js"></script>
+<script src="lib/highcharts-9.3.1/modules/coloraxis.js"></script>
+<script src="lib/highcharts-9.3.1/modules/dumbbell.js"></script>
+<script src="lib/highcharts-9.3.1/modules/lollipop.js"></script>
+<script src="lib/highcharts-9.3.1/modules/series-label.js"></script>
+<script src="lib/highcharts-9.3.1/plugins/motion.js"></script>
+<script src="lib/highcharts-9.3.1/custom/reset.js"></script>
+<script src="lib/highcharts-9.3.1/modules/boost.js"></script>
+
+</head>
+<body>
+<style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: Arial, sans-serif; font-size: 13px; background: #fff; padding: 10px; }
+      #hc-controls { margin-bottom: 12px; }
+      #hc-controls label { font-weight: bold; margin-right: 8px; }
+      #hc-omr-select {
+        padding: 5px 10px; font-size: 13px;
+        border: 1px solid #ccc; border-radius: 4px;
+        min-width: 220px; cursor: pointer;
+      }
+      #hc-chart-container { width: 100%; height: 420px; }
+    </style>
+<div id="hc-controls">
+  <label for="hc-omr-select">Institusjon:</label>
+  <select id="hc-omr-select"></select>
+</div>
+<div id="hc-chart-container"></div>
+<script>
+(function() {
+  const allData = [{"label":"Ansgar høyskole","categories":["2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[295,356,365,305,328,264],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[10460,12875,12920,9725,10510,9400],"color":"#0025A0","type":"column"}]},{"label":"Ansgar Teologiske Høgskole","categories":["2015","2016","2017","2018","2019"],"series":[{"name":"Søkere","data":[149,144,178,212,186],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[2755,2760,3370,5580,4890],"color":"#0025A0","type":"column"}]},{"label":"Arkitektur- og designhøgskolen i Oslo","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[972,963,1062,1141,1228,1378,1577,1399,1446,1203,972],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[54330,53790,59550,61320,65650,74740,91435,80940,76670,61430,50240],"color":"#0025A0","type":"column"}]},{"label":"Det teologiske Menighetsfakultet","categories":["2015","2016","2017","2018"],"series":[{"name":"Søkere","data":[207,222,231,233],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[5835,5380,5745,7005],"color":"#0025A0","type":"column"}]},{"label":"Diakonhjemmet Høgskole","categories":"2015","series":[{"name":"Søkere","data":1448,"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":138050,"color":"#0025A0","type":"column"}]},{"label":"Dronning Mauds Minne Høgskole for barnehagelærerutdanning","categories":["2019","2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[641,518,508,417,286,300,291],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[57015,43155,46230,37285,24815,25265,16950],"color":"#0025A0","type":"column"}]},{"label":"Dronning Mauds Minne Høgskolen","categories":["2015","2016","2017","2018"],"series":[{"name":"Søkere","data":[387,402,456,490],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[40686,43974,48762,50288],"color":"#0025A0","type":"column"}]},{"label":"Fjellhaug Internasjonale Høgskole","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[79,50,65,131,148,165,142,124,149,176,157],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[1530,915,1105,2505,2734,7040,6420,4850,5205,2180,2055],"color":"#0025A0","type":"column"}]},{"label":"Haraldsplass diakonale høgskole","categories":"2015","series":[{"name":"Søkere","data":233,"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":22135,"color":"#0025A0","type":"column"}]},{"label":"Høgskolen Betanien","categories":"2015","series":[{"name":"Søkere","data":249,"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":22410,"color":"#0025A0","type":"column"}]},{"label":"Høgskolen i Bergen","categories":["2015","2016"],"series":[{"name":"Søkere","data":[5455,5319],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[390658,408895],"color":"#0025A0","type":"column"}]},{"label":"Høgskolen i Buskerud og Vestfold","categories":"2015","series":[{"name":"Søkere","data":4351,"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":288194,"color":"#0025A0","type":"column"}]},{"label":"Høgskolen i Gjøvik","categories":"2015","series":[{"name":"Søkere","data":1988,"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":81264,"color":"#0025A0","type":"column"}]},{"label":"Høgskolen i Harstad","categories":"2015","series":[{"name":"Søkere","data":602,"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":25735,"color":"#0025A0","type":"column"}]},{"label":"Høgskolen i Hedmark","categories":["2015","2016"],"series":[{"name":"Søkere","data":[3417,3576],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[162567,182496],"color":"#0025A0","type":"column"}]},{"label":"Høgskolen i Innlandet","categories":["2018","2019","2020","2021","2022","2023","2024"],"series":[{"name":"Søkere","data":[6932,7126,7255,7789,9020,8308,9357],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[506035,531146,535071,609425,832958,829262,846445],"color":"#0025A0","type":"column"}]},{"label":"Høgskolen i Innlandet, studier i Hedmark","categories":"2017","series":[{"name":"Søkere","data":3843,"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":213970,"color":"#0025A0","type":"column"}]},{"label":"Høgskolen i Innlandet, studier i Lillehammer","categories":"2017","series":[{"name":"Søkere","data":2305,"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":166835,"color":"#0025A0","type":"column"}]},{"label":"Høgskolen i Lillehammer","categories":["2015","2016"],"series":[{"name":"Søkere","data":[2630,2374],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[180375,175920],"color":"#0025A0","type":"column"}]},{"label":"Høgskolen i Molde","categories":"2015","series":[{"name":"Søkere","data":851,"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":41390,"color":"#0025A0","type":"column"}]},{"label":"Høgskolen i Molde, Vitenskaplig høgskole i logistikk","categories":["2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[849,982,1155,1327,1580,1766,1359,1768,2320,2115],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[49885,53380,65610,63935,79720,85310,119300,152824,333951,279430],"color":"#0025A0","type":"column"}]},{"label":"Høgskolen i Narvik","categories":"2015","series":[{"name":"Søkere","data":475,"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":10705,"color":"#0025A0","type":"column"}]},{"label":"Høgskolen i Nesna","categories":"2015","series":[{"name":"Søkere","data":348,"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":6560,"color":"#0025A0","type":"column"}]},{"label":"Høgskolen i Nord-Trøndelag","categories":"2015","series":[{"name":"Søkere","data":1826,"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":118053,"color":"#0025A0","type":"column"}]},{"label":"Høgskolen i Oslo og Akershus","categories":["2015","2016","2017"],"series":[{"name":"Søkere","data":[14095,15120,14957],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[1780787,2063941,2059393],"color":"#0025A0","type":"column"}]},{"label":"Høgskolen i Oslo og Akershus (OsloMet)","categories":"2018","series":[{"name":"Søkere","data":15014,"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":1857151,"color":"#0025A0","type":"column"}]},{"label":"Høgskolen i Sør-Trøndelag","categories":"2015","series":[{"name":"Søkere","data":5834,"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":787863,"color":"#0025A0","type":"column"}]},{"label":"Høgskolen i Sørøst-Norge","categories":["2017","2018"],"series":[{"name":"Søkere","data":[8487,8651],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[518427,524476],"color":"#0025A0","type":"column"}]},{"label":"Høgskolen i Sørøst-Norge, studier i Buskerud og Vestfold","categories":"2016","series":[{"name":"Søkere","data":4147,"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":297452,"color":"#0025A0","type":"column"}]},{"label":"Høgskolen i Sørøst-Norge, studier i Telemark","categories":"2016","series":[{"name":"Søkere","data":3898,"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":211957,"color":"#0025A0","type":"column"}]},{"label":"Høgskolen i Telemark","categories":"2015","series":[{"name":"Søkere","data":3484,"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":149297,"color":"#0025A0","type":"column"}]},{"label":"Høgskolen i Østfold","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[3008,3330,3582,3811,3578,4266,3965,3646,2964,3046,3222],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[203568,235630,295776,321255,296763,317054,293397,268535,223972,232178,322266],"color":"#0025A0","type":"column"}]},{"label":"Høgskolen i Ålesund","categories":"2015","series":[{"name":"Søkere","data":1317,"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":70674,"color":"#0025A0","type":"column"}]},{"label":"Høgskolen Stord/Haugesund","categories":["2015","2016"],"series":[{"name":"Søkere","data":[1176,1147],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[78562,81534],"color":"#0025A0","type":"column"}]},{"label":"Høgskulen i Sogn og Fjordane","categories":["2015","2016"],"series":[{"name":"Søkere","data":[1551,1574],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[52315,59249],"color":"#0025A0","type":"column"}]},{"label":"Høgskulen i Volda","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[1200,1169,1270,1367,1379,1481,1413,1131,1092,898,950],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[45749,38634,41390,45579,43752,49944,52702,43029,42662,34587,39498],"color":"#0025A0","type":"column"}]},{"label":"Høgskulen på Vestlandet","categories":["2017","2018","2019","2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[7810,7963,7761,8395,8292,7279,7031,7911,9139],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[539645,558733,598008,688915,695832,561396,520510,601504,683643],"color":"#0025A0","type":"column"}]},{"label":"Høyskolen Diakonova","categories":["2015","2016","2017"],"series":[{"name":"Søkere","data":[197,330,240],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[19700,33000,24000],"color":"#0025A0","type":"column"}]},{"label":"Lovisenberg diakonale høgskole","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[534,829,803,708,690,931,883,613,713,673,871],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[96120,165800,160600,141600,138000,186200,203090,159380,185380,179018,235170],"color":"#0025A0","type":"column"}]},{"label":"MF vitenskapelig høyskole","categories":["2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[209,211,164,153,162,154],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[7165,7558,4774,4520,4485,6535],"color":"#0025A0","type":"column"}]},{"label":"MF vitenskapelig høyskole (Det teologiske Menighetsfakultet)","categories":"2019","series":[{"name":"Søkere","data":226,"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":6750,"color":"#0025A0","type":"column"}]},{"label":"Misjonshøgskolen","categories":"2015","series":[{"name":"Søkere","data":67,"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":1086,"color":"#0025A0","type":"column"}]},{"label":"NLA Høgskolen","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[842,861,990,1161,1256,1224,1248,1182,1341,2113,2175],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[38838,35801,40469,51703,54823,50798,52494,51174,56858,72147,75384],"color":"#0025A0","type":"column"}]},{"label":"Nord universitet","categories":["2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[4622,5301,5555,5342,5188,6030,4521,4219,4300,5062],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[245986,263271,274727,271326,274527,317240,250008,228921,234842,245867],"color":"#0025A0","type":"column"}]},{"label":"Norges Handelshøyskole","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[2117,1892,1773,1801,1716,2112,2221,2073,2170,2830,2407],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[931480,889240,833310,846470,806520,1056000,1110500,1036500,1085000,833100,791800],"color":"#0025A0","type":"column"}]},{"label":"Norges idrettshøgskole","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[988,847,976,1434,1273,1212,1106,1024,1212,1310,1192],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[78585,64530,71085,65700,56360,54150,49945,45785,55815,73515,73340],"color":"#0025A0","type":"column"}]},{"label":"Norges miljø- og biovitenskapelige universitet","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[2856,2846,2808,2934,2910,2997,3028,2660,3631,4139,3783],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[111250,109734,116125,121866,122796,124943,144736,121770,320865,943336,1082142],"color":"#0025A0","type":"column"}]},{"label":"Norges teknisk-naturvitenskapelige universitet","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[12391,22776,22993,24638,23690,25635,25699,23524,23981,23888,24279],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[1050368,2159991,2234645,2351773,2220012,2577735,2648738,2219707,2277793,2338386,2393031],"color":"#0025A0","type":"column"}]},{"label":"Noroff University College","categories":["2015","2016","2017","2018"],"series":[{"name":"Søkere","data":[67,35,61,87],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[2680,2100,3660,5220],"color":"#0025A0","type":"column"}]},{"label":"OsloMet - storbyuniversitetet","categories":["2019","2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[15076,16454,16058,13459,14188,14227,14129],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[1950733,2243006,2144284,1766971,1918550,2051047,2334848],"color":"#0025A0","type":"column"}]},{"label":"Politihøgskolen","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[3421,3802,3193,2795,2281,1864,2343,2033,2284,1732,1834],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[722856,794592,657264,577680,458018,224540,309862,258848,388510,294272,282594],"color":"#0025A0","type":"column"}]},{"label":"Sámi allaskuvla / Sámi University College","categories":["2015","2016","2017"],"series":[{"name":"Søkere","data":[30,18,27],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[450,216,405],"color":"#0025A0","type":"column"}]},{"label":"Sámi allaskuvla / Sámi University of Applied Sciences","categories":["2019","2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[30,15,27,28,48,11,55],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[405,180,378,416,780,220,1035],"color":"#0025A0","type":"column"}]},{"label":"UiT Norges arktiske universitet","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[5551,7236,7714,8820,8269,10335,9809,8115,8657,9077,8417],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[475694,581342,624732,823885,1172087,1334054,1809615,1460468,1797066,1964666,1647318],"color":"#0025A0","type":"column"}]},{"label":"Universitetet i Agder","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[6664,6483,6625,6627,6826,7170,7023,6243,6112,6059,6327],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[372290,386867,456425,443264,487776,543249,533496,478682,471213,480022,522173],"color":"#0025A0","type":"column"}]},{"label":"Universitetet i Bergen","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[9024,9758,10493,10575,10446,11645,12268,10618,10569,11400,10588],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[1288080,1153801,1244175,1283145,1281807,1374635,1487269,1291066,1308407,1345815,1294382],"color":"#0025A0","type":"column"}]},{"label":"Universitetet i Innlandet","categories":"2025","series":[{"name":"Søkere","data":8590,"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":986298,"color":"#0025A0","type":"column"}]},{"label":"Universitetet i Nordland","categories":"2015","series":[{"name":"Søkere","data":2425,"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":94929,"color":"#0025A0","type":"column"}]},{"label":"Universitetet i Oslo","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[17764,17750,18481,19175,18165,21062,19483,17266,18495,19202,18585],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[1861703,1834919,1893171,1992983,1829144,1972919,1989749,1829321,1936774,1950873,1875042],"color":"#0025A0","type":"column"}]},{"label":"Universitetet i Stavanger","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[5659,5916,5749,6006,6036,6366,8111,6155,5812,6287,6513],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[433018,495099,534002,611320,559116,604841,717464,582150,496872,511859,564219],"color":"#0025A0","type":"column"}]},{"label":"Universitetet i Sørøst-Norge","categories":["2019","2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[8634,8887,9023,7855,6868,7306,7681],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[552354,573049,618623,515187,437539,478060,564914],"color":"#0025A0","type":"column"}]},{"label":"VID vitenskapelige høgskole","categories":["2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"series":[{"name":"Søkere","data":[1736,2132,2588,2492,2145,3709,2681,2178,2161,2252],"color":"#E72F72","type":"column"},{"name":"Studieplasser","data":[178079,227869,263190,283502,293610,360726,297770,235046,235575,250657],"color":"#0025A0","type":"column"}]}];
+  const xTitle  = "";
+  const yTitle  = "";
+  const yMin    = 0;
+  
+  const select = document.getElementById("hc-omr-select");
+  let chart = null;
+
+  allData.forEach(function(d, i) {
+    const opt = document.createElement("option");
+    opt.value = i;
+    opt.textContent = d.label;
+    select.appendChild(opt);
+  });
+
+  function fmtNum(val) { return Highcharts.numberFormat(val, 0, ",", "\u00a0"); }
+
+  function renderChart(index) {
+    const d = allData[index];
+    if (chart) { chart.destroy(); }
+    chart = Highcharts.chart("hc-chart-container", {
+      chart:    { reflow: true, margin: [50, 20, 60, 80] },
+      title:    { text: "" },
+      subtitle: { text: "" },
+      xAxis: {
+        categories: d.categories,
+        title: { text: xTitle }
+      },
+      yAxis: {
+        min: yMin,
+        title: { text: yTitle },
+        labels: { formatter: function() { var val = this.value; return fmtNum(val); } }
+      },
+      legend: {
+        enabled: true,
+        align: "center",
+        verticalAlign: "bottom",
+        layout: "horizontal",
+        itemStyle: { fontSize: "11px", fontWeight: "normal" }
+      },
+      tooltip: {
+        shared: true,
+        formatter: function() {
+          var s = "<b>" + this.x + "</b>";
+          this.points.forEach(function(p) {
+            var val = p.y;
+            s += "<br/>" + p.series.name + ": " + fmtNum(val);
+          });
+          return s;
+        }
+      },
+      plotOptions: {
+        line:   { lineWidth: 1.5, marker: { enabled: true, radius: 4 } },
+        column: { grouping: true },
+        bar:    { grouping: true }
+      },
+      series:  d.series,
+      credits: { enabled: false },
+      exporting: { enabled: true }
+    });
+  }
+
+  select.addEventListener("change", function() {
+    renderChart(parseInt(this.value));
+  });
+
+  renderChart(0);
+})();
+</script>
+</body>
+</html>

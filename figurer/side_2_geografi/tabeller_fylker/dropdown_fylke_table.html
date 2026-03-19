@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+
+  <meta charset="utf-8"/>
+  <script src="https://code.highcharts.com/dashboards/datagrid.js"></script>
+  <link rel="stylesheet" href="https://code.highcharts.com/dashboards/css/datagrid.css"/>
+  <style>
+      body { font-family: sans-serif; max-width: 660px; margin: 30px auto; padding: 0 12px; }
+      select {
+        font-size: 14px; padding: 6px 10px; margin-bottom: 16px;
+        border: 1px solid #ccc; border-radius: 4px; width: 100%;
+      }
+      .highcharts-datagrid-table thead th {
+        background-color: #F58220 !important;
+        color: white !important;
+        font-weight: bold;
+      }
+      .highcharts-datagrid-row:nth-child(even) td {
+        background-color: #fde9d9;
+      }
+    </style>
+</head>
+<html>
+  <body>
+    <h4>Søkere etter fylke</h4>
+    <select id="fylke-select"><option value="Agder">Agder</option>
+<option value="Akershus">Akershus</option>
+<option value="Buskerud">Buskerud</option>
+<option value="Finnmark">Finnmark</option>
+<option value="Innlandet">Innlandet</option>
+<option value="Møre og Romsdal">Møre og Romsdal</option>
+<option value="Nordland">Nordland</option>
+<option value="Oslo">Oslo</option>
+<option value="Rogaland">Rogaland</option>
+<option value="Svalbard">Svalbard</option>
+<option value="Telemark">Telemark</option>
+<option value="Troms">Troms</option>
+<option value="Trøndelag">Trøndelag</option>
+<option value="Vestfold">Vestfold</option>
+<option value="Vestland">Vestland</option>
+<option value="Østfold">Østfold</option></select>
+    <div id="datagrid-container"></div>
+    <script>
+      const allData = {"Agder":[{"Studiested":"Agder","Antall":3429,"Andel":"43.4 %"},{"Studiested":"Oslo","Antall":1269,"Andel":"16.1 %"},{"Studiested":"Vestland","Antall":909,"Andel":"11.5 %"},{"Studiested":"Trøndelag","Antall":582,"Andel":"7.4 %"},{"Studiested":"Rogaland","Antall":469,"Andel":"5.9 %"},{"Studiested":"Innlandet","Antall":332,"Andel":"4.2 %"},{"Studiested":"Akershus","Antall":195,"Andel":"2.5 %"},{"Studiested":"Telemark","Antall":179,"Andel":"2.3 %"},{"Studiested":"Møre og Romsdal","Antall":111,"Andel":"1.4 %"},{"Studiested":"Vestfold","Antall":94,"Andel":"1.2 %"},{"Studiested":"Troms","Antall":87,"Andel":"1.1 %"},{"Studiested":"Nordland","Antall":71,"Andel":"0.9 %"},{"Studiested":"Finnmark","Antall":66,"Andel":"0.8 %"},{"Studiested":"Østfold","Antall":54,"Andel":"0.7 %"},{"Studiested":"Buskerud","Antall":53,"Andel":"0.7 %"}],"Akershus":[{"Studiested":"Oslo","Antall":8200,"Andel":"43.5 %"},{"Studiested":"Trøndelag","Antall":2655,"Andel":"14.1 %"},{"Studiested":"Vestland","Antall":1841,"Andel":"9.8 %"},{"Studiested":"Akershus","Antall":1708,"Andel":"9.1 %"},{"Studiested":"Innlandet","Antall":1538,"Andel":"8.2 %"},{"Studiested":"Agder","Antall":446,"Andel":"2.4 %"},{"Studiested":"Møre og Romsdal","Antall":387,"Andel":"2.1 %"},{"Studiested":"Rogaland","Antall":363,"Andel":"1.9 %"},{"Studiested":"Buskerud","Antall":340,"Andel":"1.8 %"},{"Studiested":"Troms","Antall":279,"Andel":"1.5 %"},{"Studiested":"Telemark","Antall":275,"Andel":"1.5 %"},{"Studiested":"Østfold","Antall":255,"Andel":"1.4 %"},{"Studiested":"Finnmark","Antall":205,"Andel":"1.1 %"},{"Studiested":"Nordland","Antall":192,"Andel":"1 %"},{"Studiested":"Vestfold","Antall":166,"Andel":"0.9 %"}],"Buskerud":[{"Studiested":"Oslo","Antall":1846,"Andel":"31.1 %"},{"Studiested":"Buskerud","Antall":1023,"Andel":"17.3 %"},{"Studiested":"Trøndelag","Antall":618,"Andel":"10.4 %"},{"Studiested":"Vestland","Antall":561,"Andel":"9.5 %"},{"Studiested":"Innlandet","Antall":465,"Andel":"7.8 %"},{"Studiested":"Akershus","Antall":296,"Andel":"5 %"},{"Studiested":"Agder","Antall":225,"Andel":"3.8 %"},{"Studiested":"Telemark","Antall":222,"Andel":"3.7 %"},{"Studiested":"Rogaland","Antall":140,"Andel":"2.4 %"},{"Studiested":"Vestfold","Antall":130,"Andel":"2.2 %"},{"Studiested":"Møre og Romsdal","Antall":122,"Andel":"2.1 %"},{"Studiested":"Troms","Antall":92,"Andel":"1.6 %"},{"Studiested":"Nordland","Antall":75,"Andel":"1.3 %"},{"Studiested":"Finnmark","Antall":58,"Andel":"1 %"},{"Studiested":"Østfold","Antall":55,"Andel":"0.9 %"}],"Finnmark":[{"Studiested":"Finnmark","Antall":597,"Andel":"31.8 %"},{"Studiested":"Troms","Antall":401,"Andel":"21.3 %"},{"Studiested":"Oslo","Antall":193,"Andel":"10.3 %"},{"Studiested":"Trøndelag","Antall":191,"Andel":"10.2 %"},{"Studiested":"Nordland","Antall":102,"Andel":"5.4 %"},{"Studiested":"Innlandet","Antall":92,"Andel":"4.9 %"},{"Studiested":"Vestland","Antall":79,"Andel":"4.2 %"},{"Studiested":"Møre og Romsdal","Antall":37,"Andel":"2 %"},{"Studiested":"Agder","Antall":36,"Andel":"1.9 %"},{"Studiested":"Rogaland","Antall":36,"Andel":"1.9 %"},{"Studiested":"Akershus","Antall":35,"Andel":"1.9 %"},{"Studiested":"Telemark","Antall":35,"Andel":"1.9 %"},{"Studiested":"Vestfold","Antall":24,"Andel":"1.3 %"},{"Studiested":"Østfold","Antall":19,"Andel":"1 %"},{"Studiested":"Buskerud","Antall":2,"Andel":"0.1 %"}],"Innlandet":[{"Studiested":"Innlandet","Antall":3855,"Andel":"43.1 %"},{"Studiested":"Oslo","Antall":1822,"Andel":"20.4 %"},{"Studiested":"Trøndelag","Antall":1123,"Andel":"12.6 %"},{"Studiested":"Vestland","Antall":590,"Andel":"6.6 %"},{"Studiested":"Akershus","Antall":345,"Andel":"3.9 %"},{"Studiested":"Rogaland","Antall":190,"Andel":"2.1 %"},{"Studiested":"Agder","Antall":186,"Andel":"2.1 %"},{"Studiested":"Møre og Romsdal","Antall":170,"Andel":"1.9 %"},{"Studiested":"Troms","Antall":161,"Andel":"1.8 %"},{"Studiested":"Telemark","Antall":125,"Andel":"1.4 %"},{"Studiested":"Østfold","Antall":91,"Andel":"1 %"},{"Studiested":"Nordland","Antall":78,"Andel":"0.9 %"},{"Studiested":"Finnmark","Antall":75,"Andel":"0.8 %"},{"Studiested":"Vestfold","Antall":65,"Andel":"0.7 %"},{"Studiested":"Buskerud","Antall":63,"Andel":"0.7 %"}],"Møre og Romsdal":[{"Studiested":"Møre og Romsdal","Antall":1824,"Andel":"30.3 %"},{"Studiested":"Trøndelag","Antall":1225,"Andel":"20.4 %"},{"Studiested":"Vestland","Antall":1007,"Andel":"16.8 %"},{"Studiested":"Oslo","Antall":780,"Andel":"13 %"},{"Studiested":"Innlandet","Antall":382,"Andel":"6.4 %"},{"Studiested":"Rogaland","Antall":138,"Andel":"2.3 %"},{"Studiested":"Akershus","Antall":136,"Andel":"2.3 %"},{"Studiested":"Troms","Antall":128,"Andel":"2.1 %"},{"Studiested":"Agder","Antall":82,"Andel":"1.4 %"},{"Studiested":"Nordland","Antall":74,"Andel":"1.2 %"},{"Studiested":"Telemark","Antall":61,"Andel":"1 %"},{"Studiested":"Finnmark","Antall":59,"Andel":"1 %"},{"Studiested":"Vestfold","Antall":54,"Andel":"0.9 %"},{"Studiested":"Østfold","Antall":36,"Andel":"0.6 %"},{"Studiested":"Buskerud","Antall":25,"Andel":"0.4 %"}],"Nordland":[{"Studiested":"Nordland","Antall":1626,"Andel":"31.8 %"},{"Studiested":"Trøndelag","Antall":1138,"Andel":"22.3 %"},{"Studiested":"Troms","Antall":763,"Andel":"14.9 %"},{"Studiested":"Oslo","Antall":501,"Andel":"9.8 %"},{"Studiested":"Innlandet","Antall":223,"Andel":"4.4 %"},{"Studiested":"Vestland","Antall":223,"Andel":"4.4 %"},{"Studiested":"Finnmark","Antall":172,"Andel":"3.4 %"},{"Studiested":"Møre og Romsdal","Antall":92,"Andel":"1.8 %"},{"Studiested":"Rogaland","Antall":92,"Andel":"1.8 %"},{"Studiested":"Akershus","Antall":91,"Andel":"1.8 %"},{"Studiested":"Agder","Antall":67,"Andel":"1.3 %"},{"Studiested":"Telemark","Antall":43,"Andel":"0.8 %"},{"Studiested":"Østfold","Antall":30,"Andel":"0.6 %"},{"Studiested":"Buskerud","Antall":29,"Andel":"0.6 %"},{"Studiested":"Vestfold","Antall":22,"Andel":"0.4 %"}],"Oslo":[{"Studiested":"Oslo","Antall":13845,"Andel":"58 %"},{"Studiested":"Trøndelag","Antall":2203,"Andel":"9.2 %"},{"Studiested":"Vestland","Antall":1966,"Andel":"8.2 %"},{"Studiested":"Innlandet","Antall":1457,"Andel":"6.1 %"},{"Studiested":"Akershus","Antall":1328,"Andel":"5.6 %"},{"Studiested":"Møre og Romsdal","Antall":514,"Andel":"2.2 %"},{"Studiested":"Telemark","Antall":395,"Andel":"1.7 %"},{"Studiested":"Finnmark","Antall":359,"Andel":"1.5 %"},{"Studiested":"Troms","Antall":330,"Andel":"1.4 %"},{"Studiested":"Rogaland","Antall":315,"Andel":"1.3 %"},{"Studiested":"Agder","Antall":283,"Andel":"1.2 %"},{"Studiested":"Østfold","Antall":278,"Andel":"1.2 %"},{"Studiested":"Buskerud","Antall":267,"Andel":"1.1 %"},{"Studiested":"Nordland","Antall":203,"Andel":"0.9 %"},{"Studiested":"Vestfold","Antall":131,"Andel":"0.5 %"}],"Rogaland":[{"Studiested":"Rogaland","Antall":4526,"Andel":"40.2 %"},{"Studiested":"Vestland","Antall":2184,"Andel":"19.4 %"},{"Studiested":"Oslo","Antall":1287,"Andel":"11.4 %"},{"Studiested":"Trøndelag","Antall":973,"Andel":"8.7 %"},{"Studiested":"Agder","Antall":596,"Andel":"5.3 %"},{"Studiested":"Innlandet","Antall":482,"Andel":"4.3 %"},{"Studiested":"Akershus","Antall":245,"Andel":"2.2 %"},{"Studiested":"Møre og Romsdal","Antall":240,"Andel":"2.1 %"},{"Studiested":"Troms","Antall":154,"Andel":"1.4 %"},{"Studiested":"Telemark","Antall":142,"Andel":"1.3 %"},{"Studiested":"Nordland","Antall":132,"Andel":"1.2 %"},{"Studiested":"Finnmark","Antall":110,"Andel":"1 %"},{"Studiested":"Vestfold","Antall":72,"Andel":"0.6 %"},{"Studiested":"Østfold","Antall":53,"Andel":"0.5 %"},{"Studiested":"Buskerud","Antall":50,"Andel":"0.4 %"}],"Svalbard":[{"Studiested":"Troms","Antall":4,"Andel":"20 %"},{"Studiested":"Innlandet","Antall":3,"Andel":"15 %"},{"Studiested":"Nordland","Antall":3,"Andel":"15 %"},{"Studiested":"Finnmark","Antall":2,"Andel":"10 %"},{"Studiested":"Rogaland","Antall":2,"Andel":"10 %"},{"Studiested":"Trøndelag","Antall":2,"Andel":"10 %"},{"Studiested":"Agder","Antall":1,"Andel":"5 %"},{"Studiested":"Oslo","Antall":1,"Andel":"5 %"},{"Studiested":"Telemark","Antall":1,"Andel":"5 %"},{"Studiested":"Vestland","Antall":1,"Andel":"5 %"}],"Telemark":[{"Studiested":"Telemark","Antall":1165,"Andel":"30.8 %"},{"Studiested":"Oslo","Antall":716,"Andel":"18.9 %"},{"Studiested":"Agder","Antall":392,"Andel":"10.4 %"},{"Studiested":"Trøndelag","Antall":327,"Andel":"8.6 %"},{"Studiested":"Vestland","Antall":272,"Andel":"7.2 %"},{"Studiested":"Innlandet","Antall":223,"Andel":"5.9 %"},{"Studiested":"Vestfold","Antall":143,"Andel":"3.8 %"},{"Studiested":"Rogaland","Antall":116,"Andel":"3.1 %"},{"Studiested":"Akershus","Antall":105,"Andel":"2.8 %"},{"Studiested":"Buskerud","Antall":88,"Andel":"2.3 %"},{"Studiested":"Møre og Romsdal","Antall":65,"Andel":"1.7 %"},{"Studiested":"Troms","Antall":45,"Andel":"1.2 %"},{"Studiested":"Nordland","Antall":44,"Andel":"1.2 %"},{"Studiested":"Finnmark","Antall":43,"Andel":"1.1 %"},{"Studiested":"Østfold","Antall":38,"Andel":"1 %"}],"Troms":[{"Studiested":"Troms","Antall":2232,"Andel":"47.8 %"},{"Studiested":"Trøndelag","Antall":512,"Andel":"11 %"},{"Studiested":"Finnmark","Antall":507,"Andel":"10.9 %"},{"Studiested":"Oslo","Antall":369,"Andel":"7.9 %"},{"Studiested":"Vestland","Antall":242,"Andel":"5.2 %"},{"Studiested":"Nordland","Antall":225,"Andel":"4.8 %"},{"Studiested":"Innlandet","Antall":165,"Andel":"3.5 %"},{"Studiested":"Rogaland","Antall":101,"Andel":"2.2 %"},{"Studiested":"Akershus","Antall":74,"Andel":"1.6 %"},{"Studiested":"Agder","Antall":60,"Andel":"1.3 %"},{"Studiested":"Møre og Romsdal","Antall":57,"Andel":"1.2 %"},{"Studiested":"Telemark","Antall":45,"Andel":"1 %"},{"Studiested":"Buskerud","Antall":31,"Andel":"0.7 %"},{"Studiested":"Østfold","Antall":30,"Andel":"0.6 %"},{"Studiested":"Vestfold","Antall":19,"Andel":"0.4 %"}],"Trøndelag":[{"Studiested":"Trøndelag","Antall":7660,"Andel":"59.3 %"},{"Studiested":"Oslo","Antall":1223,"Andel":"9.5 %"},{"Studiested":"Innlandet","Antall":964,"Andel":"7.5 %"},{"Studiested":"Vestland","Antall":880,"Andel":"6.8 %"},{"Studiested":"Møre og Romsdal","Antall":472,"Andel":"3.7 %"},{"Studiested":"Nordland","Antall":333,"Andel":"2.6 %"},{"Studiested":"Troms","Antall":284,"Andel":"2.2 %"},{"Studiested":"Akershus","Antall":265,"Andel":"2.1 %"},{"Studiested":"Rogaland","Antall":198,"Andel":"1.5 %"},{"Studiested":"Agder","Antall":181,"Andel":"1.4 %"},{"Studiested":"Finnmark","Antall":159,"Andel":"1.2 %"},{"Studiested":"Telemark","Antall":103,"Andel":"0.8 %"},{"Studiested":"Østfold","Antall":76,"Andel":"0.6 %"},{"Studiested":"Vestfold","Antall":60,"Andel":"0.5 %"},{"Studiested":"Buskerud","Antall":49,"Andel":"0.4 %"}],"Vestfold":[{"Studiested":"Oslo","Antall":1242,"Andel":"23.4 %"},{"Studiested":"Vestfold","Antall":1098,"Andel":"20.6 %"},{"Studiested":"Trøndelag","Antall":621,"Andel":"11.7 %"},{"Studiested":"Vestland","Antall":492,"Andel":"9.3 %"},{"Studiested":"Telemark","Antall":393,"Andel":"7.4 %"},{"Studiested":"Innlandet","Antall":331,"Andel":"6.2 %"},{"Studiested":"Agder","Antall":329,"Andel":"6.2 %"},{"Studiested":"Akershus","Antall":187,"Andel":"3.5 %"},{"Studiested":"Buskerud","Antall":150,"Andel":"2.8 %"},{"Studiested":"Rogaland","Antall":126,"Andel":"2.4 %"},{"Studiested":"Møre og Romsdal","Antall":98,"Andel":"1.8 %"},{"Studiested":"Troms","Antall":79,"Andel":"1.5 %"},{"Studiested":"Østfold","Antall":61,"Andel":"1.1 %"},{"Studiested":"Nordland","Antall":56,"Andel":"1.1 %"},{"Studiested":"Finnmark","Antall":55,"Andel":"1 %"}],"Vestland":[{"Studiested":"Vestland","Antall":10659,"Andel":"62.9 %"},{"Studiested":"Oslo","Antall":1369,"Andel":"8.1 %"},{"Studiested":"Trøndelag","Antall":1186,"Andel":"7 %"},{"Studiested":"Innlandet","Antall":816,"Andel":"4.8 %"},{"Studiested":"Rogaland","Antall":696,"Andel":"4.1 %"},{"Studiested":"Møre og Romsdal","Antall":536,"Andel":"3.2 %"},{"Studiested":"Akershus","Antall":341,"Andel":"2 %"},{"Studiested":"Agder","Antall":270,"Andel":"1.6 %"},{"Studiested":"Troms","Antall":239,"Andel":"1.4 %"},{"Studiested":"Nordland","Antall":203,"Andel":"1.2 %"},{"Studiested":"Finnmark","Antall":192,"Andel":"1.1 %"},{"Studiested":"Telemark","Antall":169,"Andel":"1 %"},{"Studiested":"Vestfold","Antall":123,"Andel":"0.7 %"},{"Studiested":"Østfold","Antall":84,"Andel":"0.5 %"},{"Studiested":"Buskerud","Antall":61,"Andel":"0.4 %"}],"Østfold":[{"Studiested":"Østfold","Antall":2022,"Andel":"28 %"},{"Studiested":"Oslo","Antall":1978,"Andel":"27.4 %"},{"Studiested":"Trøndelag","Antall":664,"Andel":"9.2 %"},{"Studiested":"Vestland","Antall":557,"Andel":"7.7 %"},{"Studiested":"Akershus","Antall":487,"Andel":"6.7 %"},{"Studiested":"Innlandet","Antall":477,"Andel":"6.6 %"},{"Studiested":"Agder","Antall":224,"Andel":"3.1 %"},{"Studiested":"Rogaland","Antall":195,"Andel":"2.7 %"},{"Studiested":"Telemark","Antall":138,"Andel":"1.9 %"},{"Studiested":"Møre og Romsdal","Antall":118,"Andel":"1.6 %"},{"Studiested":"Troms","Antall":93,"Andel":"1.3 %"},{"Studiested":"Vestfold","Antall":88,"Andel":"1.2 %"},{"Studiested":"Nordland","Antall":69,"Andel":"1 %"},{"Studiested":"Finnmark","Antall":67,"Andel":"0.9 %"},{"Studiested":"Buskerud","Antall":55,"Andel":"0.8 %"}]};
+
+      let grid = null;
+
+      function renderTable(fylke) {
+        const rows = allData[fylke];
+
+        if (grid) {
+          grid.update({
+            dataTable: {
+              columns: {
+                Studiested: rows.map(r => r.Studiested),
+                Antall:     rows.map(r => r.Antall),
+                Andel:      rows.map(r => r.Andel)
+              }
+            }
+          });
+        } else {
+          grid = new DataGrid.DataGrid('datagrid-container', {
+            dataTable: {
+              columns: {
+                Studiested: rows.map(r => r.Studiested),
+                Antall:     rows.map(r => r.Antall),
+                Andel:      rows.map(r => r.Andel)
+              }
+            },
+            columnDefaults: {
+              resizable: true
+            },
+            columns: [
+              { id: 'Studiested', header: { format: 'Studiested' } },
+              { id: 'Antall',     header: { format: 'Antall'     },
+                cells: { format: '{value}' } },
+              { id: 'Andel',      header: { format: 'Andel'      } }
+            ]
+          });
+        }
+      }
+
+      // Initial render
+      const select = document.getElementById('fylke-select');
+      renderTable(select.value);
+
+      select.addEventListener('change', function() {
+        renderTable(this.value);
+      });
+    </script>
+  </body>
+</html>
+</html>
