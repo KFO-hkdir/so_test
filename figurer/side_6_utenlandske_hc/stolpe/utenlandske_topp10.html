@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+<link href="lib/highcharts-9.3.1/css/motion.css" rel="stylesheet" />
+<script src="lib/highcharts-9.3.1/highcharts.js"></script>
+<script src="lib/highcharts-9.3.1/highcharts-3d.js"></script>
+<script src="lib/highcharts-9.3.1/highcharts-more.js"></script>
+<script src="lib/highcharts-9.3.1/modules/stock.js"></script>
+<script src="lib/highcharts-9.3.1/modules/map.js"></script>
+<script src="lib/highcharts-9.3.1/modules/data.js"></script>
+<script src="lib/highcharts-9.3.1/modules/exporting.js"></script>
+<script src="lib/highcharts-9.3.1/modules/offline-exporting.js"></script>
+<script src="lib/highcharts-9.3.1/modules/drilldown.js"></script>
+<script src="lib/highcharts-9.3.1/modules/item-series.js"></script>
+<script src="lib/highcharts-9.3.1/modules/overlapping-datalabels.js"></script>
+<script src="lib/highcharts-9.3.1/modules/annotations.js"></script>
+<script src="lib/highcharts-9.3.1/modules/export-data.js"></script>
+<script src="lib/highcharts-9.3.1/modules/funnel.js"></script>
+<script src="lib/highcharts-9.3.1/modules/heatmap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/treemap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/sankey.js"></script>
+<script src="lib/highcharts-9.3.1/modules/dependency-wheel.js"></script>
+<script src="lib/highcharts-9.3.1/modules/organization.js"></script>
+<script src="lib/highcharts-9.3.1/modules/solid-gauge.js"></script>
+<script src="lib/highcharts-9.3.1/modules/streamgraph.js"></script>
+<script src="lib/highcharts-9.3.1/modules/sunburst.js"></script>
+<script src="lib/highcharts-9.3.1/modules/vector.js"></script>
+<script src="lib/highcharts-9.3.1/modules/wordcloud.js"></script>
+<script src="lib/highcharts-9.3.1/modules/xrange.js"></script>
+<script src="lib/highcharts-9.3.1/modules/tilemap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/venn.js"></script>
+<script src="lib/highcharts-9.3.1/modules/gantt.js"></script>
+<script src="lib/highcharts-9.3.1/modules/timeline.js"></script>
+<script src="lib/highcharts-9.3.1/modules/parallel-coordinates.js"></script>
+<script src="lib/highcharts-9.3.1/modules/bullet.js"></script>
+<script src="lib/highcharts-9.3.1/modules/coloraxis.js"></script>
+<script src="lib/highcharts-9.3.1/modules/dumbbell.js"></script>
+<script src="lib/highcharts-9.3.1/modules/lollipop.js"></script>
+<script src="lib/highcharts-9.3.1/modules/series-label.js"></script>
+<script src="lib/highcharts-9.3.1/plugins/motion.js"></script>
+<script src="lib/highcharts-9.3.1/custom/reset.js"></script>
+<script src="lib/highcharts-9.3.1/modules/boost.js"></script>
+
+</head>
+<body>
+<style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; font-size: 13px;
+               background: #fff; padding: 10px; }
+        #chart-container { width: 100%; height: 520px; }
+      </style>
+<div id="chart-container"></div>
+<script>
+        const COLOR   = "#E72F72";
+        const allData = [{"categories":["Ukraina","Syria","Polen","Frankrike","Tyrkia","Filippinene ","USA","Tyskland","Russland","Iran"],"values":[550,363,226,212,208,182,182,164,161,149],"seriesName":"Antall søkere","decimals":0}];
+        let chart = null;
+
+        
+    function renderChart(index) {
+      const d = allData[index];
+      if (!d) return;
+      if (chart) { chart.destroy(); }
+
+      chart = Highcharts.chart("chart-container", {
+        chart: {
+          type: "bar",
+          reflow: true,
+          margin: [20, 60, 40, 180]
+        },
+        title:    { text: "Søkere med utenlandsk utdanningsbakgrunn" },
+        subtitle: { text: "" },
+        xAxis: {
+          categories: d.categories,
+          title: { text: "" },
+          labels: { style: { fontSize: "11px" } }
+        },
+        yAxis: {
+          min: 0,
+          title: { text: "" },
+          labels: {
+            formatter: function() {
+              return Highcharts.numberFormat(this.value, d.decimals, ",", " ");
+            }
+          }
+        },
+        legend: {
+          enabled: true,
+          align: "center",
+          verticalAlign: "bottom",
+          layout: "horizontal",
+          itemStyle: { fontSize: "11px", fontWeight: "normal" }
+        },
+        tooltip: {
+          formatter: function() {
+            return "<b>" + this.x + "</b><br/>" + d.seriesName + ": " +
+                   Highcharts.numberFormat(this.y, d.decimals, ",", " ");
+          }
+        },
+        plotOptions: {
+          bar: {
+            
+            pointPadding: 0.01,
+            colorByPoint: false,
+            dataLabels: { enabled: false },
+            label:       { enabled: false }
+          }
+        },
+        series: [{
+          name:  d.seriesName,
+          data:  d.values,
+          color: COLOR
+        }],
+        credits: { enabled: false },
+        exporting: {
+          enabled: true,
+          csv: {
+            columnHeaderFormatter: function(item, key) {
+              if (!item || item.isXAxis) { return "Land"; }
+              return item.name;
+            }
+          }
+        }
+      });
+    }
+  
+
+        renderChart(0);
+      </script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+<link href="lib/highcharts-9.3.1/css/motion.css" rel="stylesheet" />
+<script src="lib/highcharts-9.3.1/highcharts.js"></script>
+<script src="lib/highcharts-9.3.1/highcharts-3d.js"></script>
+<script src="lib/highcharts-9.3.1/highcharts-more.js"></script>
+<script src="lib/highcharts-9.3.1/modules/stock.js"></script>
+<script src="lib/highcharts-9.3.1/modules/map.js"></script>
+<script src="lib/highcharts-9.3.1/modules/data.js"></script>
+<script src="lib/highcharts-9.3.1/modules/exporting.js"></script>
+<script src="lib/highcharts-9.3.1/modules/offline-exporting.js"></script>
+<script src="lib/highcharts-9.3.1/modules/drilldown.js"></script>
+<script src="lib/highcharts-9.3.1/modules/item-series.js"></script>
+<script src="lib/highcharts-9.3.1/modules/overlapping-datalabels.js"></script>
+<script src="lib/highcharts-9.3.1/modules/annotations.js"></script>
+<script src="lib/highcharts-9.3.1/modules/export-data.js"></script>
+<script src="lib/highcharts-9.3.1/modules/funnel.js"></script>
+<script src="lib/highcharts-9.3.1/modules/heatmap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/treemap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/sankey.js"></script>
+<script src="lib/highcharts-9.3.1/modules/dependency-wheel.js"></script>
+<script src="lib/highcharts-9.3.1/modules/organization.js"></script>
+<script src="lib/highcharts-9.3.1/modules/solid-gauge.js"></script>
+<script src="lib/highcharts-9.3.1/modules/streamgraph.js"></script>
+<script src="lib/highcharts-9.3.1/modules/sunburst.js"></script>
+<script src="lib/highcharts-9.3.1/modules/vector.js"></script>
+<script src="lib/highcharts-9.3.1/modules/wordcloud.js"></script>
+<script src="lib/highcharts-9.3.1/modules/xrange.js"></script>
+<script src="lib/highcharts-9.3.1/modules/tilemap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/venn.js"></script>
+<script src="lib/highcharts-9.3.1/modules/gantt.js"></script>
+<script src="lib/highcharts-9.3.1/modules/timeline.js"></script>
+<script src="lib/highcharts-9.3.1/modules/parallel-coordinates.js"></script>
+<script src="lib/highcharts-9.3.1/modules/bullet.js"></script>
+<script src="lib/highcharts-9.3.1/modules/coloraxis.js"></script>
+<script src="lib/highcharts-9.3.1/modules/dumbbell.js"></script>
+<script src="lib/highcharts-9.3.1/modules/lollipop.js"></script>
+<script src="lib/highcharts-9.3.1/modules/series-label.js"></script>
+<script src="lib/highcharts-9.3.1/plugins/motion.js"></script>
+<script src="lib/highcharts-9.3.1/custom/reset.js"></script>
+<script src="lib/highcharts-9.3.1/modules/boost.js"></script>
+
+</head>
+<body>
+<style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: Arial, sans-serif; font-size: 13px;
+             background: #fff; padding: 10px; }
+      #controls { margin-bottom: 12px; }
+      #controls label { font-weight: bold; margin-right: 8px; }
+      #chart-select {
+        padding: 5px 10px;
+        font-size: 13px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        min-width: 260px;
+        cursor: pointer;
+      }
+      #chart-container { width: 100%; height: 520px; }
+    </style>
+<div id="controls">
+  <label for="chart-select">Vis:</label>
+  <select id="chart-select"></select>
+</div>
+<div id="chart-container"></div>
+<script>
+      const COLOR   = "#E72F72";
+      const allData = [{"categories":["Helsefag","Økonomisk-administrative fag","Lærerutdanninger","Teknologiske fag","Samfunnsfag","Informasjonsteknologi","Historiefag","Språkfag","Realfag","Juridiske fag","Estetiske fag","Idrettsfag","Mediefag","Pedagogiske fag","Land- og havbruk","Reiselivsfag"],"values":[12426,10248,7389,6954,6312,3108,3071,2978,2395,2150,1616,1607,1587,1571,900,230],"seriesName":"Studieplasser","decimals":0,"label":"Planlagte studieplasser"},{"categories":["Helsefag","Økonomisk-administrative fag","Samfunnsfag","Teknologiske fag","Juridiske fag","Lærerutdanninger","Informasjonsteknologi","Språkfag","Mediefag","Realfag","Historiefag","Idrettsfag","Estetiske fag","Pedagogiske fag","Land- og havbruk","Reiselivsfag"],"values":[35245,26108,16619,14710,10146,8029,5598,4628,4026,3819,3762,2834,2752,2223,1095,410],"seriesName":"Førstevalg","decimals":0,"label":"Førstevalg"},{"categories":["Juridiske fag","Helsefag","Samfunnsfag","Mediefag","Økonomisk-administrative fag","Teknologiske fag","Idrettsfag","Informasjonsteknologi","Reiselivsfag","Estetiske fag","Realfag","Språkfag","Pedagogiske fag","Historiefag","Land- og havbruk","Lærerutdanninger"],"values":[4.7,2.8,2.6,2.5,2.5,2.1,1.8,1.8,1.8,1.7,1.6,1.6,1.4,1.2,1.2,1.1],"seriesName":"Førstevalg per plass","decimals":1,"label":"Førstevalg per planlagte studieplass"}];
+
+      const select = document.getElementById("chart-select");
+      let chart = null;
+
+      allData.forEach(function(d, i) {
+        const opt = document.createElement("option");
+        opt.value = i;
+        opt.textContent = d.label;
+        select.appendChild(opt);
+      });
+
+      
+    function renderChart(index) {
+      const d = allData[index];
+      if (!d) return;
+      if (chart) { chart.destroy(); }
+
+      chart = Highcharts.chart("chart-container", {
+        chart: {
+          type: "bar",
+          reflow: true,
+          margin: [20, 60, 40, 180]
+        },
+        title:    { text: "" },
+        subtitle: { text: "" },
+        xAxis: {
+          categories: d.categories,
+          title: { text: "" },
+          labels: { style: { fontSize: "11px" } }
+        },
+        yAxis: {
+          min: 0,
+          title: { text: "" },
+          labels: {
+            formatter: function() {
+              return Highcharts.numberFormat(this.value, d.decimals, ",", " ");
+            }
+          }
+        },
+        legend: { enabled: false },
+        tooltip: {
+          formatter: function() {
+            return "<b>" + this.x + "</b><br/>" + d.seriesName + ": " +
+                   Highcharts.numberFormat(this.y, d.decimals, ",", " ");
+          }
+        },
+        plotOptions: {
+          bar: {
+            
+            pointPadding: 0.01,
+            colorByPoint: false,
+            dataLabels: { enabled: false },
+            label:       { enabled: false }
+          }
+        },
+        series: [{
+          name:  d.seriesName,
+          data:  d.values,
+          color: COLOR
+        }],
+        credits: { enabled: false },
+        exporting: {
+          enabled: true,
+          csv: {
+            columnHeaderFormatter: function(item, key) {
+              if (!item || item.isXAxis) { return "utd_omr"; }
+              return item.name;
+            }
+          }
+        }
+      });
+    }
+  
+
+      select.addEventListener("change", function() {
+        renderChart(parseInt(this.value));
+      });
+
+      renderChart(0);
+    </script>
+</body>
+</html>
