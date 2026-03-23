@@ -47,8 +47,8 @@
         .hc-filter-row input.hc-col-filter:focus { outline: none; border-color: #F58220; background: #fff; }
 
         /* Per-column filter widths */
-  .hc-filter-row input.hc-col-filter:nth-child(1) { flex: 0 0 121px !important; width: 121px !important; min-width: 121px !important; max-width: 121px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(2) { flex: 0 0 181px !important; width: 181px !important; min-width: 181px !important; max-width: 181px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(1) { flex: 0 0 90px !important; width: 90px !important; min-width: 90px !important; max-width: 90px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(2) { flex: 0 0 212px !important; width: 212px !important; min-width: 212px !important; max-width: 212px !important; }
   .hc-filter-row input.hc-col-filter:nth-child(3) { flex: 0 0 181px !important; width: 181px !important; min-width: 181px !important; max-width: 181px !important; }
   .hc-filter-row input.hc-col-filter:nth-child(4) { flex: 0 0 123px !important; width: 123px !important; min-width: 123px !important; max-width: 123px !important; }
 
@@ -97,9 +97,9 @@
 
         /* Per-column cell widths */
   .hcg-container th:nth-child(1),
-  .hcg-container td:nth-child(1) { width: 121px !important; min-width: 121px !important; max-width: 121px !important; }
+  .hcg-container td:nth-child(1) { width: 90px !important; min-width: 90px !important; max-width: 90px !important; }
   .hcg-container th:nth-child(2),
-  .hcg-container td:nth-child(2) { width: 181px !important; min-width: 181px !important; max-width: 181px !important; }
+  .hcg-container td:nth-child(2) { width: 212px !important; min-width: 212px !important; max-width: 212px !important; }
   .hcg-container th:nth-child(3),
   .hcg-container td:nth-child(3) { width: 181px !important; min-width: 181px !important; max-width: 181px !important; }
   .hcg-container th:nth-child(4),
@@ -144,8 +144,8 @@
         grid = Grid.grid("datagrid-container", {
           dataTable: { columns: cols },
           columnDefaults: { resizable: true },
-          columns: [ { id: 'col_1', header: { format: 'Institusjon' }, width: 121 },
-                  { id: 'col_2', header: { format: 'Studieprogram' }, width: 181 },
+          columns: [ { id: 'col_1', header: { format: 'Institusjon' }, width: 90 },
+                  { id: 'col_2', header: { format: 'Studieprogram' }, width: 212 },
                   { id: 'col_3', header: { format: 'Utdanningstype' }, width: 181 },
                   { id: 'col_4', header: { format: 'Førstevalgs-<br>søkere<br>per plass' }, width: 123 } ],
           rendering: { theme: "hcg-theme-default hcg-custom-theme" }

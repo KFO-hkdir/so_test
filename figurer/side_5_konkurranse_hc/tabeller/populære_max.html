@@ -12,7 +12,7 @@
         html, body { height: 100%; margin: 0; padding: 0; box-sizing: border-box; }
         body {
           font-family: sans-serif;
-          max-width: 1200px;
+          max-width: 1000px;
           margin: 16px auto;
           padding: 0 16px;
           font-size: 11px;
@@ -47,12 +47,12 @@
         .hc-filter-row input.hc-col-filter:focus { outline: none; border-color: #F58220; background: #fff; }
 
         /* Per-column filter widths */
-  .hc-filter-row input.hc-col-filter:nth-child(1) { flex: 0 0 349px !important; width: 349px !important; min-width: 349px !important; max-width: 349px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(2) { flex: 0 0 233px !important; width: 233px !important; min-width: 233px !important; max-width: 233px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(3) { flex: 0 0 233px !important; width: 233px !important; min-width: 233px !important; max-width: 233px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(4) { flex: 0 0 116px !important; width: 116px !important; min-width: 116px !important; max-width: 116px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(5) { flex: 0 0 116px !important; width: 116px !important; min-width: 116px !important; max-width: 116px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(6) { flex: 0 0 119px !important; width: 119px !important; min-width: 119px !important; max-width: 119px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(1) { flex: 0 0 241px !important; width: 241px !important; min-width: 241px !important; max-width: 241px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(2) { flex: 0 0 241px !important; width: 241px !important; min-width: 241px !important; max-width: 241px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(3) { flex: 0 0 193px !important; width: 193px !important; min-width: 193px !important; max-width: 193px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(4) { flex: 0 0 96px !important; width: 96px !important; min-width: 96px !important; max-width: 96px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(5) { flex: 0 0 96px !important; width: 96px !important; min-width: 96px !important; max-width: 96px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(6) { flex: 0 0 99px !important; width: 99px !important; min-width: 99px !important; max-width: 99px !important; }
 
         .hc-export-wrap { position: relative; display: inline-block; }
         .hc-export-btn {
@@ -99,17 +99,17 @@
 
         /* Per-column cell widths */
   .hcg-container th:nth-child(1),
-  .hcg-container td:nth-child(1) { width: 349px !important; min-width: 349px !important; max-width: 349px !important; }
+  .hcg-container td:nth-child(1) { width: 241px !important; min-width: 241px !important; max-width: 241px !important; }
   .hcg-container th:nth-child(2),
-  .hcg-container td:nth-child(2) { width: 233px !important; min-width: 233px !important; max-width: 233px !important; }
+  .hcg-container td:nth-child(2) { width: 241px !important; min-width: 241px !important; max-width: 241px !important; }
   .hcg-container th:nth-child(3),
-  .hcg-container td:nth-child(3) { width: 233px !important; min-width: 233px !important; max-width: 233px !important; }
+  .hcg-container td:nth-child(3) { width: 193px !important; min-width: 193px !important; max-width: 193px !important; }
   .hcg-container th:nth-child(4),
-  .hcg-container td:nth-child(4) { width: 116px !important; min-width: 116px !important; max-width: 116px !important; }
+  .hcg-container td:nth-child(4) { width: 96px !important; min-width: 96px !important; max-width: 96px !important; }
   .hcg-container th:nth-child(5),
-  .hcg-container td:nth-child(5) { width: 116px !important; min-width: 116px !important; max-width: 116px !important; }
+  .hcg-container td:nth-child(5) { width: 96px !important; min-width: 96px !important; max-width: 96px !important; }
   .hcg-container th:nth-child(6),
-  .hcg-container td:nth-child(6) { width: 119px !important; min-width: 119px !important; max-width: 119px !important; }
+  .hcg-container td:nth-child(6) { width: 99px !important; min-width: 99px !important; max-width: 99px !important; }
 
         /* Scroll height */
         #datagrid-container { height: 600px !important; }
@@ -154,12 +154,12 @@
         grid = Grid.grid("datagrid-container", {
           dataTable: { columns: cols },
           columnDefaults: { resizable: true },
-          columns: [ { id: 'col_1', header: { format: 'Institusjon' }, width: 349 },
-                  { id: 'col_2', header: { format: 'Studieprogram' }, width: 233 },
-                  { id: 'col_3', header: { format: 'Utdanningstype' }, width: 233 },
-                  { id: 'col_4', header: { format: 'Førstevalgs-<br>søkere' }, width: 116 },
-                  { id: 'col_5', header: { format: 'Studieplasser' }, width: 116 },
-                  { id: 'col_6', header: { format: 'Førstevalgs-<br>søkere<br>per plass' }, width: 119 } ],
+          columns: [ { id: 'col_1', header: { format: 'Institusjon' }, width: 241 },
+                  { id: 'col_2', header: { format: 'Studieprogram' }, width: 241 },
+                  { id: 'col_3', header: { format: 'Utdanningstype' }, width: 193 },
+                  { id: 'col_4', header: { format: 'Førstevalgs-<br>søkere' }, width: 96 },
+                  { id: 'col_5', header: { format: 'Studieplasser' }, width: 96 },
+                  { id: 'col_6', header: { format: 'Førstevalgs-<br>søkere<br>per plass' }, width: 99 } ],
           rendering: { theme: "hcg-theme-default hcg-custom-theme" }
         });
       }
