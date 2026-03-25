@@ -1,0 +1,284 @@
+source("script/helpers/chart_json_spec.R")
+
+`%||%` <- function(left, right) {
+  if (is.null(left) || length(left) == 0) {
+    return(right)
+  }
+
+  left
+}
+
+`%&&%` <- function(left, right) {
+  if (is.null(left) || length(left) == 0) {
+    return(right)
+  }
+
+  left
+}
+
+write_preview_html_from_spec <- function(chart_spec, output_path, dropdown_id = "chart-select") {
+  json_path <- sub("\\.html$", ".chart.json", output_path)
+  relative_json_path <- basename(json_path)
+  chart_type <- chart_spec$chartType
+  is_tabbed <- identical(chart_spec$kind, "tabbed")
+  control_label <- chart_spec$controlLabel %||% "Velg verdi"
+  y_format <- chart_spec$presentation$yAxis$format %||% "integer-nb"
+  tooltip_mode <- chart_spec$presentation$tooltip$mode %||% "shared-number"
+  legend_enabled <- chart_spec$presentation$legend$enabled %||% TRUE
+  legend_align <- chart_spec$presentation$legend$align %||% "center"
+  legend_vertical_align <- chart_spec$presentation$legend$verticalAlign %||% "bottom"
+  legend_layout <- chart_spec$presentation$legend$layout %||% "horizontal"
+  y_min <- chart_spec$presentation$yAxis$min
+  y_max <- chart_spec$presentation$yAxis$max
+  x_rotation <- jsonlite::toJSON(chart_spec$presentation$xAxis$labelRotation %||% list(), auto_unbox = TRUE)
+  stacking <- chart_spec$presentation$stacking %||% "none"
+  height <- if (chart_type == "bar") 520 else 420
+  margin <- if (chart_type == "bar") "[20, 60, 40, 180]" else "[50, 20, 60, 80]"
+  controls_markup <- if (is_tabbed) {
+    sprintf(
+      '<div id="controls"><label for="%s">%s</label><select id="%s"></select></div>',
+      dropdown_id,
+      control_label,
+      dropdown_id
+    )
+  } else {
+    ""
+  }
+
+  html_template <- glue::glue(
+    '<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{{background-color:white;}}</style>
+<link href="lib/highcharts-9.3.1/css/motion.css" rel="stylesheet" />
+<script src="lib/highcharts-9.3.1/highcharts.js"></script>
+<script src="lib/highcharts-9.3.1/highcharts-3d.js"></script>
+<script src="lib/highcharts-9.3.1/highcharts-more.js"></script>
+<script src="lib/highcharts-9.3.1/modules/stock.js"></script>
+<script src="lib/highcharts-9.3.1/modules/map.js"></script>
+<script src="lib/highcharts-9.3.1/modules/data.js"></script>
+<script src="lib/highcharts-9.3.1/modules/exporting.js"></script>
+<script src="lib/highcharts-9.3.1/modules/offline-exporting.js"></script>
+<script src="lib/highcharts-9.3.1/modules/drilldown.js"></script>
+<script src="lib/highcharts-9.3.1/modules/item-series.js"></script>
+<script src="lib/highcharts-9.3.1/modules/overlapping-datalabels.js"></script>
+<script src="lib/highcharts-9.3.1/modules/annotations.js"></script>
+<script src="lib/highcharts-9.3.1/modules/export-data.js"></script>
+<script src="lib/highcharts-9.3.1/modules/funnel.js"></script>
+<script src="lib/highcharts-9.3.1/modules/heatmap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/treemap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/sankey.js"></script>
+<script src="lib/highcharts-9.3.1/modules/dependency-wheel.js"></script>
+<script src="lib/highcharts-9.3.1/modules/organization.js"></script>
+<script src="lib/highcharts-9.3.1/modules/solid-gauge.js"></script>
+<script src="lib/highcharts-9.3.1/modules/streamgraph.js"></script>
+<script src="lib/highcharts-9.3.1/modules/sunburst.js"></script>
+<script src="lib/highcharts-9.3.1/modules/vector.js"></script>
+<script src="lib/highcharts-9.3.1/modules/wordcloud.js"></script>
+<script src="lib/highcharts-9.3.1/modules/xrange.js"></script>
+<script src="lib/highcharts-9.3.1/modules/tilemap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/venn.js"></script>
+<script src="lib/highcharts-9.3.1/modules/gantt.js"></script>
+<script src="lib/highcharts-9.3.1/modules/timeline.js"></script>
+<script src="lib/highcharts-9.3.1/modules/parallel-coordinates.js"></script>
+<script src="lib/highcharts-9.3.1/modules/bullet.js"></script>
+<script src="lib/highcharts-9.3.1/modules/coloraxis.js"></script>
+<script src="lib/highcharts-9.3.1/modules/dumbbell.js"></script>
+<script src="lib/highcharts-9.3.1/modules/lollipop.js"></script>
+<script src="lib/highcharts-9.3.1/modules/series-label.js"></script>
+<script src="lib/highcharts-9.3.1/plugins/motion.js"></script>
+<script src="lib/highcharts-9.3.1/custom/reset.js"></script>
+<script src="lib/highcharts-9.3.1/modules/boost.js"></script>
+</head>
+<body>
+<style>
+  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  body {{ font-family: Arial, sans-serif; font-size: 13px; background: #fff; padding: 10px; }}
+  #controls {{ margin-bottom: 12px; }}
+  #controls label {{ font-weight: bold; margin-right: 8px; }}
+  #{dropdown_id} {{ padding: 5px 10px; font-size: 13px; border: 1px solid #ccc; border-radius: 4px; min-width: 220px; cursor: pointer; }}
+  #chart-container {{ width: 100%; height: {height}px; }}
+</style>
+{controls_markup}
+<div id="chart-container"></div>
+<script>
+  const JSON_URL = "{relative_json_path}";
+  const COLORS = ["#E72F72", "#0025A0", "#EA591D", "#9B3699", "#FF8C43", "#A80037", "#FFC948", "#630879"];
+  const X_ROTATION = {x_rotation};
+  const CHART_TYPE = "{chart_type}";
+  const TOOLTIP_MODE = "{tooltip_mode}";
+  const Y_FORMAT = "{y_format}";
+  const LEGEND_ENABLED = {tolower(as.character(legend_enabled))};
+  const LEGEND_ALIGN = "{legend_align}";
+  const LEGEND_VERTICAL_ALIGN = "{legend_vertical_align}";
+  const LEGEND_LAYOUT = "{legend_layout}";
+  const Y_MIN = {if (is.null(y_min)) "null" else y_min};
+  const Y_MAX = {if (is.null(y_max)) "null" else y_max};
+  const STACKING = "{stacking}";
+  const select = document.getElementById("{dropdown_id}");
+  let chart = null;
+  let chartSpec = null;
+
+  function formatNumber(value) {{
+    const decimals = Y_FORMAT === "integer-nb" ? 0 : 1;
+    return Highcharts.numberFormat(value, decimals, ",", " ");
+  }}
+
+  function formatAxisValue(value) {{
+    if (Y_FORMAT === "percent") {{
+      return formatNumber(value) + " %";
+    }}
+
+    return formatNumber(value);
+  }}
+
+  function getActiveItem(index) {{
+    if (chartSpec.kind === "tabbed") {{
+      return chartSpec.items[index] || chartSpec.items[0];
+    }}
+
+    return chartSpec;
+  }}
+
+  function buildSeries(series) {{
+    return series.map(function(entry, index) {{
+      const item = {{
+        type: CHART_TYPE,
+        name: entry.name,
+        data: entry.data,
+        color: COLORS[index % COLORS.length],
+        dataLabels: {{ enabled: false }},
+        label: {{ enabled: false }}
+      }};
+
+      if (entry.labels) {{
+        item.labels = entry.labels;
+      }}
+
+      if (CHART_TYPE === "line") {{
+        item.marker = {{ enabled: true, radius: 4 }};
+      }}
+
+      return item;
+    }});
+  }}
+
+  function buildTooltip() {{
+    return {{
+      shared: true,
+      useHTML: true,
+      formatter: function() {{
+        if (this.points && this.points.length) {{
+          let output = "<b>" + this.x + "</b>";
+          this.points.forEach(function(point) {{
+            const labelValue = point.series.userOptions.labels && point.series.userOptions.labels[point.point.index];
+            if (labelValue) {{
+              output += "<br/>" + point.series.name + ": " + labelValue;
+            }} else if (TOOLTIP_MODE === "shared-percent") {{
+              output += "<br/>" + point.series.name + ": " + formatNumber(point.y) + " %";
+            }} else {{
+              output += "<br/>" + point.series.name + ": " + formatNumber(point.y);
+            }}
+          }});
+          return output;
+        }}
+
+        if (this.point) {{
+          const labelValue = this.point.series.userOptions.labels && this.point.series.userOptions.labels[this.point.index];
+          if (labelValue) {{
+            return "<b>" + this.x + "</b><br/>" + this.series.name + ": " + labelValue;
+          }}
+
+          if (TOOLTIP_MODE === "shared-percent") {{
+            return "<b>" + this.x + "</b><br/>" + this.series.name + ": " + formatNumber(this.y) + " %";
+          }}
+
+          return "<b>" + this.x + "</b><br/>" + this.series.name + ": " + formatNumber(this.y);
+        }}
+
+        return "";
+      }}
+    }};
+  }}
+
+  function renderChart(index) {{
+    const activeItem = getActiveItem(index);
+    if (!activeItem) return;
+    if (chart) chart.destroy();
+
+    chart = Highcharts.chart("chart-container", {{
+      chart: {{ type: CHART_TYPE, reflow: true, margin: {margin} }},
+      title: {{ text: chartSpec.title || "" }},
+      subtitle: {{ text: chartSpec.subtitle || "" }},
+      xAxis: {{
+        categories: activeItem.categories.map(String),
+        title: {{ text: "" }},
+        labels: {{
+          autoRotation: CHART_TYPE === "bar" ? undefined : X_ROTATION,
+          style: CHART_TYPE === "bar" ? {{ fontSize: "11px" }} : undefined
+        }}
+      }},
+      yAxis: {{
+        min: Y_MIN,
+        max: Y_MAX,
+        title: {{ text: "" }},
+        reversedStacks: false,
+        labels: {{ formatter: function() {{ return formatAxisValue(this.value); }} }}
+      }},
+      legend: {{
+        enabled: LEGEND_ENABLED,
+        align: LEGEND_ALIGN,
+        verticalAlign: LEGEND_VERTICAL_ALIGN,
+        layout: LEGEND_LAYOUT,
+        itemStyle: {{ fontSize: "11px", fontWeight: "normal" }}
+      }},
+      tooltip: buildTooltip(),
+      plotOptions: {{
+        line: {{ lineWidth: 1.5 }},
+        series: STACKING !== "none" ? {{ stacking: STACKING, borderWidth: 0 }} : undefined,
+        bar: {{ pointPadding: 0.01, colorByPoint: false, dataLabels: {{ enabled: false }} }},
+        column: {{ pointPadding: 0.01, borderWidth: 0, dataLabels: {{ enabled: false }} }}
+      }},
+      series: buildSeries(activeItem.series),
+      credits: {{ enabled: false }},
+      exporting: {{ enabled: true }}
+    }});
+  }}
+
+  fetch(JSON_URL)
+    .then(function(response) {{
+      if (!response.ok) throw new Error("Could not load chart json");
+      return response.json();
+    }})
+    .then(function(spec) {{
+      chartSpec = spec;
+
+      if (chartSpec.kind === "tabbed" && select) {{
+        chartSpec.items.forEach(function(item, index) {{
+          const option = document.createElement("option");
+          option.value = index;
+          option.textContent = item.label;
+          select.appendChild(option);
+        }});
+
+        select.addEventListener("change", function() {{
+          renderChart(parseInt(this.value, 10));
+        }});
+
+        renderChart(0);
+        return;
+      }}
+
+      renderChart(0);
+    }})
+    .catch(function(error) {{
+      console.error(error);
+    }});
+</script>
+</body>
+</html>'
+  )
+
+  writeLines(html_template, output_path, useBytes = TRUE)
+}

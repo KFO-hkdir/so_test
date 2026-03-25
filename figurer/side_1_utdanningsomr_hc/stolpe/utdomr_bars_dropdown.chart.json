@@ -1,0 +1,163 @@
+{
+  "version": 1,
+  "renderer": "highcharts",
+  "kind": "tabbed",
+  "chartType": "bar",
+  "title": "",
+  "subtitle": "",
+  "controlLabel": "Vis:",
+  "items": [
+    {
+      "label": "Planlagte studieplasser",
+      "categories": [
+        "Helsefag",
+        "Økonomisk-administrative fag",
+        "Lærerutdanninger",
+        "Teknologiske fag",
+        "Samfunnsfag",
+        "Informasjonsteknologi",
+        "Historiefag",
+        "Språkfag",
+        "Realfag",
+        "Juridiske fag",
+        "Estetiske fag",
+        "Idrettsfag",
+        "Mediefag",
+        "Pedagogiske fag",
+        "Land- og havbruk",
+        "Reiselivsfag"
+      ],
+      "series": [
+        {
+          "name": "Studieplasser",
+          "data": [
+            12426,
+            10248,
+            7389,
+            6954,
+            6312,
+            3108,
+            3071,
+            2978,
+            2395,
+            2150,
+            1616,
+            1607,
+            1587,
+            1571,
+            900,
+            230
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Førstevalg",
+      "categories": [
+        "Helsefag",
+        "Økonomisk-administrative fag",
+        "Samfunnsfag",
+        "Teknologiske fag",
+        "Juridiske fag",
+        "Lærerutdanninger",
+        "Informasjonsteknologi",
+        "Språkfag",
+        "Mediefag",
+        "Realfag",
+        "Historiefag",
+        "Idrettsfag",
+        "Estetiske fag",
+        "Pedagogiske fag",
+        "Land- og havbruk",
+        "Reiselivsfag"
+      ],
+      "series": [
+        {
+          "name": "Førstevalg",
+          "data": [
+            35245,
+            26108,
+            16619,
+            14710,
+            10146,
+            8029,
+            5598,
+            4628,
+            4026,
+            3819,
+            3762,
+            2834,
+            2752,
+            2223,
+            1095,
+            410
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Førstevalg per planlagte studieplass",
+      "categories": [
+        "Juridiske fag",
+        "Helsefag",
+        "Samfunnsfag",
+        "Mediefag",
+        "Økonomisk-administrative fag",
+        "Teknologiske fag",
+        "Idrettsfag",
+        "Informasjonsteknologi",
+        "Reiselivsfag",
+        "Estetiske fag",
+        "Realfag",
+        "Språkfag",
+        "Pedagogiske fag",
+        "Historiefag",
+        "Land- og havbruk",
+        "Lærerutdanninger"
+      ],
+      "series": [
+        {
+          "name": "Førstevalg per plass",
+          "data": [
+            4.7,
+            2.8,
+            2.6,
+            2.5,
+            2.5,
+            2.1,
+            1.8,
+            1.8,
+            1.8,
+            1.7,
+            1.6,
+            1.6,
+            1.4,
+            1.2,
+            1.2,
+            1.1
+          ]
+        }
+      ]
+    }
+  ],
+  "presentation": {
+    "legend": {
+      "enabled": true,
+      "align": "center",
+      "verticalAlign": "bottom",
+      "layout": "horizontal"
+    },
+    "yAxis": {
+      "min": 0,
+      "max": null,
+      "format": "integer-nb"
+    },
+    "xAxis": {
+      "labelRotation": [-10, -20, -30, -40, -50, -60, -70, -80, -90]
+    },
+    "tooltip": {
+      "mode": "shared-number"
+    },
+    "stacking": "none"
+  }
+}
