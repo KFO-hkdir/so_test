@@ -40,7 +40,6 @@
 <script src="lib/highcharts-9.3.1/modules/lollipop.js"></script>
 <script src="lib/highcharts-9.3.1/modules/series-label.js"></script>
 <script src="lib/highcharts-9.3.1/plugins/motion.js"></script>
-<script src="lib/highcharts-9.3.1/custom/reset.js"></script>
 <script src="lib/highcharts-9.3.1/modules/boost.js"></script>
 </head>
 <body>
@@ -54,6 +53,887 @@
 </style>
 <div id="controls"><label for="grp-select">Utdanningstype</label><select id="grp-select"></select></div>
 <div id="chart-container"></div>
+<textarea id="chart-preview-data" hidden>{
+  "version": 1,
+  "renderer": "highcharts",
+  "kind": "tabbed",
+  "chartType": "line",
+  "title": "",
+  "subtitle": "",
+  "controlLabel": "Utdanningstype",
+  "items": [
+    {
+      "label": "Audio",
+      "categories": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "series": [
+        {
+          "name": "Søkere",
+          "data": [
+            77,
+            75,
+            91,
+            87,
+            77,
+            66,
+            82,
+            70,
+            65,
+            98,
+            87
+          ]
+        },
+        {
+          "name": "Studieplasser",
+          "data": [
+            40,
+            40,
+            40,
+            40,
+            40,
+            40,
+            40,
+            40,
+            40,
+            40,
+            40
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Barnevern",
+      "categories": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "series": [
+        {
+          "name": "Søkere",
+          "data": [
+            2214,
+            2500,
+            2470,
+            2693,
+            2687,
+            2782,
+            2386,
+            2014,
+            1706,
+            1782,
+            1689
+          ]
+        },
+        {
+          "name": "Studieplasser",
+          "data": [
+            797,
+            788,
+            719,
+            749,
+            741,
+            771,
+            821,
+            841,
+            846,
+            855,
+            846
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Bioingeniør",
+      "categories": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "series": [
+        {
+          "name": "Søkere",
+          "data": [
+            725,
+            837,
+            908,
+            954,
+            921,
+            1064,
+            1101,
+            917,
+            913,
+            1005,
+            971
+          ]
+        },
+        {
+          "name": "Studieplasser",
+          "data": [
+            254,
+            302,
+            299,
+            313,
+            323,
+            340,
+            353,
+            376,
+            393,
+            410,
+            417
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Ergoterapi",
+      "categories": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "series": [
+        {
+          "name": "Søkere",
+          "data": [
+            525,
+            535,
+            594,
+            657,
+            627,
+            696,
+            567,
+            536,
+            523,
+            513,
+            480
+          ]
+        },
+        {
+          "name": "Studieplasser",
+          "data": [
+            294,
+            284,
+            284,
+            296,
+            312,
+            338,
+            307,
+            325,
+            322,
+            330,
+            302
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Ernæring",
+      "categories": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "series": [
+        {
+          "name": "Søkere",
+          "data": [
+            603,
+            651,
+            587,
+            531,
+            358,
+            398,
+            384,
+            686,
+            752,
+            789,
+            893
+          ]
+        },
+        {
+          "name": "Studieplasser",
+          "data": [
+            196,
+            211,
+            220,
+            220,
+            173,
+            153,
+            159,
+            184,
+            189,
+            237,
+            357
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Farmasi",
+      "categories": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "series": [
+        {
+          "name": "Søkere",
+          "data": [
+            288,
+            286,
+            308,
+            268,
+            251,
+            228,
+            305,
+            244,
+            254,
+            230,
+            252
+          ]
+        },
+        {
+          "name": "Studieplasser",
+          "data": [
+            92,
+            92,
+            92,
+            92,
+            92,
+            92,
+            107,
+            107,
+            92,
+            102,
+            102
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Fysioterapi",
+      "categories": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "series": [
+        {
+          "name": "Søkere",
+          "data": [
+            2063,
+            2089,
+            2032,
+            2175,
+            2244,
+            2259,
+            2200,
+            1923,
+            2055,
+            2365,
+            2341
+          ]
+        },
+        {
+          "name": "Studieplasser",
+          "data": [
+            356,
+            376,
+            371,
+            382,
+            385,
+            362,
+            387,
+            385,
+            420,
+            460,
+            480
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Medisin",
+      "categories": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "series": [
+        {
+          "name": "Søkere",
+          "data": [
+            2955,
+            3168,
+            3337,
+            3608,
+            3520,
+            4107,
+            3940,
+            3989,
+            3493,
+            3706,
+            3639
+          ]
+        },
+        {
+          "name": "Studieplasser",
+          "data": [
+            606,
+            636,
+            636,
+            636,
+            636,
+            636,
+            716,
+            731,
+            761,
+            821,
+            856
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Odontologi",
+      "categories": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "series": [
+        {
+          "name": "Søkere",
+          "data": [
+            744,
+            843,
+            861,
+            890,
+            884,
+            1071,
+            1095,
+            1041,
+            1061,
+            1173,
+            1139
+          ]
+        },
+        {
+          "name": "Studieplasser",
+          "data": [
+            198,
+            198,
+            194,
+            214,
+            217,
+            215,
+            256,
+            257,
+            292,
+            312,
+            340
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Optikk",
+      "categories": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "series": [
+        {
+          "name": "Søkere",
+          "data": [
+            174,
+            176,
+            173,
+            184,
+            180,
+            200,
+            214,
+            181,
+            206,
+            233,
+            198
+          ]
+        },
+        {
+          "name": "Studieplasser",
+          "data": [
+            54,
+            58,
+            58,
+            58,
+            60,
+            60,
+            60,
+            60,
+            60,
+            60,
+            60
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Ortopediingeniør",
+      "categories": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "series": [
+        {
+          "name": "Søkere",
+          "data": [
+            69,
+            77,
+            89,
+            93,
+            116,
+            115,
+            109,
+            105,
+            98,
+            114,
+            107
+          ]
+        },
+        {
+          "name": "Studieplasser",
+          "data": [
+            20,
+            25,
+            25,
+            25,
+            25,
+            25,
+            20,
+            20,
+            20,
+            20,
+            20
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Paramedisin",
+      "categories": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "series": [
+        {
+          "name": "Søkere",
+          "data": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            756,
+            637,
+            618,
+            779,
+            760
+          ]
+        },
+        {
+          "name": "Studieplasser",
+          "data": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            145,
+            170,
+            180,
+            197,
+            225
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Radiografi",
+      "categories": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "series": [
+        {
+          "name": "Søkere",
+          "data": [
+            478,
+            534,
+            537,
+            572,
+            561,
+            604,
+            573,
+            486,
+            521,
+            597,
+            587
+          ]
+        },
+        {
+          "name": "Studieplasser",
+          "data": [
+            170,
+            170,
+            195,
+            198,
+            208,
+            218,
+            236,
+            251,
+            261,
+            281,
+            286
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Reseptar",
+      "categories": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "series": [
+        {
+          "name": "Søkere",
+          "data": [
+            177,
+            230,
+            260,
+            263,
+            255,
+            287,
+            336,
+            300,
+            350,
+            364,
+            337
+          ]
+        },
+        {
+          "name": "Studieplasser",
+          "data": [
+            70,
+            70,
+            77,
+            77,
+            77,
+            77,
+            87,
+            87,
+            87,
+            97,
+            97
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Sykepleie",
+      "categories": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "series": [
+        {
+          "name": "Søkere",
+          "data": [
+            18099,
+            20653,
+            21849,
+            22489,
+            21427,
+            22558,
+            21889,
+            18396,
+            16572,
+            17186,
+            18882
+          ]
+        },
+        {
+          "name": "Studieplasser",
+          "data": [
+            6770,
+            6810,
+            6908,
+            6817,
+            6983,
+            7112,
+            7515,
+            7492,
+            7464,
+            7456,
+            7440
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Tannpleie",
+      "categories": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "series": [
+        {
+          "name": "Søkere",
+          "data": [
+            699,
+            714,
+            668,
+            758,
+            781,
+            888,
+            852,
+            737,
+            651,
+            641,
+            620
+          ]
+        },
+        {
+          "name": "Studieplasser",
+          "data": [
+            148,
+            152,
+            165,
+            165,
+            165,
+            170,
+            177,
+            177,
+            187,
+            177,
+            157
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Vernepleie",
+      "categories": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "series": [
+        {
+          "name": "Søkere",
+          "data": [
+            3104,
+            3553,
+            3867,
+            4253,
+            3966,
+            4279,
+            3995,
+            3422,
+            3284,
+            3787,
+            4044
+          ]
+        },
+        {
+          "name": "Studieplasser",
+          "data": [
+            1110,
+            1121,
+            1091,
+            1127,
+            1081,
+            1112,
+            1177,
+            1117,
+            1165,
+            1235,
+            1302
+          ]
+        }
+      ]
+    }
+  ],
+  "presentation": {
+    "legend": {
+      "enabled": true,
+      "align": "center",
+      "verticalAlign": "bottom",
+      "layout": "horizontal"
+    },
+    "yAxis": {
+      "min": 0,
+      "max": null,
+      "format": "integer-nb"
+    },
+    "xAxis": {
+      "labelRotation": [-10, -20, -30, -40, -50, -60, -70, -80, -90]
+    },
+    "tooltip": {
+      "mode": "shared-number"
+    },
+    "stacking": "none"
+  }
+}</textarea>
 <script>
   const JSON_URL = "utdomr_linje_dropdown_helsefag.chart.json";
   const COLORS = ["#E72F72", "#0025A0", "#EA591D", "#9B3699", "#FF8C43", "#A80037", "#FFC948", "#630879"];
@@ -159,6 +1039,16 @@
     if (!activeItem) return;
     if (chart) chart.destroy();
 
+    const xAxisLabels = {};
+
+    if (CHART_TYPE !== "bar") {
+      xAxisLabels.autoRotation = X_ROTATION;
+    }
+
+    if (CHART_TYPE === "bar") {
+      xAxisLabels.style = { fontSize: "11px" };
+    }
+
     chart = Highcharts.chart("chart-container", {
       chart: { type: CHART_TYPE, reflow: true, margin: [50, 20, 60, 80] },
       title: { text: chartSpec.title || "" },
@@ -166,10 +1056,7 @@
       xAxis: {
         categories: activeItem.categories.map(String),
         title: { text: "" },
-        labels: {
-          autoRotation: CHART_TYPE === "bar" ? undefined : X_ROTATION,
-          style: CHART_TYPE === "bar" ? { fontSize: "11px" } : undefined
-        }
+        labels: xAxisLabels
       },
       yAxis: {
         min: Y_MIN,
@@ -198,11 +1085,29 @@
     });
   }
 
-  fetch(JSON_URL)
-    .then(function(response) {
-      if (!response.ok) throw new Error("Could not load chart json");
-      return response.json();
-    })
+  function loadChartSpec() {
+    if (window.location.protocol === "file:") {
+      const previewNode = document.getElementById("chart-preview-data");
+
+      if (!previewNode) {
+        return Promise.reject(new Error("Could not load preview chart data"));
+      }
+
+      try {
+        return Promise.resolve(JSON.parse(previewNode.value));
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    }
+
+    return fetch(JSON_URL)
+      .then(function(response) {
+        if (!response.ok) throw new Error("Could not load chart json");
+        return response.json();
+      });
+  }
+
+  loadChartSpec()
     .then(function(spec) {
       chartSpec = spec;
 

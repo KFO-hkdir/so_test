@@ -40,7 +40,6 @@
 <script src="lib/highcharts-9.3.1/modules/lollipop.js"></script>
 <script src="lib/highcharts-9.3.1/modules/series-label.js"></script>
 <script src="lib/highcharts-9.3.1/plugins/motion.js"></script>
-<script src="lib/highcharts-9.3.1/custom/reset.js"></script>
 <script src="lib/highcharts-9.3.1/modules/boost.js"></script>
 </head>
 <body>
@@ -54,6 +53,169 @@
 </style>
 <div id="controls"><label for="chart-select">Vis:</label><select id="chart-select"></select></div>
 <div id="chart-container"></div>
+<textarea id="chart-preview-data" hidden>{
+  "version": 1,
+  "renderer": "highcharts",
+  "kind": "tabbed",
+  "chartType": "bar",
+  "title": "",
+  "subtitle": "",
+  "controlLabel": "Vis:",
+  "items": [
+    {
+      "label": "Planlagte studieplasser",
+      "categories": [
+        "Helsefag",
+        "Økonomisk-administrative fag",
+        "Lærerutdanninger",
+        "Teknologiske fag",
+        "Samfunnsfag",
+        "Informasjonsteknologi",
+        "Historiefag",
+        "Språkfag",
+        "Realfag",
+        "Juridiske fag",
+        "Estetiske fag",
+        "Idrettsfag",
+        "Mediefag",
+        "Pedagogiske fag",
+        "Land- og havbruk",
+        "Reiselivsfag"
+      ],
+      "series": [
+        {
+          "name": "Studieplasser",
+          "data": [
+            12426,
+            10248,
+            7389,
+            6954,
+            6312,
+            3108,
+            3071,
+            2978,
+            2395,
+            2150,
+            1616,
+            1607,
+            1587,
+            1571,
+            900,
+            230
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Førstevalg",
+      "categories": [
+        "Helsefag",
+        "Økonomisk-administrative fag",
+        "Samfunnsfag",
+        "Teknologiske fag",
+        "Juridiske fag",
+        "Lærerutdanninger",
+        "Informasjonsteknologi",
+        "Språkfag",
+        "Mediefag",
+        "Realfag",
+        "Historiefag",
+        "Idrettsfag",
+        "Estetiske fag",
+        "Pedagogiske fag",
+        "Land- og havbruk",
+        "Reiselivsfag"
+      ],
+      "series": [
+        {
+          "name": "Førstevalg",
+          "data": [
+            35245,
+            26108,
+            16619,
+            14710,
+            10146,
+            8029,
+            5598,
+            4628,
+            4026,
+            3819,
+            3762,
+            2834,
+            2752,
+            2223,
+            1095,
+            410
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Førstevalg per planlagte studieplass",
+      "categories": [
+        "Juridiske fag",
+        "Helsefag",
+        "Samfunnsfag",
+        "Mediefag",
+        "Økonomisk-administrative fag",
+        "Teknologiske fag",
+        "Idrettsfag",
+        "Informasjonsteknologi",
+        "Reiselivsfag",
+        "Estetiske fag",
+        "Realfag",
+        "Språkfag",
+        "Pedagogiske fag",
+        "Historiefag",
+        "Land- og havbruk",
+        "Lærerutdanninger"
+      ],
+      "series": [
+        {
+          "name": "Førstevalg per plass",
+          "data": [
+            4.7,
+            2.8,
+            2.6,
+            2.5,
+            2.5,
+            2.1,
+            1.8,
+            1.8,
+            1.8,
+            1.7,
+            1.6,
+            1.6,
+            1.4,
+            1.2,
+            1.2,
+            1.1
+          ]
+        }
+      ]
+    }
+  ],
+  "presentation": {
+    "legend": {
+      "enabled": true,
+      "align": "center",
+      "verticalAlign": "bottom",
+      "layout": "horizontal"
+    },
+    "yAxis": {
+      "min": 0,
+      "max": null,
+      "format": "integer-nb"
+    },
+    "xAxis": {
+      "labelRotation": [-10, -20, -30, -40, -50, -60, -70, -80, -90]
+    },
+    "tooltip": {
+      "mode": "shared-number"
+    },
+    "stacking": "none"
+  }
+}</textarea>
 <script>
   const JSON_URL = "utdomr_bars_dropdown.chart.json";
   const COLORS = ["#E72F72", "#0025A0", "#EA591D", "#9B3699", "#FF8C43", "#A80037", "#FFC948", "#630879"];
@@ -159,6 +321,16 @@
     if (!activeItem) return;
     if (chart) chart.destroy();
 
+    const xAxisLabels = {};
+
+    if (CHART_TYPE !== "bar") {
+      xAxisLabels.autoRotation = X_ROTATION;
+    }
+
+    if (CHART_TYPE === "bar") {
+      xAxisLabels.style = { fontSize: "11px" };
+    }
+
     chart = Highcharts.chart("chart-container", {
       chart: { type: CHART_TYPE, reflow: true, margin: [20, 60, 40, 180] },
       title: { text: chartSpec.title || "" },
@@ -166,10 +338,7 @@
       xAxis: {
         categories: activeItem.categories.map(String),
         title: { text: "" },
-        labels: {
-          autoRotation: CHART_TYPE === "bar" ? undefined : X_ROTATION,
-          style: CHART_TYPE === "bar" ? { fontSize: "11px" } : undefined
-        }
+        labels: xAxisLabels
       },
       yAxis: {
         min: Y_MIN,
@@ -198,11 +367,29 @@
     });
   }
 
-  fetch(JSON_URL)
-    .then(function(response) {
-      if (!response.ok) throw new Error("Could not load chart json");
-      return response.json();
-    })
+  function loadChartSpec() {
+    if (window.location.protocol === "file:") {
+      const previewNode = document.getElementById("chart-preview-data");
+
+      if (!previewNode) {
+        return Promise.reject(new Error("Could not load preview chart data"));
+      }
+
+      try {
+        return Promise.resolve(JSON.parse(previewNode.value));
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    }
+
+    return fetch(JSON_URL)
+      .then(function(response) {
+        if (!response.ok) throw new Error("Could not load chart json");
+        return response.json();
+      });
+  }
+
+  loadChartSpec()
     .then(function(spec) {
       chartSpec = spec;
 

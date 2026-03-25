@@ -40,7 +40,6 @@
 <script src="lib/highcharts-9.3.1/modules/lollipop.js"></script>
 <script src="lib/highcharts-9.3.1/modules/series-label.js"></script>
 <script src="lib/highcharts-9.3.1/plugins/motion.js"></script>
-<script src="lib/highcharts-9.3.1/custom/reset.js"></script>
 <script src="lib/highcharts-9.3.1/modules/boost.js"></script>
 </head>
 <body>
@@ -54,6 +53,237 @@
 </style>
 <div id="controls"><label for="grp-select">Utdanningstype</label><select id="grp-select"></select></div>
 <div id="chart-container"></div>
+<textarea id="chart-preview-data" hidden>{
+  "version": 1,
+  "renderer": "highcharts",
+  "kind": "tabbed",
+  "chartType": "line",
+  "title": "",
+  "subtitle": "",
+  "controlLabel": "Utdanningstype",
+  "items": [
+    {
+      "label": "Arkitekt",
+      "categories": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "series": [
+        {
+          "name": "Søkere",
+          "data": [
+            1233,
+            1224,
+            1320,
+            1293,
+            1374,
+            1498,
+            1672,
+            1488,
+            1550,
+            1231,
+            1021
+          ]
+        },
+        {
+          "name": "Studieplasser",
+          "data": [
+            140,
+            140,
+            140,
+            140,
+            140,
+            140,
+            160,
+            160,
+            140,
+            144,
+            153
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Ingeniør",
+      "categories": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "series": [
+        {
+          "name": "Søkere",
+          "data": [
+            5762,
+            5567,
+            5151,
+            5247,
+            5101,
+            5439,
+            5541,
+            5373,
+            5185,
+            5923,
+            5876
+          ]
+        },
+        {
+          "name": "Studieplasser",
+          "data": [
+            3067,
+            3390,
+            3423,
+            3763,
+            3691,
+            3388,
+            3451,
+            3428,
+            3467,
+            3573,
+            3600
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Maritime",
+      "categories": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "series": [
+        {
+          "name": "Søkere",
+          "data": [
+            461,
+            384,
+            448,
+            482,
+            631,
+            662,
+            882,
+            884,
+            1020,
+            983,
+            1097
+          ]
+        },
+        {
+          "name": "Studieplasser",
+          "data": [
+            168,
+            158,
+            203,
+            218,
+            230,
+            238,
+            230,
+            230,
+            232,
+            245,
+            275
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Sivilingeniør",
+      "categories": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "series": [
+        {
+          "name": "Søkere",
+          "data": [
+            5325,
+            4892,
+            4912,
+            5269,
+            5377,
+            5622,
+            5739,
+            5262,
+            5820,
+            5948,
+            5683
+          ]
+        },
+        {
+          "name": "Studieplasser",
+          "data": [
+            1807,
+            1853,
+            2074,
+            2096,
+            2115,
+            2100,
+            2378,
+            2317,
+            2191,
+            2431,
+            2433
+          ]
+        }
+      ]
+    }
+  ],
+  "presentation": {
+    "legend": {
+      "enabled": true,
+      "align": "center",
+      "verticalAlign": "bottom",
+      "layout": "horizontal"
+    },
+    "yAxis": {
+      "min": 0,
+      "max": null,
+      "format": "integer-nb"
+    },
+    "xAxis": {
+      "labelRotation": [-10, -20, -30, -40, -50, -60, -70, -80, -90]
+    },
+    "tooltip": {
+      "mode": "shared-number"
+    },
+    "stacking": "none"
+  }
+}</textarea>
 <script>
   const JSON_URL = "utdomr_linje_dropdown_teknologiske_fag.chart.json";
   const COLORS = ["#E72F72", "#0025A0", "#EA591D", "#9B3699", "#FF8C43", "#A80037", "#FFC948", "#630879"];
@@ -159,6 +389,16 @@
     if (!activeItem) return;
     if (chart) chart.destroy();
 
+    const xAxisLabels = {};
+
+    if (CHART_TYPE !== "bar") {
+      xAxisLabels.autoRotation = X_ROTATION;
+    }
+
+    if (CHART_TYPE === "bar") {
+      xAxisLabels.style = { fontSize: "11px" };
+    }
+
     chart = Highcharts.chart("chart-container", {
       chart: { type: CHART_TYPE, reflow: true, margin: [50, 20, 60, 80] },
       title: { text: chartSpec.title || "" },
@@ -166,10 +406,7 @@
       xAxis: {
         categories: activeItem.categories.map(String),
         title: { text: "" },
-        labels: {
-          autoRotation: CHART_TYPE === "bar" ? undefined : X_ROTATION,
-          style: CHART_TYPE === "bar" ? { fontSize: "11px" } : undefined
-        }
+        labels: xAxisLabels
       },
       yAxis: {
         min: Y_MIN,
@@ -198,11 +435,29 @@
     });
   }
 
-  fetch(JSON_URL)
-    .then(function(response) {
-      if (!response.ok) throw new Error("Could not load chart json");
-      return response.json();
-    })
+  function loadChartSpec() {
+    if (window.location.protocol === "file:") {
+      const previewNode = document.getElementById("chart-preview-data");
+
+      if (!previewNode) {
+        return Promise.reject(new Error("Could not load preview chart data"));
+      }
+
+      try {
+        return Promise.resolve(JSON.parse(previewNode.value));
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    }
+
+    return fetch(JSON_URL)
+      .then(function(response) {
+        if (!response.ok) throw new Error("Could not load chart json");
+        return response.json();
+      });
+  }
+
+  loadChartSpec()
     .then(function(spec) {
       chartSpec = spec;
 

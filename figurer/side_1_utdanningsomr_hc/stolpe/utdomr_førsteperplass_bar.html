@@ -40,7 +40,6 @@
 <script src="lib/highcharts-9.3.1/modules/lollipop.js"></script>
 <script src="lib/highcharts-9.3.1/modules/series-label.js"></script>
 <script src="lib/highcharts-9.3.1/plugins/motion.js"></script>
-<script src="lib/highcharts-9.3.1/custom/reset.js"></script>
 <script src="lib/highcharts-9.3.1/modules/boost.js"></script>
 </head>
 <body>
@@ -54,6 +53,75 @@
 </style>
 
 <div id="chart-container"></div>
+<textarea id="chart-preview-data" hidden>{
+  "version": 1,
+  "renderer": "highcharts",
+  "kind": "single",
+  "chartType": "bar",
+  "title": "",
+  "subtitle": "",
+  "categories": [
+    "Juridiske fag",
+    "Helsefag",
+    "Samfunnsfag",
+    "Mediefag",
+    "Økonomisk-administrative fag",
+    "Teknologiske fag",
+    "Idrettsfag",
+    "Informasjonsteknologi",
+    "Reiselivsfag",
+    "Estetiske fag",
+    "Realfag",
+    "Språkfag",
+    "Pedagogiske fag",
+    "Historiefag",
+    "Land- og havbruk",
+    "Lærerutdanninger"
+  ],
+  "series": [
+    {
+      "name": "Førstevalg per plass",
+      "data": [
+        4.7,
+        2.8,
+        2.6,
+        2.5,
+        2.5,
+        2.1,
+        1.8,
+        1.8,
+        1.8,
+        1.7,
+        1.6,
+        1.6,
+        1.4,
+        1.2,
+        1.2,
+        1.1
+      ]
+    }
+  ],
+  "presentation": {
+    "legend": {
+      "enabled": true,
+      "align": "center",
+      "verticalAlign": "bottom",
+      "layout": "horizontal"
+    },
+    "yAxis": {
+      "min": 0,
+      "max": null,
+      "format": "integer-nb"
+    },
+    "xAxis": {
+      "labelRotation": [-10, -20, -30, -40, -50, -60, -70, -80, -90]
+    },
+    "tooltip": {
+      "mode": "shared-number"
+    },
+    "stacking": "none"
+  }
+}</textarea>
 <script>
   const JSON_URL = "utdomr_førsteperplass_bar.chart.json";
   const COLORS = ["#E72F72", "#0025A0", "#EA591D", "#9B3699", "#FF8C43", "#A80037", "#FFC948", "#630879"];
@@ -159,6 +227,16 @@
     if (!activeItem) return;
     if (chart) chart.destroy();
 
+    const xAxisLabels = {};
+
+    if (CHART_TYPE !== "bar") {
+      xAxisLabels.autoRotation = X_ROTATION;
+    }
+
+    if (CHART_TYPE === "bar") {
+      xAxisLabels.style = { fontSize: "11px" };
+    }
+
     chart = Highcharts.chart("chart-container", {
       chart: { type: CHART_TYPE, reflow: true, margin: [20, 60, 40, 180] },
       title: { text: chartSpec.title || "" },
@@ -166,10 +244,7 @@
       xAxis: {
         categories: activeItem.categories.map(String),
         title: { text: "" },
-        labels: {
-          autoRotation: CHART_TYPE === "bar" ? undefined : X_ROTATION,
-          style: CHART_TYPE === "bar" ? { fontSize: "11px" } : undefined
-        }
+        labels: xAxisLabels
       },
       yAxis: {
         min: Y_MIN,
@@ -198,11 +273,29 @@
     });
   }
 
-  fetch(JSON_URL)
-    .then(function(response) {
-      if (!response.ok) throw new Error("Could not load chart json");
-      return response.json();
-    })
+  function loadChartSpec() {
+    if (window.location.protocol === "file:") {
+      const previewNode = document.getElementById("chart-preview-data");
+
+      if (!previewNode) {
+        return Promise.reject(new Error("Could not load preview chart data"));
+      }
+
+      try {
+        return Promise.resolve(JSON.parse(previewNode.value));
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    }
+
+    return fetch(JSON_URL)
+      .then(function(response) {
+        if (!response.ok) throw new Error("Could not load chart json");
+        return response.json();
+      });
+  }
+
+  loadChartSpec()
     .then(function(spec) {
       chartSpec = spec;
 

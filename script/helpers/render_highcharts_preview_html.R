@@ -44,6 +44,13 @@ write_preview_html_from_spec <- function(chart_spec, output_path, dropdown_id = 
   } else {
     ""
   }
+  preview_json <- jsonlite::toJSON(
+    chart_spec,
+    auto_unbox = TRUE,
+    pretty = TRUE,
+    null = "null"
+  )
+  preview_json <- gsub("</", "<\\\\/", preview_json, fixed = TRUE)
 
   html_template <- glue::glue(
     '<!DOCTYPE html>
@@ -88,7 +95,6 @@ write_preview_html_from_spec <- function(chart_spec, output_path, dropdown_id = 
 <script src="lib/highcharts-9.3.1/modules/lollipop.js"></script>
 <script src="lib/highcharts-9.3.1/modules/series-label.js"></script>
 <script src="lib/highcharts-9.3.1/plugins/motion.js"></script>
-<script src="lib/highcharts-9.3.1/custom/reset.js"></script>
 <script src="lib/highcharts-9.3.1/modules/boost.js"></script>
 </head>
 <body>
@@ -102,6 +108,7 @@ write_preview_html_from_spec <- function(chart_spec, output_path, dropdown_id = 
 </style>
 {controls_markup}
 <div id="chart-container"></div>
+<textarea id="chart-preview-data" hidden>{preview_json}</textarea>
 <script>
   const JSON_URL = "{relative_json_path}";
   const COLORS = ["#E72F72", "#0025A0", "#EA591D", "#9B3699", "#FF8C43", "#A80037", "#FFC948", "#630879"];
@@ -207,6 +214,16 @@ write_preview_html_from_spec <- function(chart_spec, output_path, dropdown_id = 
     if (!activeItem) return;
     if (chart) chart.destroy();
 
+    const xAxisLabels = {{}};
+
+    if (CHART_TYPE !== "bar") {{
+      xAxisLabels.autoRotation = X_ROTATION;
+    }}
+
+    if (CHART_TYPE === "bar") {{
+      xAxisLabels.style = {{ fontSize: "11px" }};
+    }}
+
     chart = Highcharts.chart("chart-container", {{
       chart: {{ type: CHART_TYPE, reflow: true, margin: {margin} }},
       title: {{ text: chartSpec.title || "" }},
@@ -214,10 +231,7 @@ write_preview_html_from_spec <- function(chart_spec, output_path, dropdown_id = 
       xAxis: {{
         categories: activeItem.categories.map(String),
         title: {{ text: "" }},
-        labels: {{
-          autoRotation: CHART_TYPE === "bar" ? undefined : X_ROTATION,
-          style: CHART_TYPE === "bar" ? {{ fontSize: "11px" }} : undefined
-        }}
+        labels: xAxisLabels
       }},
       yAxis: {{
         min: Y_MIN,
@@ -246,11 +260,29 @@ write_preview_html_from_spec <- function(chart_spec, output_path, dropdown_id = 
     }});
   }}
 
-  fetch(JSON_URL)
-    .then(function(response) {{
-      if (!response.ok) throw new Error("Could not load chart json");
-      return response.json();
-    }})
+  function loadChartSpec() {{
+    if (window.location.protocol === "file:") {{
+      const previewNode = document.getElementById("chart-preview-data");
+
+      if (!previewNode) {{
+        return Promise.reject(new Error("Could not load preview chart data"));
+      }}
+
+      try {{
+        return Promise.resolve(JSON.parse(previewNode.value));
+      }} catch (error) {{
+        return Promise.reject(error);
+      }}
+    }}
+
+    return fetch(JSON_URL)
+      .then(function(response) {{
+        if (!response.ok) throw new Error("Could not load chart json");
+        return response.json();
+      }});
+  }}
+
+  loadChartSpec()
     .then(function(spec) {{
       chartSpec = spec;
 
