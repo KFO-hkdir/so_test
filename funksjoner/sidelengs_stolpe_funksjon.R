@@ -251,6 +251,7 @@ make_bar_chart <- function(
           align: "center",
           verticalAlign: "bottom",
           layout: "horizontal",
+          y: 20,
           itemStyle: { fontSize: "11px", fontWeight: "normal" }
         },
         tooltip: {

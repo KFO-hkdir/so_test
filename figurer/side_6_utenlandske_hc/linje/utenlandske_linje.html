@@ -65,7 +65,7 @@ Highcharts.chart("chart-container", {
   },
   legend: {
     enabled: true,
-    align: "center", verticalAlign: "bottom", layout: "horizontal",
+    align: "center", verticalAlign: "bottom", layout: "horizontal",y: 10,
     itemStyle: { fontSize: "11px", fontWeight: "normal" }
   },
   tooltip: { shared: true, formatter: function() {  var s = "<b>" + this.x + "</b>";  this.points.forEach(function(p) {    s += "<br/>" + p.series.name + ": " +         Highcharts.numberFormat(p.y, 0, ",", " ");  });  return s;} },

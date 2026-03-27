@@ -267,7 +267,7 @@ make_line_chart <- function(
       '  },\n',
       '  legend: {\n',
       '    enabled: ', tolower(as.character(show_legend)), ',\n',
-      '    align: "center", verticalAlign: "bottom", layout: "horizontal",\n',
+      '    align: "center", verticalAlign: "bottom", layout: "horizontal",y: 10,\n',
       '    itemStyle: { fontSize: "11px", fontWeight: "normal" }\n',
       '  },\n',
       '  tooltip: { ', tooltip_opts_js, ' },\n',
