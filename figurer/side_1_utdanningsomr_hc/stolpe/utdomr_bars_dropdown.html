@@ -108,7 +108,14 @@
             }
           }
         },
-        legend: { enabled: false },
+        legend: {
+          enabled: true,
+          align: "center",
+          verticalAlign: "bottom",
+          layout: "horizontal",
+          y: 20,
+          itemStyle: { fontSize: "11px", fontWeight: "normal" }
+        },
         tooltip: {
           formatter: function() {
             return "<b>" + this.x + "</b><br/>" + d.seriesName + ": " +

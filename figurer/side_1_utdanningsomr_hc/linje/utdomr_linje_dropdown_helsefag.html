@@ -45,92 +45,64 @@
 
 </head>
 <body>
-<style>
-      * { box-sizing: border-box; margin: 0; padding: 0; }
-      body { font-family: Arial, sans-serif; font-size: 13px;
-             background: #fff; padding: 10px; }
-      #controls { margin-bottom: 12px; }
-      #controls label { font-weight: bold; margin-right: 8px; }
-      #grp-select {
-        padding: 5px 10px;
-        font-size: 13px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        min-width: 220px;
-        cursor: pointer;
-      }
-      #chart-container { width: 100%; height: 420px; }
-    </style>
+<style>* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Arial, sans-serif; font-size: 13px; background: #fff; padding: 10px; }
+#controls { margin-bottom: 12px; }
+#controls label { font-weight: bold; margin-right: 8px; }
+#grp-select { padding: 5px 10px; font-size: 13px; border: 1px solid #ccc; border-radius: 4px; min-width: 220px; cursor: pointer; }
+#chart-container { width: 100%; height: 420px; }</style>
 <div id="controls">
   <label for="grp-select">Utdanningstype:</label>
   <select id="grp-select"></select>
 </div>
 <div id="chart-container"></div>
-<script>
-      const COLORS        = ["#E72F72","#0025A0"];
-      const MARKER_RADIUS = 4;
-      const allData       = [{"label":"Audio","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[77,75,91,87,77,66,82,70,65,98,87],"antall_studieplasser":[40,40,40,40,40,40,40,40,40,40,40]},{"label":"Barnevern","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[2214,2500,2470,2693,2687,2782,2386,2014,1706,1782,1689],"antall_studieplasser":[797,788,719,749,741,771,821,841,846,855,846]},{"label":"Bioingeniør","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[725,837,908,954,921,1064,1101,917,913,1005,971],"antall_studieplasser":[254,302,299,313,323,340,353,376,393,410,417]},{"label":"Ergoterapi","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[525,535,594,657,627,696,567,536,523,513,480],"antall_studieplasser":[294,284,284,296,312,338,307,325,322,330,302]},{"label":"Ernæring","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[603,651,587,531,358,398,384,686,752,789,893],"antall_studieplasser":[196,211,220,220,173,153,159,184,189,237,357]},{"label":"Farmasi","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[288,286,308,268,251,228,305,244,254,230,252],"antall_studieplasser":[92,92,92,92,92,92,107,107,92,102,102]},{"label":"Fysioterapi","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[2063,2089,2032,2175,2244,2259,2200,1923,2055,2365,2341],"antall_studieplasser":[356,376,371,382,385,362,387,385,420,460,480]},{"label":"Medisin","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[2955,3168,3337,3608,3520,4107,3940,3989,3493,3706,3639],"antall_studieplasser":[606,636,636,636,636,636,716,731,761,821,856]},{"label":"Odontologi","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[850,874,961,1006,1033,1001,1095,1068,1025,1003,1137],"antall_studieplasser":[241,246,246,246,245,259,245,248,248,255,271]},{"label":"Ortopedi","categories":["2015","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[66,61,54,35,64,52,47,49,36,50],"antall_studieplasser":[12,16,16,16,16,16,16,16,16,16]},{"label":"Radiologi","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[689,762,726,770,863,783,892,703,843,861,986],"antall_studieplasser":[205,205,210,215,220,244,230,237,230,240,235]},{"label":"Reseptar","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[343,411,462,379,395,360,388,366,345,282,391],"antall_studieplasser":[130,145,145,145,145,162,170,170,180,170,150]},{"label":"Sosionom","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[3431,3936,4167,4075,4042,4338,4371,3448,3397,3506,3358],"antall_studieplasser":[838,873,893,898,903,938,1057,1045,1074,1069,1059]},{"label":"Sykepleie","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[12362,14816,15738,15789,12843,13593,13370,10299,9012,9943,13885],"antall_studieplasser":[4521,4689,4758,4689,4941,4954,5145,5152,5352,5419,5467]},{"label":"Vernepleie","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[2774,3264,3710,3780,4182,3927,4814,3888,3269,3318,2707],"antall_studieplasser":[938,950,1025,947,1012,1030,1117,1122,1087,1160,1232]},{"label":"Veterinær","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[1095,1151,997,1191,1050,1102,1032,871,807,753,702],"antall_studieplasser":[159,160,160,165,164,164,217,207,207,207,223]}];
+<script>const allData = [{"label":"Audio","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[77,75,91,87,77,66,82,70,65,98,87],"antall_studieplasser":[40,40,40,40,40,40,40,40,40,40,40]},{"label":"Barnevern","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[2214,2500,2470,2693,2687,2782,2386,2014,1706,1782,1689],"antall_studieplasser":[797,788,719,749,741,771,821,841,846,855,846]},{"label":"Bioingeniør","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[725,837,908,954,921,1064,1101,917,913,1005,971],"antall_studieplasser":[254,302,299,313,323,340,353,376,393,410,417]},{"label":"Ergoterapi","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[525,535,594,657,627,696,567,536,523,513,480],"antall_studieplasser":[294,284,284,296,312,338,307,325,322,330,302]},{"label":"Ernæring","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[603,651,587,531,358,398,384,686,752,789,893],"antall_studieplasser":[196,211,220,220,173,153,159,184,189,237,357]},{"label":"Farmasi","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[288,286,308,268,251,228,305,244,254,230,252],"antall_studieplasser":[92,92,92,92,92,92,107,107,92,102,102]},{"label":"Fysioterapi","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[2063,2089,2032,2175,2244,2259,2200,1923,2055,2365,2341],"antall_studieplasser":[356,376,371,382,385,362,387,385,420,460,480]},{"label":"Medisin","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[2955,3168,3337,3608,3520,4107,3940,3989,3493,3706,3639],"antall_studieplasser":[606,636,636,636,636,636,716,731,761,821,856]},{"label":"Odontologi","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[850,874,961,1006,1033,1001,1095,1068,1025,1003,1137],"antall_studieplasser":[241,246,246,246,245,259,245,248,248,255,271]},{"label":"Ortopedi","categories":["2015","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[66,61,54,35,64,52,47,49,36,50],"antall_studieplasser":[12,16,16,16,16,16,16,16,16,16]},{"label":"Radiologi","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[689,762,726,770,863,783,892,703,843,861,986],"antall_studieplasser":[205,205,210,215,220,244,230,237,230,240,235]},{"label":"Reseptar","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[343,411,462,379,395,360,388,366,345,282,391],"antall_studieplasser":[130,145,145,145,145,162,170,170,180,170,150]},{"label":"Sosionom","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[3431,3936,4167,4075,4042,4338,4371,3448,3397,3506,3358],"antall_studieplasser":[838,873,893,898,903,938,1057,1045,1074,1069,1059]},{"label":"Sykepleie","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[12362,14816,15738,15789,12843,13593,13370,10299,9012,9943,13885],"antall_studieplasser":[4521,4689,4758,4689,4941,4954,5145,5152,5352,5419,5467]},{"label":"Vernepleie","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[2774,3264,3710,3780,4182,3927,4814,3888,3269,3318,2707],"antall_studieplasser":[938,950,1025,947,1012,1030,1117,1122,1087,1160,1232]},{"label":"Veterinær","categories":["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"],"n_sokere":[1095,1151,997,1191,1050,1102,1032,871,807,753,702],"antall_studieplasser":[159,160,160,165,164,164,217,207,207,207,223]}];
+const select  = document.getElementById("grp-select");
+let chart = null;
 
-      const select = document.getElementById("grp-select");
-      let chart = null;
+allData.forEach(function(d, i) {
+  const opt = document.createElement("option");
+  opt.value = i;
+  opt.textContent = d.label;
+  select.appendChild(opt);
+});
 
-      allData.forEach(function(d, i) {
-        const opt = document.createElement("option");
-        opt.value = i;
-        opt.textContent = d.label;
-        select.appendChild(opt);
-      });
+function renderChart(index) {
+  const d = allData[index];
+  if (!d) return;
+  if (chart) { chart.destroy(); }
 
-      function renderChart(index) {
-        const d = allData[index];
-        if (!d) return;
-        if (chart) { chart.destroy(); }
+  chart = Highcharts.chart("chart-container", {
+    chart: { type: "line", reflow: true, margin: [50, 20, 60, 80] },
+    title: { text: "" },
+    xAxis: { categories: d.categories, title: { text: "" } },
+    yAxis: {
+      min: 0, max: null,
+      title: { text: "" },
+      labels: { formatter: function() {
+        return Highcharts.numberFormat(this.value, 0, ",", " ");
+      }}
+    },
+    legend: {
+      enabled: true,
+      align: "center", verticalAlign: "bottom", layout: "horizontal",
+      itemStyle: { fontSize: "11px", fontWeight: "normal" }
+    },
+    tooltip: { shared: true, formatter: function() {  var s = "<b>" + this.x + "</b>";  this.points.forEach(function(p) {    s += "<br/>" + p.series.name + ": " +         Highcharts.numberFormat(p.y, 0, ",", " ");  });  return s;} },
+    plotOptions: { line: { lineWidth: 1.5 } },
+    series: [
+    { name: "Søkere", data: d["n_sokere"], color: "#E72F72", marker: { enabled: true, radius: 4 }, dataLabels: { enabled: false }, label: { enabled: false } },
+      { name: "Studieplasser", data: d["antall_studieplasser"], color: "#0025A0", marker: { enabled: true, radius: 4 }, dataLabels: { enabled: false }, label: { enabled: false } }
+    ],
+    credits: { enabled: false },
+    exporting: { enabled: true }
+  });
+}
 
-        chart = Highcharts.chart("chart-container", {
-          chart: {
-            type: "line",
-            reflow: true,
-            margin: [50, 20, 60, 80]
-          },
-          title:    { text: "" },
-          subtitle: { text: "" },
-          xAxis: {
-            categories: d.categories,
-            title: { text: "" }
-          },
-          yAxis: {
-            min: 0,
-            max: null,
-            title: { text: "" },
-            labels: {
-              formatter: function() {
-                return Highcharts.numberFormat(this.value, 0, ",", " ");
-              }
-            }
-          },
-          legend: {
-            enabled: true,
-            align: "center",
-            verticalAlign: "bottom",
-            layout: "horizontal",
-            itemStyle: { fontSize: "11px", fontWeight: "normal" }
-          },
-          tooltip: { shared: true, formatter: function() {  var s = "<b>" + this.x + "</b>";  this.points.forEach(function(p) {    s += "<br/>" + p.series.name + ": " +         Highcharts.numberFormat(p.y, 0, ",", " ");  });  return s;} },
-          plotOptions: { line: { lineWidth: 1.5 } },
-          series: [
-            { name: "Søkere", data: d["n_sokere"], color: COLORS[0], marker: { enabled: true, radius: MARKER_RADIUS }, dataLabels: { enabled: false }, label: { enabled: false } },
-          { name: "Studieplasser", data: d["antall_studieplasser"], color: COLORS[1], marker: { enabled: true, radius: MARKER_RADIUS }, dataLabels: { enabled: false }, label: { enabled: false } }
-          ],
-          credits: { enabled: false },
-          exporting: { enabled: true }
-        });
-      }
+select.addEventListener("change", function() {
+  renderChart(parseInt(this.value));
+});
 
-      select.addEventListener("change", function() {
-        renderChart(parseInt(this.value));
-      });
-
-      renderChart(0);
-    </script>
+renderChart(0);</script>
 </body>
 </html>

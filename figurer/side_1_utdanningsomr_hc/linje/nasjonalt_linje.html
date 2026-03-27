@@ -45,89 +45,38 @@
 
 </head>
 <body>
-<style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: Arial, sans-serif; font-size: 13px;
-               background: #fff; padding: 10px; }
-        #chart-container { width: 100%; height: 520px; }
-      </style>
+<style>* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Arial, sans-serif; font-size: 13px; background: #fff; padding: 10px; }
+#chart-container { width: 100%; height: 420px; }</style>
 <div id="chart-container"></div>
-<script>
-        const COLOR   = "#E72F72";
-        const allData = [{"categories":["Juridiske fag","Helsefag","Samfunnsfag","Mediefag","Økonomisk-administrative fag","Teknologiske fag","Idrettsfag","Informasjonsteknologi","Reiselivsfag","Estetiske fag","Realfag","Språkfag","Pedagogiske fag","Historiefag","Land- og havbruk","Lærerutdanninger"],"values":[4.7,2.8,2.6,2.5,2.5,2.1,1.8,1.8,1.8,1.7,1.6,1.6,1.4,1.2,1.2,1.1],"seriesName":"Førstevalg per plass","decimals":1}];
-        let chart = null;
+<script>const series_n_sokere = [127929,132021,135587,142004,138732,150784,154088,134954,135980,142416,142004];
+const series_antall_studieplasser = [53195,54534,55470,57402,58530,58513,61673,62191,62590,64086,64542];
+const categories = ["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"];
 
-        
-    function renderChart(index) {
-      const d = allData[index];
-      if (!d) return;
-      if (chart) { chart.destroy(); }
-
-      chart = Highcharts.chart("chart-container", {
-        chart: {
-          type: "bar",
-          reflow: true,
-          margin: [20, 60, 40, 180]
-        },
-        title:    { text: "" },
-        subtitle: { text: "" },
-        xAxis: {
-          categories: d.categories,
-          title: { text: "" },
-          labels: { style: { fontSize: "11px" } }
-        },
-        yAxis: {
-          min: 0,
-          title: { text: "" },
-          labels: {
-            formatter: function() {
-              return Highcharts.numberFormat(this.value, d.decimals, ",", " ");
-            }
-          }
-        },
-        legend: {
-          enabled: true,
-          align: "center",
-          verticalAlign: "bottom",
-          layout: "horizontal",
-          y: 20,
-          itemStyle: { fontSize: "11px", fontWeight: "normal" }
-        },
-        tooltip: {
-          formatter: function() {
-            return "<b>" + this.x + "</b><br/>" + d.seriesName + ": " +
-                   Highcharts.numberFormat(this.y, d.decimals, ",", " ");
-          }
-        },
-        plotOptions: {
-          bar: {
-            
-            pointPadding: 0.01,
-            colorByPoint: false,
-            dataLabels: { enabled: false },
-            label:       { enabled: false }
-          }
-        },
-        series: [{
-          name:  d.seriesName,
-          data:  d.values,
-          color: COLOR
-        }],
-        credits: { enabled: false },
-        exporting: {
-          enabled: true,
-          csv: {
-            columnHeaderFormatter: function(item, key) {
-              if (!item || item.isXAxis) { return "utd_omr"; }
-              return item.name;
-            }
-          }
-        }
-      });
-    }
-  
-
-        renderChart(0);
-      </script>
+Highcharts.chart("chart-container", {
+  chart: { type: "line", reflow: true, margin: [50, 20, 60, 80] },
+  title: { text: "" },
+  xAxis: { categories: categories, title: { text: "" } },
+  yAxis: {
+    min: 0, max: null,
+    title: { text: "" },
+    labels: { formatter: function() {
+      return Highcharts.numberFormat(this.value, 0, ",", " ");
+    }}
+  },
+  legend: {
+    enabled: true,
+    align: "center", verticalAlign: "bottom", layout: "horizontal",y: 10,
+    itemStyle: { fontSize: "11px", fontWeight: "normal" }
+  },
+  tooltip: { shared: true, formatter: function() {  var s = "<b>" + this.x + "</b>";  this.points.forEach(function(p) {    s += "<br/>" + p.series.name + ": " +         Highcharts.numberFormat(p.y, 0, ",", " ");  });  return s;} },
+  plotOptions: { line: { lineWidth: 1.5 } },
+  series: [
+  { name: "Søkere", data: series_n_sokere, color: "#E72F72", marker: { enabled: true, radius: 4 }, dataLabels: { enabled: false }, label: { enabled: false } },
+  { name: "Studieplasser", data: series_antall_studieplasser, color: "#0025A0", marker: { enabled: true, radius: 4 }, dataLabels: { enabled: false }, label: { enabled: false } }
+  ],
+  credits: { enabled: false },
+  exporting: { enabled: true }
+});</script>
 </body>
 </html>
