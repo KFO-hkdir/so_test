@@ -9,24 +9,28 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@highcharts/grid-lite/css/grid-lite.css"/>
   <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
   <style>
-        html, body { height: 100%; margin: 0; padding: 0; box-sizing: border-box; }
+        html { height: 100%; overflow: hidden; margin: 0; padding: 0; box-sizing: border-box; }
         body {
+          height: 100%;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
           font-family: sans-serif;
           max-width: 640px;
-          margin: 16px auto;
-          padding: 0 16px;
-          font-size: 11px;
+          margin: 0 auto;
+          padding: 8px 16px;
+          font-size: 13px;
           box-sizing: border-box;
         }
-        h4 { font-size: 13px; margin: 0 0 12px 0; line-height: 1.25; }
+        h4 { font-size: 16px; margin: 0 0 12px 0; line-height: 1.25; }
 
         .hc-table-controls {
-          display: flex; align-items: center; gap: 6px;
+          display: flex; align-items: center; gap: 8px;
           margin-bottom: 10px; width: 100%; box-sizing: border-box;
         }
         .hc-table-select-wrap { flex: 1 1 auto; min-width: 0; }
         .hc-table-select-wrap select {
-          font-size: 11px; padding: 4px 7px;
+          font-size: 13px; padding: 6px 10px;
           border: 1px solid #ccc; border-radius: 4px;
           width: 100%; box-sizing: border-box; background: white;
         }
@@ -39,7 +43,7 @@
         }
         .hc-filter-row input.hc-col-filter {
           flex: 1 1 0; min-width: 0;
-          font-size: 11px; padding: 4px 6px;
+          font-size: 13px; padding: 4px 6px;
           border: 1px solid #ccc; border-right-width: 0;
           box-sizing: border-box; background: #fafafa;
         }
@@ -54,8 +58,8 @@
 
         .hc-export-wrap { position: relative; display: inline-block; }
         .hc-export-btn {
-          width: 26px; height: 26px; border: 1px solid #ccc; border-radius: 4px;
-          background: white; cursor: pointer; font-size: 11px; line-height: 1; padding: 0;
+          width: 30px; height: 30px; border: 1px solid #ccc; border-radius: 4px;
+          background: white; cursor: pointer; font-size: 13px; line-height: 1; padding: 0;
         }
         .hc-export-btn:hover { background: #f6f6f6; }
         .hc-export-menu {
@@ -66,22 +70,22 @@
         .hc-export-menu.open { display: block; }
         .hc-export-item {
           display: block; width: 100%; border: 0; background: white;
-          text-align: left; padding: 8px 10px; cursor: pointer; font-size: 11px;
+          text-align: left; padding: 8px 10px; cursor: pointer; font-size: 13px;
         }
         .hc-export-item:hover { background: #f6f6f6; }
 
-        #datagrid-container { width: 100%; }
-        .hcg-container { width: 100% !important; }
+        #datagrid-container { width: 100%; flex: 1 1 0; min-height: 0; overflow: hidden; }
+        .hcg-container { width: 100% !important; height: 100% !important; }
 
         .hcg-custom-theme {
-          --hcg-font-size:           11px;
+          --hcg-font-size:           13px;
           --hcg-font-family:         sans-serif;
-          --hcg-padding:             3px 6px;
+          --hcg-padding:             6px 10px;
           --hcg-header-background:   #F58220;
           --hcg-header-color:        #ffffff;
-          --hcg-header-font-size:    11px;
+          --hcg-header-font-size:    13px;
           --hcg-header-font-weight:  bold;
-          --hcg-header-padding:      3px 6px;
+          --hcg-header-padding:      6px 10px;
           --hcg-row-odd-background:  #ffffff;
           --hcg-row-even-background: #fde9d9;
           width: 100% !important;
@@ -106,7 +110,7 @@
   .hcg-container td:nth-child(4) { width: 99px !important; min-width: 99px !important; max-width: 99px !important; }
 
         /* Scroll height */
-        #datagrid-container { height: 600px !important; }
+        #datagrid-container { flex: 0 0 600px !important; }
         </style>
 </head>
 <html>
