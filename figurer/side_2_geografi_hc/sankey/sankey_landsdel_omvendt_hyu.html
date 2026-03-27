@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <style>
+      html, body { margin:0; padding:0; }
+      #wrap { max-width:640px; margin:0 auto; font-family:sans-serif; }
+      #sankey_chart { width:100%; height:520px; }
+      h2 { font-size:16px; text-align:center; margin:10px 0 6px 0; }
+    </style>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["sankey"]});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function getChartSize() {
+        var el = document.getElementById("sankey_chart");
+        var width = el.clientWidth || 640;
+        var height = Math.max(420, Math.round(width * 0.85));
+        return { width: width, height: height };
+      }
+
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn("string", "Fra");
+        data.addColumn("string", "Til");
+        data.addColumn("number", "Søkere");
+
+        data.addRows([
+          ['Nord-Norge (1 737, 11.5%)', 'Førstevalg i hjemfylket (7 591, 50.3%)', 622],
+          ['Sørlandet (737, 4.9%)', 'Førstevalg i hjemfylket (7 591, 50.3%)', 509],
+          ['Trøndelag (1 527, 10.1%)', 'Førstevalg i hjemfylket (7 591, 50.3%)', 962],
+          ['Vestlandet (3 830, 25.4%)', 'Førstevalg i hjemfylket (7 591, 50.3%)', 2551],
+          ['Østlandet (7 258, 48.1%)', 'Førstevalg i hjemfylket (7 591, 50.3%)', 2947],
+          ['Nord-Norge (1 737, 11.5%)', 'Førstevalg utenfor hjemfylket (7 498, 49.7%)', 1115],
+          ['Sørlandet (737, 4.9%)', 'Førstevalg utenfor hjemfylket (7 498, 49.7%)', 228],
+          ['Trøndelag (1 527, 10.1%)', 'Førstevalg utenfor hjemfylket (7 498, 49.7%)', 565],
+          ['Vestlandet (3 830, 25.4%)', 'Førstevalg utenfor hjemfylket (7 498, 49.7%)', 1279],
+          ['Østlandet (7 258, 48.1%)', 'Førstevalg utenfor hjemfylket (7 498, 49.7%)', 4311]
+        ]);
+
+        var size = getChartSize();
+
+        var options = {
+          width: size.width,
+          height: size.height,
+          sankey: {
+            node: {
+              label: { fontSize: 12, color: "black" },
+              nodePadding: 10,
+              width: 12
+            },
+            link: {
+              colorMode: "gradient"
+            }
+          }
+        };
+
+        var chart = new google.visualization.Sankey(document.getElementById("sankey_chart"));
+        chart.draw(data, options);
+      }
+
+      window.addEventListener("resize", function() {
+        drawChart();
+      });
+    </script>
+  </head>
+  <body>
+    <div id="wrap">
+      <div id="sankey_chart"></div>
+    </div>
+  </body>
+</html>

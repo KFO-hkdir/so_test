@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+<link href="lib/highcharts-9.3.1/css/motion.css" rel="stylesheet" />
+<script src="lib/highcharts-9.3.1/highcharts.js"></script>
+<script src="lib/highcharts-9.3.1/highcharts-3d.js"></script>
+<script src="lib/highcharts-9.3.1/highcharts-more.js"></script>
+<script src="lib/highcharts-9.3.1/modules/stock.js"></script>
+<script src="lib/highcharts-9.3.1/modules/map.js"></script>
+<script src="lib/highcharts-9.3.1/modules/data.js"></script>
+<script src="lib/highcharts-9.3.1/modules/exporting.js"></script>
+<script src="lib/highcharts-9.3.1/modules/offline-exporting.js"></script>
+<script src="lib/highcharts-9.3.1/modules/drilldown.js"></script>
+<script src="lib/highcharts-9.3.1/modules/item-series.js"></script>
+<script src="lib/highcharts-9.3.1/modules/overlapping-datalabels.js"></script>
+<script src="lib/highcharts-9.3.1/modules/annotations.js"></script>
+<script src="lib/highcharts-9.3.1/modules/export-data.js"></script>
+<script src="lib/highcharts-9.3.1/modules/funnel.js"></script>
+<script src="lib/highcharts-9.3.1/modules/heatmap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/treemap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/sankey.js"></script>
+<script src="lib/highcharts-9.3.1/modules/dependency-wheel.js"></script>
+<script src="lib/highcharts-9.3.1/modules/organization.js"></script>
+<script src="lib/highcharts-9.3.1/modules/solid-gauge.js"></script>
+<script src="lib/highcharts-9.3.1/modules/streamgraph.js"></script>
+<script src="lib/highcharts-9.3.1/modules/sunburst.js"></script>
+<script src="lib/highcharts-9.3.1/modules/vector.js"></script>
+<script src="lib/highcharts-9.3.1/modules/wordcloud.js"></script>
+<script src="lib/highcharts-9.3.1/modules/xrange.js"></script>
+<script src="lib/highcharts-9.3.1/modules/tilemap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/venn.js"></script>
+<script src="lib/highcharts-9.3.1/modules/gantt.js"></script>
+<script src="lib/highcharts-9.3.1/modules/timeline.js"></script>
+<script src="lib/highcharts-9.3.1/modules/parallel-coordinates.js"></script>
+<script src="lib/highcharts-9.3.1/modules/bullet.js"></script>
+<script src="lib/highcharts-9.3.1/modules/coloraxis.js"></script>
+<script src="lib/highcharts-9.3.1/modules/dumbbell.js"></script>
+<script src="lib/highcharts-9.3.1/modules/lollipop.js"></script>
+<script src="lib/highcharts-9.3.1/modules/series-label.js"></script>
+<script src="lib/highcharts-9.3.1/plugins/motion.js"></script>
+<script src="lib/highcharts-9.3.1/custom/reset.js"></script>
+<script src="lib/highcharts-9.3.1/modules/boost.js"></script>
+
+</head>
+<body>
+<style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: Arial, sans-serif; font-size: 13px;
+             background: #fff; padding: 10px; }
+      #controls { margin-bottom: 12px; }
+      #controls label { font-weight: bold; margin-right: 8px; }
+      #grp-select { padding: 5px 10px; font-size: 13px; border: 1px solid #ccc;
+                    border-radius: 4px; min-width: 220px; cursor: pointer; }
+      #chart-container { width: 100%; height: 520px; }
+    </style>
+<div id="controls">
+  <label for="grp-select">Vis:</label>
+  <select id="grp-select"></select>
+</div>
+<div id="chart-container"></div>
+<script>
+      const allData       = [{"label":"Førstevalgssøkere","categories":["Estetiske fag","Mediefag","Informasjonsteknologi","Teknologiske fag","Helsefag","Økonomisk-administrative fag","Land- og havbruk","Matfag","Pedagogiske fag","Reiseliv"],"Stedbasert":[253,106,490,3936,277,38,0,0,0,0],"lbl_Stedbasert":["253 (92,7 %)","106 (83,5 %)","490 (48,0 %)","3 936 (43,5 %)","277 (10,0 %)","38 (2,9 %)","0 (0,0 %)","0 (0,0 %)","0 (0,0 %)","0 (0,0 %)"],"Nett/samling":[20,21,530,5110,2502,1268,144,160,269,72],"lbl_Nett/samling":["20 (7,3 %)","21 (16,5 %)","530 (52,0 %)","5 110 (56,5 %)","2 502 (90,0 %)","1 268 (97,1 %)","144 (100,0 %)","160 (100,0 %)","269 (100,0 %)","72 (100,0 %)"]},{"label":"Planlagte studieplasser","categories":["Estetiske fag","Mediefag","Informasjonsteknologi","Teknologiske fag","Helsefag","Økonomisk-administrative fag","Land- og havbruk","Matfag","Pedagogiske fag","Reiseliv"],"Stedbasert":[174,30,399,2390,343,52,0,0,0,0],"lbl_Stedbasert":["174 (89,2 %)","30 (50,0 %)","399 (48,1 %)","2 390 (34,7 %)","343 (10,6 %)","52 (3,9 %)","0 (0,0 %)","0 (0,0 %)","0 (0,0 %)","0 (0,0 %)"],"Nett/samling":[21,30,430,4488,2902,1285,154,161,330,180],"lbl_Nett/samling":["21 (10,8 %)","30 (50,0 %)","430 (51,9 %)","4 488 (65,3 %)","2 902 (89,4 %)","1 285 (96,1 %)","154 (100,0 %)","161 (100,0 %)","330 (100,0 %)","180 (100,0 %)"]}];
+      const CHART_TYPE    = "bar";
+      const CHART_HEIGHT  = 520;
+      const BAR_WIDTH     = 26;
+      const FONT_SIZE     = "10px";
+      const THRESHOLD     = 8;
+      const CAT_LABEL     = "Utdanningsområde";
+      const STACK_LABEL   = "Kategori";
+
+      const select = document.getElementById("grp-select");
+      let chart = null;
+
+      allData.forEach(function(d, i) {
+        const opt = document.createElement("option");
+        opt.value = i;
+        opt.textContent = d.label;
+        select.appendChild(opt);
+      });
+
+      function renderChart(index) {
+        const d = allData[index];
+        if (!d) return;
+        if (chart) { chart.destroy(); }
+
+        chart = Highcharts.chart("chart-container", {
+          chart: { type: CHART_TYPE, height: CHART_HEIGHT, reflow: true },
+          title: { text: "" },
+          xAxis: {
+            categories: d.categories,
+            title: { text: "" },
+            labels: {
+              rotation: (CHART_TYPE === "column" && d.categories.length > 6) ? -35 : 0,
+              style: { fontSize: "11px" }
+            }
+          },
+          yAxis: {
+            min: 0, max: 100,
+            title: { text: "" },
+            labels: { format: "{value}%" },
+            reversedStacks: false
+          },
+          tooltip: {
+            useHTML: true,
+            formatter: function() {
+              var idx = this.point.index;
+              var lbl = this.series.userOptions.labels[idx];
+              return CAT_LABEL + ": " + this.x +
+                     "<br>" + STACK_LABEL + ": " + this.series.name +
+                     "<br>Antall / andel: " + lbl;
+            }
+          },
+          plotOptions: {
+            series: {
+              stacking: "percent",
+              borderWidth: 0,
+              pointWidth: BAR_WIDTH,
+              dataLabels: {
+                enabled: true,
+                crop: false,
+                overflow: "none",
+                style: {
+                  color: "white",
+                  fontWeight: "normal",
+                  textOutline: "none",
+                  fontSize: FONT_SIZE
+                },
+                formatter: function() {
+                  if (this.percentage < THRESHOLD) return null;
+                  return Highcharts.numberFormat(this.percentage, 1, ",", " ") + " %";
+                }
+              }
+            }
+          },
+          legend: {
+            layout: "horizontal", align: "center", verticalAlign: "bottom",
+            itemStyle: { fontSize: "11px", fontWeight: "normal" }
+          },
+          series: [
+          { name: "Stedbasert", data: d["Stedbasert"], labels: d["lbl_Stedbasert"], color: "#0025A0" },
+          { name: "Nett/samling", data: d["Nett/samling"], labels: d["lbl_Nett/samling"], color: "#E72F72" }
+          ],
+          credits: { enabled: false },
+          exporting: { enabled: true }
+        });
+      }
+
+      select.addEventListener("change", function() {
+        renderChart(parseInt(this.value));
+      });
+
+      renderChart(0);
+    </script>
+</body>
+</html>

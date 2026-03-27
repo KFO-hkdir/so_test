@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+<link href="lib/highcharts-9.3.1/css/motion.css" rel="stylesheet" />
+<script src="lib/highcharts-9.3.1/highcharts.js"></script>
+<script src="lib/highcharts-9.3.1/highcharts-3d.js"></script>
+<script src="lib/highcharts-9.3.1/highcharts-more.js"></script>
+<script src="lib/highcharts-9.3.1/modules/stock.js"></script>
+<script src="lib/highcharts-9.3.1/modules/map.js"></script>
+<script src="lib/highcharts-9.3.1/modules/data.js"></script>
+<script src="lib/highcharts-9.3.1/modules/exporting.js"></script>
+<script src="lib/highcharts-9.3.1/modules/offline-exporting.js"></script>
+<script src="lib/highcharts-9.3.1/modules/drilldown.js"></script>
+<script src="lib/highcharts-9.3.1/modules/item-series.js"></script>
+<script src="lib/highcharts-9.3.1/modules/overlapping-datalabels.js"></script>
+<script src="lib/highcharts-9.3.1/modules/annotations.js"></script>
+<script src="lib/highcharts-9.3.1/modules/export-data.js"></script>
+<script src="lib/highcharts-9.3.1/modules/funnel.js"></script>
+<script src="lib/highcharts-9.3.1/modules/heatmap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/treemap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/sankey.js"></script>
+<script src="lib/highcharts-9.3.1/modules/dependency-wheel.js"></script>
+<script src="lib/highcharts-9.3.1/modules/organization.js"></script>
+<script src="lib/highcharts-9.3.1/modules/solid-gauge.js"></script>
+<script src="lib/highcharts-9.3.1/modules/streamgraph.js"></script>
+<script src="lib/highcharts-9.3.1/modules/sunburst.js"></script>
+<script src="lib/highcharts-9.3.1/modules/vector.js"></script>
+<script src="lib/highcharts-9.3.1/modules/wordcloud.js"></script>
+<script src="lib/highcharts-9.3.1/modules/xrange.js"></script>
+<script src="lib/highcharts-9.3.1/modules/tilemap.js"></script>
+<script src="lib/highcharts-9.3.1/modules/venn.js"></script>
+<script src="lib/highcharts-9.3.1/modules/gantt.js"></script>
+<script src="lib/highcharts-9.3.1/modules/timeline.js"></script>
+<script src="lib/highcharts-9.3.1/modules/parallel-coordinates.js"></script>
+<script src="lib/highcharts-9.3.1/modules/bullet.js"></script>
+<script src="lib/highcharts-9.3.1/modules/coloraxis.js"></script>
+<script src="lib/highcharts-9.3.1/modules/dumbbell.js"></script>
+<script src="lib/highcharts-9.3.1/modules/lollipop.js"></script>
+<script src="lib/highcharts-9.3.1/modules/series-label.js"></script>
+<script src="lib/highcharts-9.3.1/plugins/motion.js"></script>
+<script src="lib/highcharts-9.3.1/custom/reset.js"></script>
+<script src="lib/highcharts-9.3.1/modules/boost.js"></script>
+
+</head>
+<body>
+<style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: Arial, sans-serif; font-size: 13px;
+             background: #fff; padding: 10px; }
+      #controls { margin-bottom: 12px; }
+      #controls label { font-weight: bold; margin-right: 8px; }
+      #grp-select { padding: 5px 10px; font-size: 13px; border: 1px solid #ccc;
+                    border-radius: 4px; min-width: 220px; cursor: pointer; }
+      #chart-container { width: 100%; height: 520px; }
+    </style>
+<div id="controls">
+  <label for="grp-select">Utdanningsområde:</label>
+  <select id="grp-select"></select>
+</div>
+<div id="chart-container"></div>
+<script>
+      const allData       = [{"label":"Estetiske fag","categories":["2020","2021","2022","2023","2024","2025"],"Kvinne":[214,260,257,207,326,201],"lbl_Kvinne":["214 (74,0 %)","260 (68,1 %)","257 (71,8 %)","207 (76,1 %)","326 (71,8 %)","201 (73,6 %)"],"Mann":[75,122,101,65,128,72],"lbl_Mann":["75 (26,0 %)","122 (31,9 %)","101 (28,2 %)","65 (23,9 %)","128 (28,2 %)","72 (26,4 %)"]},{"label":"Helsefag","categories":["2020","2021","2022","2023","2024","2025"],"Kvinne":[1815,2778,2278,2368,2723,2357],"lbl_Kvinne":["1 815 (85,2 %)","2 778 (83,6 %)","2 278 (84,9 %)","2 368 (83,9 %)","2 723 (86,6 %)","2 357 (84,8 %)"],"Mann":[315,545,404,456,422,422],"lbl_Mann":["315 (14,8 %)","545 (16,4 %)","404 (15,1 %)","456 (16,1 %)","422 (13,4 %)","422 (15,2 %)"]},{"label":"Informasjonsteknologi","categories":["2020","2021","2022","2023","2024","2025"],"Kvinne":[30,70,93,108,149,228],"lbl_Kvinne":["30 (7,5 %)","70 (11,5 %)","93 (15,7 %)","108 (14,8 %)","149 (18,4 %)","228 (22,4 %)"],"Mann":[368,538,498,620,662,792],"lbl_Mann":["368 (92,5 %)","538 (88,5 %)","498 (84,3 %)","620 (85,2 %)","662 (81,6 %)","792 (77,6 %)"]},{"label":"Land- og havbruk","categories":["2020","2021","2022","2023","2024","2025"],"Kvinne":[151,160,171,136,171,88],"lbl_Kvinne":["151 (50,0 %)","160 (43,5 %)","171 (41,6 %)","136 (53,3 %)","171 (58,6 %)","88 (61,1 %)"],"Mann":[151,208,240,119,121,56],"lbl_Mann":["151 (50,0 %)","208 (56,5 %)","240 (58,4 %)","119 (46,7 %)","121 (41,4 %)","56 (38,9 %)"]},{"label":"Matfag","categories":["2020","2021","2022","2023","2024","2025"],"Kvinne":[57,74,127,94,91,93],"lbl_Kvinne":["57 (41,3 %)","74 (44,6 %)","127 (57,7 %)","94 (61,0 %)","91 (58,3 %)","93 (58,1 %)"],"Mann":[81,92,93,60,65,67],"lbl_Mann":["81 (58,7 %)","92 (55,4 %)","93 (42,3 %)","60 (39,0 %)","65 (41,7 %)","67 (41,9 %)"]},{"label":"Mediefag","categories":["2021","2022","2023","2024","2025"],"Kvinne":[9,38,30,35,79],"lbl_Kvinne":["9 (26,5 %)","38 (50,0 %)","30 (47,6 %)","35 (53,0 %)","79 (62,2 %)"],"Mann":[25,38,33,31,48],"lbl_Mann":["25 (73,5 %)","38 (50,0 %)","33 (52,4 %)","31 (47,0 %)","48 (37,8 %)"]},{"label":"Pedagogiske fag","categories":["2020","2021","2022","2023","2024","2025"],"Kvinne":[80,172,184,175,232,212],"lbl_Kvinne":["80 (74,8 %)","172 (74,8 %)","184 (81,1 %)","175 (83,7 %)","232 (82,3 %)","212 (78,8 %)"],"Mann":[27,58,43,34,50,57],"lbl_Mann":["27 (25,2 %)","58 (25,2 %)","43 (18,9 %)","34 (16,3 %)","50 (17,7 %)","57 (21,2 %)"]},{"label":"Reiseliv","categories":["2020","2021","2022","2023","2024","2025"],"Kvinne":[76,84,75,38,23,56],"lbl_Kvinne":["76 (65,5 %)","84 (70,6 %)","75 (66,4 %)","38 (69,1 %)","23 (67,6 %)","56 (77,8 %)"],"Mann":[40,35,38,17,11,16],"lbl_Mann":["40 (34,5 %)","35 (29,4 %)","38 (33,6 %)","17 (30,9 %)","11 (32,4 %)","16 (22,2 %)"]},{"label":"Teknologiske fag","categories":["2020","2021","2022","2023","2024","2025"],"Kvinne":[452,529,548,847,1163,1031],"lbl_Kvinne":["452 (8,0 %)","529 (8,1 %)","548 (8,3 %)","847 (10,8 %)","1 163 (12,6 %)","1 031 (11,4 %)"],"Mann":[5227,6030,6089,6997,8058,8015],"lbl_Mann":["5 227 (92,0 %)","6 030 (91,9 %)","6 089 (91,7 %)","6 997 (89,2 %)","8 058 (87,4 %)","8 015 (88,6 %)"]},{"label":"Økonomisk-administrative fag","categories":["2020","2021","2022","2023","2024","2025"],"Kvinne":[77,587,524,610,772,787],"lbl_Kvinne":["77 (48,1 %)","587 (57,7 %)","524 (56,3 %)","610 (58,2 %)","772 (60,3 %)","787 (60,3 %)"],"Mann":[83,430,407,439,509,519],"lbl_Mann":["83 (51,9 %)","430 (42,3 %)","407 (43,7 %)","439 (41,8 %)","509 (39,7 %)","519 (39,7 %)"]}];
+      const CHART_TYPE    = "column";
+      const CHART_HEIGHT  = 520;
+      const BAR_WIDTH     = 60;
+      const FONT_SIZE     = "10px";
+      const THRESHOLD     = 8;
+      const CAT_LABEL     = "År";
+      const STACK_LABEL   = "Kjønn";
+
+      const select = document.getElementById("grp-select");
+      let chart = null;
+
+      allData.forEach(function(d, i) {
+        const opt = document.createElement("option");
+        opt.value = i;
+        opt.textContent = d.label;
+        select.appendChild(opt);
+      });
+
+      function renderChart(index) {
+        const d = allData[index];
+        if (!d) return;
+        if (chart) { chart.destroy(); }
+
+        chart = Highcharts.chart("chart-container", {
+          chart: { type: CHART_TYPE, height: CHART_HEIGHT, reflow: true },
+          title: { text: "" },
+          xAxis: {
+            categories: d.categories,
+            title: { text: "" },
+            labels: {
+              rotation: (CHART_TYPE === "column" && d.categories.length > 6) ? -35 : 0,
+              style: { fontSize: "11px" }
+            }
+          },
+          yAxis: {
+            min: 0, max: 100,
+            title: { text: "" },
+            labels: { format: "{value}%" },
+            reversedStacks: false
+          },
+          tooltip: {
+            useHTML: true,
+            formatter: function() {
+              var idx = this.point.index;
+              var lbl = this.series.userOptions.labels[idx];
+              return CAT_LABEL + ": " + this.x +
+                     "<br>" + STACK_LABEL + ": " + this.series.name +
+                     "<br>Antall / andel: " + lbl;
+            }
+          },
+          plotOptions: {
+            series: {
+              stacking: "percent",
+              borderWidth: 0,
+              pointWidth: BAR_WIDTH,
+              dataLabels: {
+                enabled: true,
+                crop: false,
+                overflow: "none",
+                style: {
+                  color: "white",
+                  fontWeight: "normal",
+                  textOutline: "none",
+                  fontSize: FONT_SIZE
+                },
+                formatter: function() {
+                  if (this.percentage < THRESHOLD) return null;
+                  return Highcharts.numberFormat(this.percentage, 1, ",", " ") + " %";
+                }
+              }
+            }
+          },
+          legend: {
+            layout: "horizontal", align: "center", verticalAlign: "bottom",
+            itemStyle: { fontSize: "11px", fontWeight: "normal" }
+          },
+          series: [
+          { name: "Kvinne", data: d["Kvinne"], labels: d["lbl_Kvinne"], color: "#E91E63" },
+          { name: "Mann", data: d["Mann"], labels: d["lbl_Mann"], color: "#0D47A1" }
+          ],
+          credits: { enabled: false },
+          exporting: { enabled: true }
+        });
+      }
+
+      select.addEventListener("change", function() {
+        renderChart(parseInt(this.value));
+      });
+
+      renderChart(0);
+    </script>
+</body>
+</html>

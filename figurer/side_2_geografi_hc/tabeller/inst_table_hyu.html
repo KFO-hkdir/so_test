@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+
+  <meta charset="utf-8"/>
+  <script src="https://cdn.jsdelivr.net/npm/@highcharts/grid-lite/grid-lite.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@highcharts/grid-lite/css/grid-lite.css"/>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <style>
+        /* ── Page layout ── */
+        body {
+          font-family: sans-serif;
+          max-width: 640px;
+          margin: 20px auto;
+          padding: 0 12px;
+          font-size: 12px;
+          box-sizing: border-box;
+        }
+
+        h4 {
+          font-size: 14px;
+          margin: 0 0 10px 0;
+          line-height: 1.25;
+        }
+
+        /* ── Controls row (dropdown + export button) ── */
+        .hc-table-controls {
+          display: flex;
+          align-items: center;
+          gap: 7px;
+          margin-bottom: 12px;
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        .hc-table-select-wrap {
+          flex: 1 1 auto;
+          min-width: 0;
+        }
+
+        .hc-table-select-wrap select {
+          font-size: 12px;
+          padding: 5px 8px;
+          margin-bottom: 0;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          width: 100%;
+          box-sizing: border-box;
+          background: white;
+        }
+
+        .hc-table-export-wrap {
+          flex: 0 0 auto;
+        }
+
+        /* ── Export burger button ── */
+        .hc-export-wrap {
+          position: relative;
+          display: inline-block;
+        }
+
+        .hc-export-btn {
+          width: 28px;
+          height: 28px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          background: white;
+          cursor: pointer;
+          font-size: 12px;
+          line-height: 1;
+          padding: 0;
+        }
+
+        .hc-export-btn:hover { background: #f6f6f6; }
+
+        .hc-export-menu {
+          display: none;
+          position: absolute;
+          right: 0;
+          top: calc(100% + 4px);
+          min-width: 140px;
+          background: white;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+          z-index: 9999;
+          overflow: hidden;
+        }
+
+        .hc-export-menu.open { display: block; }
+
+        .hc-export-item {
+          display: block;
+          width: 100%;
+          border: 0;
+          background: white;
+          text-align: left;
+          padding: 8px 10px;
+          cursor: pointer;
+          font-size: 12px;
+        }
+
+        .hc-export-item:hover { background: #f6f6f6; }
+
+        /* ── Grid container ── */
+        #datagrid-container {
+          width: 100%;
+        }
+
+        .hcg-container {
+          width: 100% !important;
+        }
+
+        /* ── Grid Lite CSS-variable theme ──
+           Variables cascade: table → header / body → rows / cells
+           --hcg-font-size        : all cell text size
+           --hcg-padding          : all cell padding (overridden per section)
+           --hcg-header-background: header bg colour
+           --hcg-header-color     : header text colour
+           --hcg-header-font-size : header text size  (= body size, bold handles emphasis)
+           --hcg-row-odd-background / --hcg-row-even-background : stripe colours
+        */
+        .hcg-custom-theme {
+          --hcg-font-size:              12px;
+          --hcg-font-family:            sans-serif;
+          --hcg-padding:                4px 8px;
+          --hcg-header-background:      #F58220;
+          --hcg-header-color:           #ffffff;
+          --hcg-header-font-size:       12px;
+          --hcg-header-font-weight:     bold;
+          --hcg-header-padding:         4px 8px;
+          --hcg-row-odd-background:     #ffffff;
+          --hcg-row-even-background:    #fde9d9;
+          width: 100% !important;
+        }
+        .hcg-custom-theme th {
+          padding-left: 14px !important;
+          padding-right: 14px !important;
+        }
+
+        /* ── Column alignment: right-align all except first ── */
+        .hcg-custom-theme th:not(:first-child),
+        .hcg-custom-theme td:not(:first-child) {
+          text-align: right !important;
+          white-space: nowrap;
+        }
+
+        .hcg-custom-theme th:first-child,
+        .hcg-custom-theme td:first-child {
+          text-align: left !important;
+          white-space: nowrap;
+        }
+
+        /* right-align the sort button/span inside non-first headers */
+        .hcg-custom-theme th:not(:first-child) > *,
+        .hcg-custom-theme th:not(:first-child) button,
+        .hcg-custom-theme th:not(:first-child) span {
+          text-align: right !important;
+          justify-content: flex-end !important;
+        }
+
+        
+      .hcg-container th:first-child,
+      .hcg-container td:first-child {
+        width: 340px !important;
+        min-width: 340px !important;
+      }
+    
+      </style>
+</head>
+<html>
+  <body>
+    <h4>Søkere til institusjoner</h4>
+    <div class="hc-table-controls">
+      <div class="hc-table-export-wrap">
+        <div class="hc-export-wrap">
+          <button id="hc-export-btn" class="hc-export-btn" type="button" aria-label="Last ned XLSX">&#9776;</button>
+          <div id="hc-export-menu" class="hc-export-menu">
+            <button id="hc-export-xlsx" class="hc-export-item" type="button">Last ned XLSX</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="datagrid-container"></div>
+    <script>
+      const allData = {"default":[{"Institusjon":"Fagskolen Rogaland","Antall":"1 695","Andel":"11,2 %"},{"Institusjon":"Fagskolen Viken","Antall":"1 678","Andel":"11,0 %"},{"Institusjon":"Fagskulen Vestland","Antall":"1 496","Andel":"9,8 %"},{"Institusjon":"Fagskolen Innlandet","Antall":"1 340","Andel":"8,8 %"},{"Institusjon":"Norsk fagskole for lokomotivførere","Antall":"1 216","Andel":"8,0 %"},{"Institusjon":"Trøndelag høyere yrkesfagskole","Antall":"1 042","Andel":"6,9 %"},{"Institusjon":"Fagskolen Oslo","Antall":"1 013","Andel":"6,7 %"},{"Institusjon":"Fagskolen Vestfold og Telemark","Antall":"916","Andel":"6,0 %"},{"Institusjon":"Fagskolen Diakonova","Antall":"833","Andel":"5,5 %"},{"Institusjon":"Brann- og redningsskolen","Antall":"823","Andel":"5,4 %"},{"Institusjon":"Fagskolen i Agder","Antall":"740","Andel":"4,9 %"},{"Institusjon":"Fagskolen i Nord","Antall":"479","Andel":"3,2 %"},{"Institusjon":"Fagskolen Møre og Romsdal","Antall":"411","Andel":"2,7 %"},{"Institusjon":"Centric IT Academy","Antall":"368","Andel":"2,4 %"},{"Institusjon":"Nordland fagskole","Antall":"364","Andel":"2,4 %"},{"Institusjon":"Norges grønne fagskole - Vea","Antall":"212","Andel":"1,4 %"},{"Institusjon":"Norsk Fotofagskole","Antall":"173","Andel":"1,1 %"},{"Institusjon":"Einar Granum Kunstfagskole","Antall":"118","Andel":"0,8 %"},{"Institusjon":"Høgskulen på Vestlandet","Antall":"101","Andel":"0,7 %"},{"Institusjon":"Fagskolen Aldring og Helse","Antall":"74","Andel":"0,5 %"},{"Institusjon":"Fagskolen i Finnmark","Antall":"36","Andel":"0,2 %"},{"Institusjon":"Kunstskolen i Stavanger","Antall":"34","Andel":"0,2 %"},{"Institusjon":"Asker Kunstfagskole","Antall":"24","Andel":"0,2 %"},{"Institusjon":"Ytre Kunstfagskole","Antall":"10","Andel":"0,1 %"}]};
+      let grid = null;
+      
+    function renderTable(key) {
+      const rows = allData[key] || [];
+      const cols = {
+        'col_1': rows.map(r => r['Institusjon']),
+            'col_2': rows.map(r => r['Antall']),
+            'col_3': rows.map(r => r['Andel'])
+      };
+
+      if (grid) {
+        grid.update({
+          dataTable: { columns: cols }
+        });
+      } else {
+        grid = Grid.grid('datagrid-container', {
+          dataTable: { columns: cols },
+          columnDefaults: { resizable: true },
+          columns: [
+            { id: 'col_1', header: { format: 'Institusjon' } },
+                  { id: 'col_2', header: { format: 'Antall' } },
+                  { id: 'col_3', header: { format: 'Andel' } }
+          ],
+          rendering: {
+            theme: 'hcg-theme-default hcg-custom-theme'
+          }
+        });
+      }
+    }
+  
+      renderTable('default');
+      
+      const exportColLabels = ["Institusjon","Antall","Andel"];
+
+      function sanitizeFilePart(x) {
+        return String(x)
+          .trim()
+          .replace(/[\\/:*?"<>|]+/g, '-')
+          .replace(/\s+/g, '_');
+      }
+
+      function fileNameForExport(ext) {
+        if (false) {
+          return 'søkere_til_inst_' + sanitizeFilePart(document.getElementById('grp-select').value) + '.' + ext;
+        }
+        return 'søkere_til_inst.' + ext;
+      }
+
+      function getCurrentVisibleRows() {
+        const key = false ? document.getElementById('grp-select').value : 'default';
+        return allData[key] || [];
+      }
+
+      function downloadXLSX() {
+        const rows = getCurrentVisibleRows();
+        const aoa = [
+          exportColLabels,
+          ...rows.map(r => exportColLabels.map(lbl => r[lbl]))
+        ];
+        const ws = XLSX.utils.aoa_to_sheet(aoa);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Tabell');
+        XLSX.writeFile(wb, fileNameForExport('xlsx'));
+      }
+
+      const exportBtn     = document.getElementById('hc-export-btn');
+      const exportMenu    = document.getElementById('hc-export-menu');
+      const exportXlsxBtn = document.getElementById('hc-export-xlsx');
+
+      exportBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        exportMenu.classList.toggle('open');
+      });
+
+      exportXlsxBtn.addEventListener('click', function() {
+        downloadXLSX();
+        exportMenu.classList.remove('open');
+      });
+
+      document.addEventListener('click', function(e) {
+        if (!document.getElementById('hc-export-btn').contains(e.target) &&
+            !document.getElementById('hc-export-menu').contains(e.target)) {
+          exportMenu.classList.remove('open');
+        }
+      });
+    
+    </script>
+  </body>
+</html>
+</html>
