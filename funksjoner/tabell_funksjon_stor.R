@@ -436,12 +436,16 @@ make_hc_table_l <- function(
         tags$script(src = "https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"),
       tags$style(HTML(sprintf(
         '
-        html, body { height: 100%%; margin: 0; padding: 0; box-sizing: border-box; }
+        html { height: 100%%; overflow: hidden; margin: 0; padding: 0; box-sizing: border-box; }
         body {
+          height: 100%%;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
           font-family: sans-serif;
           max-width: %dpx;
-          margin: 16px auto;
-          padding: 0 16px;
+          margin: 0 auto;
+          padding: 8px 16px;
           font-size: %dpx;
           box-sizing: border-box;
         }
@@ -494,8 +498,8 @@ make_hc_table_l <- function(
         }
         .hc-export-item:hover { background: #f6f6f6; }
 
-        #datagrid-container { width: 100%%; }
-        .hcg-container { width: 100%% !important; }
+        #datagrid-container { width: 100%%; flex: 1 1 0; min-height: 0; overflow: hidden; }
+        .hcg-container { width: 100%% !important; height: 100%% !important; }
 
         .hcg-custom-theme {
           --hcg-font-size:           %dpx;
@@ -549,7 +553,7 @@ make_hc_table_l <- function(
         stripe_color,
         col_cell_css,
         if (!is.null(scroll_height))
-          sprintf("#datagrid-container { height: %s !important; }", scroll_height)
+          sprintf("#datagrid-container { flex: 0 0 %s !important; }", scroll_height)
         else ""
       )))
     ),
