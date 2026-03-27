@@ -40,43 +40,292 @@
 <script src="lib/highcharts-9.3.1/modules/lollipop.js"></script>
 <script src="lib/highcharts-9.3.1/modules/series-label.js"></script>
 <script src="lib/highcharts-9.3.1/plugins/motion.js"></script>
-<script src="lib/highcharts-9.3.1/custom/reset.js"></script>
 <script src="lib/highcharts-9.3.1/modules/boost.js"></script>
-
 </head>
 <body>
-<style>* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: Arial, sans-serif; font-size: 13px; background: #fff; padding: 10px; }
-#chart-container { width: 100%; height: 420px; }</style>
-<div id="chart-container"></div>
-<script>const series_n_sokere = [127929,132021,135587,142004,138732,150784,154088,134954,135980,142416,142004];
-const series_antall_studieplasser = [53195,54534,55470,57402,58530,58513,61673,62191,62590,64086,64542];
-const categories = ["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"];
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; font-size: 13px; background: #fff; padding: 10px; }
+  #controls { margin-bottom: 12px; }
+  #controls label { font-weight: bold; margin-right: 8px; }
+  #chart-select { padding: 5px 10px; font-size: 13px; border: 1px solid #ccc; border-radius: 4px; min-width: 220px; cursor: pointer; }
+  #chart-container { width: 100%; height: 420px; }
+</style>
 
-Highcharts.chart("chart-container", {
-  chart: { type: "line", reflow: true, margin: [50, 20, 60, 80] },
-  title: { text: "" },
-  xAxis: { categories: categories, title: { text: "" } },
-  yAxis: {
-    min: 0, max: null,
-    title: { text: "" },
-    labels: { formatter: function() {
-      return Highcharts.numberFormat(this.value, 0, ",", " ");
-    }}
-  },
-  legend: {
-    enabled: true,
-    align: "center", verticalAlign: "bottom", layout: "horizontal",
-    itemStyle: { fontSize: "11px", fontWeight: "normal" }
-  },
-  tooltip: { shared: true, formatter: function() {  var s = "<b>" + this.x + "</b>";  this.points.forEach(function(p) {    s += "<br/>" + p.series.name + ": " +         Highcharts.numberFormat(p.y, 0, ",", " ");  });  return s;} },
-  plotOptions: { line: { lineWidth: 1.5 } },
-  series: [
-  { name: "Søkere", data: series_n_sokere, color: "#E72F72", marker: { enabled: true, radius: 4 }, dataLabels: { enabled: false }, label: { enabled: false } },
-  { name: "Studieplasser", data: series_antall_studieplasser, color: "#0025A0", marker: { enabled: true, radius: 4 }, dataLabels: { enabled: false }, label: { enabled: false } }
+<div id="chart-container"></div>
+<textarea id="chart-preview-data" hidden>{
+  "version": 1,
+  "renderer": "highcharts",
+  "kind": "single",
+  "chartType": "line",
+  "title": "",
+  "subtitle": "",
+  "categories": [
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
   ],
-  credits: { enabled: false },
-  exporting: { enabled: true }
-});</script>
+  "series": [
+    {
+      "name": "Søkere",
+      "data": [
+        127929,
+        132021,
+        135587,
+        142004,
+        138732,
+        150784,
+        154088,
+        134954,
+        135980,
+        142416,
+        142004
+      ]
+    },
+    {
+      "name": "Studieplasser",
+      "data": [
+        53195,
+        54534,
+        55470,
+        57402,
+        58530,
+        58513,
+        61673,
+        62191,
+        62590,
+        64086,
+        64542
+      ]
+    }
+  ],
+  "presentation": {
+    "legend": {
+      "enabled": true,
+      "align": "center",
+      "verticalAlign": "bottom",
+      "layout": "horizontal"
+    },
+    "yAxis": {
+      "min": 0,
+      "max": null,
+      "format": "integer-nb"
+    },
+    "xAxis": {
+      "labelRotation": [-10, -20, -30, -40, -50, -60, -70, -80, -90]
+    },
+    "tooltip": {
+      "mode": "shared-number"
+    },
+    "stacking": "none"
+  }
+}</textarea>
+<script>
+  const JSON_URL = "nasjonalt_linje_test.chart.json";
+  const COLORS = ["#E72F72", "#0025A0", "#EA591D", "#9B3699", "#FF8C43", "#A80037", "#FFC948", "#630879"];
+  const X_ROTATION = [-10,-20,-30,-40,-50,-60,-70,-80,-90];
+  const CHART_TYPE = "line";
+  const TOOLTIP_MODE = "shared-number";
+  const Y_FORMAT = "integer-nb";
+  const LEGEND_ENABLED = true;
+  const LEGEND_ALIGN = "center";
+  const LEGEND_VERTICAL_ALIGN = "bottom";
+  const LEGEND_LAYOUT = "horizontal";
+  const Y_MIN = 0;
+  const Y_MAX = null;
+  const STACKING = "none";
+  const select = document.getElementById("chart-select");
+  let chart = null;
+  let chartSpec = null;
+
+  function formatNumber(value) {
+    const decimals = Y_FORMAT === "integer-nb" ? 0 : 1;
+    return Highcharts.numberFormat(value, decimals, ",", " ");
+  }
+
+  function formatAxisValue(value) {
+    if (Y_FORMAT === "percent") {
+      return formatNumber(value) + " %";
+    }
+
+    return formatNumber(value);
+  }
+
+  function getActiveItem(index) {
+    if (chartSpec.kind === "tabbed") {
+      return chartSpec.items[index] || chartSpec.items[0];
+    }
+
+    return chartSpec;
+  }
+
+  function buildSeries(series) {
+    return series.map(function(entry, index) {
+      const item = {
+        type: CHART_TYPE,
+        name: entry.name,
+        data: entry.data,
+        color: COLORS[index % COLORS.length],
+        dataLabels: { enabled: false },
+        label: { enabled: false }
+      };
+
+      if (entry.labels) {
+        item.labels = entry.labels;
+      }
+
+      if (CHART_TYPE === "line") {
+        item.marker = { enabled: true, radius: 4 };
+      }
+
+      return item;
+    });
+  }
+
+  function buildTooltip() {
+    return {
+      shared: true,
+      useHTML: true,
+      formatter: function() {
+        if (this.points && this.points.length) {
+          let output = "<b>" + this.x + "</b>";
+          this.points.forEach(function(point) {
+            const labelValue = point.series.userOptions.labels && point.series.userOptions.labels[point.point.index];
+            if (labelValue) {
+              output += "<br/>" + point.series.name + ": " + labelValue;
+            } else if (TOOLTIP_MODE === "shared-percent") {
+              output += "<br/>" + point.series.name + ": " + formatNumber(point.y) + " %";
+            } else {
+              output += "<br/>" + point.series.name + ": " + formatNumber(point.y);
+            }
+          });
+          return output;
+        }
+
+        if (this.point) {
+          const labelValue = this.point.series.userOptions.labels && this.point.series.userOptions.labels[this.point.index];
+          if (labelValue) {
+            return "<b>" + this.x + "</b><br/>" + this.series.name + ": " + labelValue;
+          }
+
+          if (TOOLTIP_MODE === "shared-percent") {
+            return "<b>" + this.x + "</b><br/>" + this.series.name + ": " + formatNumber(this.y) + " %";
+          }
+
+          return "<b>" + this.x + "</b><br/>" + this.series.name + ": " + formatNumber(this.y);
+        }
+
+        return "";
+      }
+    };
+  }
+
+  function renderChart(index) {
+    const activeItem = getActiveItem(index);
+    if (!activeItem) return;
+    if (chart) chart.destroy();
+
+    const xAxisLabels = {};
+
+    if (CHART_TYPE !== "bar") {
+      xAxisLabels.autoRotation = X_ROTATION;
+    }
+
+    if (CHART_TYPE === "bar") {
+      xAxisLabels.style = { fontSize: "11px" };
+    }
+
+    chart = Highcharts.chart("chart-container", {
+      chart: { type: CHART_TYPE, reflow: true, margin: [50, 20, 60, 80] },
+      title: { text: chartSpec.title || "" },
+      subtitle: { text: chartSpec.subtitle || "" },
+      xAxis: {
+        categories: activeItem.categories.map(String),
+        title: { text: "" },
+        labels: xAxisLabels
+      },
+      yAxis: {
+        min: Y_MIN,
+        max: Y_MAX,
+        title: { text: "" },
+        reversedStacks: false,
+        labels: { formatter: function() { return formatAxisValue(this.value); } }
+      },
+      legend: {
+        enabled: LEGEND_ENABLED,
+        align: LEGEND_ALIGN,
+        verticalAlign: LEGEND_VERTICAL_ALIGN,
+        layout: LEGEND_LAYOUT,
+        itemStyle: { fontSize: "11px", fontWeight: "normal" }
+      },
+      tooltip: buildTooltip(),
+      plotOptions: {
+        line: { lineWidth: 1.5 },
+        series: STACKING !== "none" ? { stacking: STACKING, borderWidth: 0 } : undefined,
+        bar: { pointPadding: 0.01, colorByPoint: false, dataLabels: { enabled: false } },
+        column: { pointPadding: 0.01, borderWidth: 0, dataLabels: { enabled: false } }
+      },
+      series: buildSeries(activeItem.series),
+      credits: { enabled: false },
+      exporting: { enabled: true }
+    });
+  }
+
+  function loadChartSpec() {
+    if (window.location.protocol === "file:") {
+      const previewNode = document.getElementById("chart-preview-data");
+
+      if (!previewNode) {
+        return Promise.reject(new Error("Could not load preview chart data"));
+      }
+
+      try {
+        return Promise.resolve(JSON.parse(previewNode.value));
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    }
+
+    return fetch(JSON_URL)
+      .then(function(response) {
+        if (!response.ok) throw new Error("Could not load chart json");
+        return response.json();
+      });
+  }
+
+  loadChartSpec()
+    .then(function(spec) {
+      chartSpec = spec;
+
+      if (chartSpec.kind === "tabbed" && select) {
+        chartSpec.items.forEach(function(item, index) {
+          const option = document.createElement("option");
+          option.value = index;
+          option.textContent = item.label;
+          select.appendChild(option);
+        });
+
+        select.addEventListener("change", function() {
+          renderChart(parseInt(this.value, 10));
+        });
+
+        renderChart(0);
+        return;
+      }
+
+      renderChart(0);
+    })
+    .catch(function(error) {
+      console.error(error);
+    });
+</script>
 </body>
 </html>
