@@ -19,22 +19,22 @@
           max-width: 640px;
           margin: 0 auto;
           padding: 8px 16px;
-          font-size: 13px;
+          font-size: 12px;
           box-sizing: border-box;
         }
-        h4 { font-size: 16px; margin: 0 0 12px 0; line-height: 1.25; }
+        h4 { font-size: 14px; margin: 0 0 12px 0; line-height: 1.25; }
 
         .hc-table-controls {
-          display: flex; align-items: center; gap: 8px;
+          display: flex; align-items: center; gap: 7px;
           margin-bottom: 10px; width: 100%; box-sizing: border-box;
         }
         .hc-table-select-wrap { flex: 1 1 auto; min-width: 0; }
         .hc-table-select-wrap select {
-          font-size: 13px; padding: 6px 10px;
+          font-size: 12px; padding: 5px 8px;
           border: 1px solid #ccc; border-radius: 4px;
           width: 100%; box-sizing: border-box; background: white;
         }
-        .hc-table-export-wrap { flex: 0 0 auto; }
+        .hc-table-export-wrap { flex: 0 0 auto;   margin-left: auto;}
 
         /* Filter row — no gap, no scroll; inputs are flush with column edges */
         .hc-filter-row {
@@ -43,7 +43,7 @@
         }
         .hc-filter-row input.hc-col-filter {
           flex: 1 1 0; min-width: 0;
-          font-size: 13px; padding: 4px 6px;
+          font-size: 12px; padding: 4px 6px;
           border: 1px solid #ccc; border-right-width: 0;
           box-sizing: border-box; background: #fafafa;
         }
@@ -58,8 +58,8 @@
 
         .hc-export-wrap { position: relative; display: inline-block; }
         .hc-export-btn {
-          width: 30px; height: 30px; border: 1px solid #ccc; border-radius: 4px;
-          background: white; cursor: pointer; font-size: 13px; line-height: 1; padding: 0;
+          width: 28px; height: 28px; border: 1px solid #ccc; border-radius: 4px;
+          background: white; cursor: pointer; font-size: 12px; line-height: 1; padding: 0;
         }
         .hc-export-btn:hover { background: #f6f6f6; }
         .hc-export-menu {
@@ -70,7 +70,7 @@
         .hc-export-menu.open { display: block; }
         .hc-export-item {
           display: block; width: 100%; border: 0; background: white;
-          text-align: left; padding: 8px 10px; cursor: pointer; font-size: 13px;
+          text-align: left; padding: 8px 10px; cursor: pointer; font-size: 12px;
         }
         .hc-export-item:hover { background: #f6f6f6; }
 
@@ -78,14 +78,14 @@
         .hcg-container { width: 100% !important; height: 100% !important; }
 
         .hcg-custom-theme {
-          --hcg-font-size:           13px;
+          --hcg-font-size:           12px;
           --hcg-font-family:         sans-serif;
-          --hcg-padding:             6px 10px;
+          --hcg-padding:             4px 8px;
           --hcg-header-background:   #F58220;
           --hcg-header-color:        #ffffff;
-          --hcg-header-font-size:    13px;
+          --hcg-header-font-size:    12px;
           --hcg-header-font-weight:  bold;
-          --hcg-header-padding:      6px 10px;
+          --hcg-header-padding:      4px 8px;
           --hcg-row-odd-background:  #ffffff;
           --hcg-row-even-background: #fde9d9;
           width: 100% !important;

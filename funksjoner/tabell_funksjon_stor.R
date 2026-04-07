@@ -461,7 +461,7 @@ make_hc_table_l <- function(
           border: 1px solid #ccc; border-radius: 4px;
           width: 100%%; box-sizing: border-box; background: white;
         }
-        .hc-table-export-wrap { flex: 0 0 auto; }
+        .hc-table-export-wrap { flex: 0 0 auto;   margin-left: auto;}
 
         /* Filter row — no gap, no scroll; inputs are flush with column edges */
         .hc-filter-row {

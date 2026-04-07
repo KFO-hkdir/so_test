@@ -396,6 +396,7 @@ make_hc_table <- function(
 
         .hc-table-export-wrap {
           flex: 0 0 auto;
+          margin-left: auto;
         }
 
         /* ── Export burger button ── */
