@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+
+  <meta charset="utf-8"/>
+  <script src="https://cdn.jsdelivr.net/npm/@highcharts/grid-lite/grid-lite.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@highcharts/grid-lite/css/grid-lite.css"/>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <style>
+        html { height: 100%; overflow: hidden; margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+          height: 100%;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          font-family: sans-serif;
+          max-width: 1100px;
+          margin: 0 auto;
+          padding: 8px 16px;
+          font-size: 11px;
+          box-sizing: border-box;
+        }
+        h4 { font-size: 13px; margin: 0 0 12px 0; line-height: 1.25; }
+
+        .hc-table-controls {
+          display: flex; align-items: center; gap: 6px;
+          margin-bottom: 10px; width: 100%; box-sizing: border-box;
+        }
+        .hc-table-select-wrap { flex: 1 1 auto; min-width: 0; }
+        .hc-table-select-wrap select {
+          font-size: 11px; padding: 4px 7px;
+          border: 1px solid #ccc; border-radius: 4px;
+          width: 100%; box-sizing: border-box; background: white;
+        }
+        .hc-table-export-wrap { flex: 0 0 auto;   margin-left: auto;}
+
+        /* Filter row — no gap, no scroll; inputs are flush with column edges */
+        .hc-filter-row {
+          display: flex; gap: 0; margin-bottom: 8px;
+          flex-wrap: nowrap; overflow: hidden;
+        }
+        .hc-filter-row input.hc-col-filter {
+          flex: 1 1 0; min-width: 0;
+          font-size: 11px; padding: 4px 6px;
+          border: 1px solid #ccc; border-right-width: 0;
+          box-sizing: border-box; background: #fafafa;
+        }
+        .hc-filter-row input.hc-col-filter:last-child { border-right-width: 1px; }
+        .hc-filter-row input.hc-col-filter:focus { outline: none; border-color: #F58220; background: #fff; }
+
+        /* Per-column filter widths */
+  .hc-filter-row input.hc-col-filter:nth-child(1) { flex: 0 0 362px !important; width: 362px !important; min-width: 362px !important; max-width: 362px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(2) { flex: 0 0 255px !important; width: 255px !important; min-width: 255px !important; max-width: 255px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(3) { flex: 0 0 74px !important; width: 74px !important; min-width: 74px !important; max-width: 74px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(4) { flex: 0 0 74px !important; width: 74px !important; min-width: 74px !important; max-width: 74px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(5) { flex: 0 0 74px !important; width: 74px !important; min-width: 74px !important; max-width: 74px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(6) { flex: 0 0 74px !important; width: 74px !important; min-width: 74px !important; max-width: 74px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(7) { flex: 0 0 74px !important; width: 74px !important; min-width: 74px !important; max-width: 74px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(8) { flex: 0 0 79px !important; width: 79px !important; min-width: 79px !important; max-width: 79px !important; }
+
+        .hc-export-wrap { position: relative; display: inline-block; }
+        .hc-export-btn {
+          width: 26px; height: 26px; border: 1px solid #ccc; border-radius: 4px;
+          background: white; cursor: pointer; font-size: 11px; line-height: 1; padding: 0;
+        }
+        .hc-export-btn:hover { background: #f6f6f6; }
+        .hc-export-menu {
+          display: none; position: absolute; right: 0; top: calc(100% + 4px);
+          min-width: 140px; background: white; border: 1px solid #ccc;
+          border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); z-index: 9999; overflow: hidden;
+        }
+        .hc-export-menu.open { display: block; }
+        .hc-export-item {
+          display: block; width: 100%; border: 0; background: white;
+          text-align: left; padding: 8px 10px; cursor: pointer; font-size: 11px;
+        }
+        .hc-export-item:hover { background: #f6f6f6; }
+
+        #datagrid-container { width: 100%; flex: 1 1 0; min-height: 0; overflow: hidden; }
+        .hcg-container { width: 100% !important; height: 100% !important; }
+
+        .hcg-custom-theme {
+          --hcg-font-size:           11px;
+          --hcg-font-family:         sans-serif;
+          --hcg-padding:             3px 6px;
+          --hcg-header-background:   #F58220;
+          --hcg-header-color:        #ffffff;
+          --hcg-header-font-size:    11px;
+          --hcg-header-font-weight:  bold;
+          --hcg-header-padding:      3px 6px;
+          --hcg-row-odd-background:  #ffffff;
+          --hcg-row-even-background: #fde9d9;
+          width: 100% !important;
+        }
+        .hcg-custom-theme th { padding-left: 14px !important; padding-right: 14px !important; }
+        .hcg-custom-theme th:not(:first-child),
+        .hcg-custom-theme td:not(:first-child) { text-align: right !important; white-space: nowrap; }
+        .hcg-custom-theme th:first-child,
+        .hcg-custom-theme td:first-child { text-align: left !important; white-space: nowrap; }
+        .hcg-custom-theme th:not(:first-child) > *,
+        .hcg-custom-theme th:not(:first-child) button,
+        .hcg-custom-theme th:not(:first-child) span { text-align: right !important; justify-content: flex-end !important; }
+
+        /* Per-column cell widths */
+  .hcg-container th:nth-child(1),
+  .hcg-container td:nth-child(1) { width: 362px !important; min-width: 362px !important; max-width: 362px !important; }
+  .hcg-container th:nth-child(2),
+  .hcg-container td:nth-child(2) { width: 255px !important; min-width: 255px !important; max-width: 255px !important; }
+  .hcg-container th:nth-child(3),
+  .hcg-container td:nth-child(3) { width: 74px !important; min-width: 74px !important; max-width: 74px !important; }
+  .hcg-container th:nth-child(4),
+  .hcg-container td:nth-child(4) { width: 74px !important; min-width: 74px !important; max-width: 74px !important; }
+  .hcg-container th:nth-child(5),
+  .hcg-container td:nth-child(5) { width: 74px !important; min-width: 74px !important; max-width: 74px !important; }
+  .hcg-container th:nth-child(6),
+  .hcg-container td:nth-child(6) { width: 74px !important; min-width: 74px !important; max-width: 74px !important; }
+  .hcg-container th:nth-child(7),
+  .hcg-container td:nth-child(7) { width: 74px !important; min-width: 74px !important; max-width: 74px !important; }
+  .hcg-container th:nth-child(8),
+  .hcg-container td:nth-child(8) { width: 79px !important; min-width: 79px !important; max-width: 79px !important; }
+
+        /* Scroll height */
+        #datagrid-container { flex: 0 0 600px !important; }
+        </style>
+</head>
+<html>
+  <body>
+    <h4>Nøkkeltall institusjonsnivå - tidsserier</h4>
+    <div class="hc-table-controls">
+      <div class="hc-table-export-wrap">
+        <div class="hc-export-wrap">
+          <button id="hc-export-btn" class="hc-export-btn" type="button" aria-label="Last ned XLSX">&#9776;</button>
+          <div id="hc-export-menu" class="hc-export-menu">
+            <button id="hc-export-xlsx" class="hc-export-item" type="button">Last ned XLSX</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hc-filter-row">
+      <input type="text" class="hc-col-filter" data-label="Institusjon" placeholder="Søk Institusjon…" step="any" />
+      <input type="text" class="hc-col-filter" data-label="Nøkkeltall" placeholder="Søk Nøkkeltall…" step="any" />
+      <input type="text" class="hc-col-filter" data-label="2020" placeholder="Søk 2020…" step="any" />
+      <input type="text" class="hc-col-filter" data-label="2021" placeholder="Søk 2021…" step="any" />
+      <input type="text" class="hc-col-filter" data-label="2022" placeholder="Søk 2022…" step="any" />
+      <input type="text" class="hc-col-filter" data-label="2023" placeholder="Søk 2023…" step="any" />
+      <input type="text" class="hc-col-filter" data-label="2024" placeholder="Søk 2024…" step="any" />
+      <input type="text" class="hc-col-filter" data-label="2025" placeholder="Søk 2025…" step="any" />
+    </div>
+    <div id="datagrid-container"></div>
+    <script>const allData = {"default":[{"Institusjon":"Centric IT Academy","Nøkkeltall":"Alle søkere","2020":"   71","2021":"  196","2022":"  258","2023":"  319","2024":"  406","2025":"  515"},{"Institusjon":"Centric IT Academy","Nøkkeltall":"Førstevalgssøkere","2020":"   43","2021":"  117","2022":"  176","2023":"  252","2024":"  318","2025":"  368"},{"Institusjon":"Centric IT Academy","Nøkkeltall":"Studieplasser","2020":"   50","2021":"  100","2022":"  151","2023":"  176","2024":"  195","2025":"  229"},{"Institusjon":"Einar Granum Kunstfagskole","Nøkkeltall":"Alle søkere","2020":"  225","2021":"  233","2022":"  186","2023":"  161","2024":"  189","2025":"  145"},{"Institusjon":"Einar Granum Kunstfagskole","Nøkkeltall":"Førstevalgssøkere","2020":"  204","2021":"  193","2022":"  150","2023":"  135","2024":"  155","2025":"  118"},{"Institusjon":"Einar Granum Kunstfagskole","Nøkkeltall":"Studieplasser","2020":"   75","2021":"   75","2022":"   75","2023":"   75","2024":"   75","2025":"   75"},{"Institusjon":"Fagskolen Aldring og Helse","Nøkkeltall":"Alle søkere","2020":"  165","2021":"  145","2022":"  182","2023":"  143","2024":"  176","2025":"  138"},{"Institusjon":"Fagskolen Aldring og Helse","Nøkkeltall":"Førstevalgssøkere","2020":"   78","2021":"   73","2022":"   96","2023":"   77","2024":"  110","2025":"   74"},{"Institusjon":"Fagskolen Aldring og Helse","Nøkkeltall":"Studieplasser","2020":"  115","2021":"   95","2022":"  175","2023":"  145","2024":"  175","2025":"  195"},{"Institusjon":"Fagskolen Innlandet","Nøkkeltall":"Alle søkere","2020":"1 343","2021":"1 588","2022":"1 397","2023":"1 617","2024":"2 191","2025":"1 858"},{"Institusjon":"Fagskolen Innlandet","Nøkkeltall":"Førstevalgssøkere","2020":"  964","2021":"1 112","2022":"  932","2023":"1 155","2024":"1 676","2025":"1 340"},{"Institusjon":"Fagskolen Innlandet","Nøkkeltall":"Studieplasser","2020":"1 040","2021":"1 165","2022":"1 065","2023":"1 115","2024":"1 290","2025":"1 075"},{"Institusjon":"Fagskolen Rogaland","Nøkkeltall":"Alle søkere","2020":"1 166","2021":"1 117","2022":"1 284","2023":"1 658","2024":"1 986","2025":"2 532"},{"Institusjon":"Fagskolen Rogaland","Nøkkeltall":"Førstevalgssøkere","2020":"  767","2021":"  691","2022":"  834","2023":"1 118","2024":"1 329","2025":"1 695"},{"Institusjon":"Fagskolen Rogaland","Nøkkeltall":"Studieplasser","2020":"  810","2021":"  754","2022":"  975","2023":"1 215","2024":"1 435","2025":"1 655"},{"Institusjon":"Fagskolen Vestfold og Telemark","Nøkkeltall":"Alle søkere","2020":"  786","2021":"  938","2022":"1 136","2023":"1 082","2024":"1 398","2025":"1 410"},{"Institusjon":"Fagskolen Vestfold og Telemark","Nøkkeltall":"Førstevalgssøkere","2020":"  510","2021":"  564","2022":"  766","2023":"  698","2024":"  873","2025":"  916"},{"Institusjon":"Fagskolen Vestfold og Telemark","Nøkkeltall":"Studieplasser","2020":"  673","2021":"  849","2022":"  909","2023":"1 100","2024":"1 346","2025":"1 030"},{"Institusjon":"Fagskolen i Agder","Nøkkeltall":"Alle søkere","2020":"  703","2021":"  807","2022":"  726","2023":"  747","2024":"  992","2025":"1 216"},{"Institusjon":"Fagskolen i Agder","Nøkkeltall":"Førstevalgssøkere","2020":"  411","2021":"  490","2022":"  476","2023":"  464","2024":"  611","2025":"  740"},{"Institusjon":"Fagskolen i Agder","Nøkkeltall":"Studieplasser","2020":"  482","2021":"  440","2022":"  555","2023":"  590","2024":"  725","2025":"  770"},{"Institusjon":"Høgskulen på Vestlandet","Nøkkeltall":"Alle søkere","2020":"  110","2021":"  165","2022":"  149","2023":"  136","2024":"  187","2025":"  146"},{"Institusjon":"Høgskulen på Vestlandet","Nøkkeltall":"Førstevalgssøkere","2020":"   88","2021":"  138","2022":"  120","2023":"  104","2024":"  128","2025":"  101"},{"Institusjon":"Høgskulen på Vestlandet","Nøkkeltall":"Studieplasser","2020":"   24","2021":"   24","2022":"   24","2023":"   20","2024":"   20","2025":"   20"},{"Institusjon":"Kunstskolen i Stavanger","Nøkkeltall":"Alle søkere","2020":"   65","2021":"   84","2022":"   55","2023":"   54","2024":"   71","2025":"   51"},{"Institusjon":"Kunstskolen i Stavanger","Nøkkeltall":"Førstevalgssøkere","2020":"   36","2021":"   55","2022":"   27","2023":"   35","2024":"   51","2025":"   34"},{"Institusjon":"Kunstskolen i Stavanger","Nøkkeltall":"Studieplasser","2020":"   22","2021":"   22","2022":"   22","2023":"   22","2024":"   22","2025":"   24"},{"Institusjon":"Nordland fagskole","Nøkkeltall":"Alle søkere","2020":"  376","2021":"  492","2022":"  380","2023":"  513","2024":"  563","2025":"  619"},{"Institusjon":"Nordland fagskole","Nøkkeltall":"Førstevalgssøkere","2020":"  214","2021":"  277","2022":"  200","2023":"  292","2024":"  286","2025":"  364"},{"Institusjon":"Nordland fagskole","Nøkkeltall":"Studieplasser","2020":"  323","2021":"  403","2022":"  293","2023":"  318","2024":"  318","2025":"  385"},{"Institusjon":"Norges grønne fagskole - Vea","Nøkkeltall":"Alle søkere","2020":"  178","2021":"  191","2022":"  438","2023":"  339","2024":"  406","2025":"  266"},{"Institusjon":"Norges grønne fagskole - Vea","Nøkkeltall":"Førstevalgssøkere","2020":"  146","2021":"  144","2022":"  352","2023":"  275","2024":"  289","2025":"  212"},{"Institusjon":"Norges grønne fagskole - Vea","Nøkkeltall":"Studieplasser","2020":"  170","2021":"   72","2022":"  216","2023":"  178","2024":"  226","2025":"  174"},{"Institusjon":"Norsk fagskole for lokomotivførere","Nøkkeltall":"Alle søkere","2020":"  976","2021":"1 145","2022":"1 277","2023":"1 464","2024":"1 489","2025":"1 282"},{"Institusjon":"Norsk fagskole for lokomotivførere","Nøkkeltall":"Førstevalgssøkere","2020":"  959","2021":"1 122","2022":"1 242","2023":"1 428","2024":"1 425","2025":"1 216"},{"Institusjon":"Norsk fagskole for lokomotivførere","Nøkkeltall":"Studieplasser","2020":"  148","2021":"  168","2022":"  168","2023":"  152","2024":"   68","2025":"  120"},{"Institusjon":"Asker Kunstfagskole","Nøkkeltall":"Alle søkere","2020":"   NA","2021":"   65","2022":"   50","2023":"   57","2024":"   54","2025":"   55"},{"Institusjon":"Asker Kunstfagskole","Nøkkeltall":"Førstevalgssøkere","2020":"   NA","2021":"   22","2022":"   16","2023":"   27","2024":"   24","2025":"   24"},{"Institusjon":"Asker Kunstfagskole","Nøkkeltall":"Studieplasser","2020":"   NA","2021":"   20","2022":"   20","2023":"   20","2024":"   20","2025":"   20"},{"Institusjon":"Fagskolen Oslo","Nøkkeltall":"Alle søkere","2020":"   NA","2021":"1 338","2022":"1 448","2023":"1 510","2024":"1 522","2025":"1 618"},{"Institusjon":"Fagskolen Oslo","Nøkkeltall":"Førstevalgssøkere","2020":"   NA","2021":"  864","2022":"  933","2023":"  964","2024":"  963","2025":"1 013"},{"Institusjon":"Fagskolen Oslo","Nøkkeltall":"Studieplasser","2020":"   NA","2021":"  480","2022":"  535","2023":"  587","2024":"  567","2025":"  714"},{"Institusjon":"Norsk Fotofagskole","Nøkkeltall":"Alle søkere","2020":"   NA","2021":"   90","2022":"  117","2023":"  107","2024":"  200","2025":"  207"},{"Institusjon":"Norsk Fotofagskole","Nøkkeltall":"Førstevalgssøkere","2020":"   NA","2021":"   70","2022":"   96","2023":"   82","2024":"  168","2025":"  173"},{"Institusjon":"Norsk Fotofagskole","Nøkkeltall":"Studieplasser","2020":"   NA","2021":"   60","2022":"  100","2023":"  100","2024":"   72","2025":"   50"},{"Institusjon":"Trøndelag høyere yrkesfagskole","Nøkkeltall":"Alle søkere","2020":"   NA","2021":"1 659","2022":"1 334","2023":"1 396","2024":"1 541","2025":"1 646"},{"Institusjon":"Trøndelag høyere yrkesfagskole","Nøkkeltall":"Førstevalgssøkere","2020":"   NA","2021":"1 142","2022":"  904","2023":"  929","2024":"1 029","2025":"1 042"},{"Institusjon":"Trøndelag høyere yrkesfagskole","Nøkkeltall":"Studieplasser","2020":"   NA","2021":"1 082","2022":"  803","2023":"  869","2024":"  985","2025":"  961"},{"Institusjon":"Fagskolen Møre og Romsdal","Nøkkeltall":"Alle søkere","2020":"   NA","2021":"   NA","2022":"  590","2023":"  552","2024":"  659","2025":"  762"},{"Institusjon":"Fagskolen Møre og Romsdal","Nøkkeltall":"Førstevalgssøkere","2020":"   NA","2021":"   NA","2022":"  292","2023":"  284","2024":"  361","2025":"  411"},{"Institusjon":"Fagskolen Møre og Romsdal","Nøkkeltall":"Studieplasser","2020":"   NA","2021":"   NA","2022":"  404","2023":"  400","2024":"  356","2025":"  352"},{"Institusjon":"Fagskolen i Nord","Nøkkeltall":"Alle søkere","2020":"   NA","2021":"   NA","2022":"  638","2023":"  678","2024":"  802","2025":"  764"},{"Institusjon":"Fagskolen i Nord","Nøkkeltall":"Førstevalgssøkere","2020":"   NA","2021":"   NA","2022":"  430","2023":"  428","2024":"  497","2025":"  479"},{"Institusjon":"Fagskolen i Nord","Nøkkeltall":"Studieplasser","2020":"   NA","2021":"   NA","2022":"  640","2023":"  660","2024":"  760","2025":"  971"},{"Institusjon":"Fagskulen Vestland","Nøkkeltall":"Alle søkere","2020":"   NA","2021":"   NA","2022":"2 101","2023":"1 927","2024":"2 119","2025":"2 170"},{"Institusjon":"Fagskulen Vestland","Nøkkeltall":"Førstevalgssøkere","2020":"   NA","2021":"   NA","2022":"1 460","2023":"1 335","2024":"1 518","2025":"1 496"},{"Institusjon":"Fagskulen Vestland","Nøkkeltall":"Studieplasser","2020":"   NA","2021":"   NA","2022":"1 341","2023":"1 271","2024":"1 186","2025":"1 123"},{"Institusjon":"Brann- og redningsskolen","Nøkkeltall":"Alle søkere","2020":"   NA","2021":"   NA","2022":"   NA","2023":"  680","2024":"1 164","2025":"  865"},{"Institusjon":"Brann- og redningsskolen","Nøkkeltall":"Førstevalgssøkere","2020":"   NA","2021":"   NA","2022":"   NA","2023":"  646","2024":"1 119","2025":"  823"},{"Institusjon":"Brann- og redningsskolen","Nøkkeltall":"Studieplasser","2020":"   NA","2021":"   NA","2022":"   NA","2023":"   80","2024":"  160","2025":"  160"},{"Institusjon":"Fagskolen Diakonova","Nøkkeltall":"Alle søkere","2020":"   NA","2021":"   NA","2022":"   NA","2023":"  151","2024":"  219","2025":"1 449"},{"Institusjon":"Fagskolen Diakonova","Nøkkeltall":"Førstevalgssøkere","2020":"   NA","2021":"   NA","2022":"   NA","2023":"   84","2024":"  122","2025":"  833"},{"Institusjon":"Fagskolen Diakonova","Nøkkeltall":"Studieplasser","2020":"   NA","2021":"   NA","2022":"   NA","2023":"   68","2024":"  220","2025":"  949"},{"Institusjon":"Ytre Kunstfagskole","Nøkkeltall":"Alle søkere","2020":"   NA","2021":"   NA","2022":"   NA","2023":"   22","2024":"   30","2025":"   26"},{"Institusjon":"Ytre Kunstfagskole","Nøkkeltall":"Førstevalgssøkere","2020":"   NA","2021":"   NA","2022":"   NA","2023":"    9","2024":"   12","2025":"   10"},{"Institusjon":"Ytre Kunstfagskole","Nøkkeltall":"Studieplasser","2020":"   NA","2021":"   NA","2022":"   NA","2023":"   20","2024":"   20","2025":"   35"},{"Institusjon":"Fagskolen i Finnmark","Nøkkeltall":"Alle søkere","2020":"   NA","2021":"   NA","2022":"   NA","2023":"   NA","2024":"   83","2025":"  110"},{"Institusjon":"Fagskolen i Finnmark","Nøkkeltall":"Førstevalgssøkere","2020":"   NA","2021":"   NA","2022":"   NA","2023":"   NA","2024":"   42","2025":"   36"},{"Institusjon":"Fagskolen i Finnmark","Nøkkeltall":"Studieplasser","2020":"   NA","2021":"   NA","2022":"   NA","2023":"   NA","2024":"   84","2025":"   90"},{"Institusjon":"Fagskolen Viken","Nøkkeltall":"Alle søkere","2020":"   NA","2021":"   NA","2022":"   NA","2023":"   NA","2024":"   NA","2025":"2 764"},{"Institusjon":"Fagskolen Viken","Nøkkeltall":"Førstevalgssøkere","2020":"   NA","2021":"   NA","2022":"   NA","2023":"   NA","2024":"   NA","2025":"1 678"},{"Institusjon":"Fagskolen Viken","Nøkkeltall":"Studieplasser","2020":"   NA","2021":"   NA","2022":"   NA","2023":"   NA","2024":"   NA","2025":"2 192"}]}; let grid = null; 
+    function renderTable(key) {
+      const rawRows      = allData[key] || [];
+      const filteredRows = (typeof applyFilters === "function") ? applyFilters(rawRows) : rawRows;
+      const cols = { 'col_1': filteredRows.map(r => r['Institusjon']),
+            'col_2': filteredRows.map(r => r['Nøkkeltall']),
+            'col_3': filteredRows.map(r => r['2020']),
+            'col_4': filteredRows.map(r => r['2021']),
+            'col_5': filteredRows.map(r => r['2022']),
+            'col_6': filteredRows.map(r => r['2023']),
+            'col_7': filteredRows.map(r => r['2024']),
+            'col_8': filteredRows.map(r => r['2025']) };
+
+      if (grid) {
+        grid.update({ dataTable: { columns: cols } });
+      } else {
+        grid = Grid.grid("datagrid-container", {
+          dataTable: { columns: cols },
+          columnDefaults: { resizable: true },
+          columns: [ { id: 'col_1', header: { format: 'Institusjon' }, width: 362 },
+                  { id: 'col_2', header: { format: 'Nøkkeltall' }, width: 255 },
+                  { id: 'col_3', header: { format: '2020' }, width: 74 },
+                  { id: 'col_4', header: { format: '2021' }, width: 74 },
+                  { id: 'col_5', header: { format: '2022' }, width: 74 },
+                  { id: 'col_6', header: { format: '2023' }, width: 74 },
+                  { id: 'col_7', header: { format: '2024' }, width: 74 },
+                  { id: 'col_8', header: { format: '2025' }, width: 79 } ],
+          rendering: { theme: "hcg-theme-default hcg-custom-theme" }
+        });
+      }
+    }
+     
+      document.querySelectorAll(".hc-col-filter").forEach(function(inp) { inp.value = ""; });
+
+      const colLabels = ["Institusjon","Nøkkeltall","2020","2021","2022","2023","2024","2025"];
+
+      function getFilterValues() {
+        const vals = {};
+        document.querySelectorAll(".hc-col-filter").forEach(function(inp) {
+          vals[inp.dataset.label] = inp.value.trim().toLowerCase();
+        });
+        return vals;
+      }
+
+      function applyFilters(rows) {
+        const filters = getFilterValues();
+        return rows.filter(function(row) {
+          return colLabels.every(function(lbl) {
+            const fv   = filters[lbl];
+            if (!fv) return true;
+            const cell = String(row[lbl] == null ? "" : row[lbl]).toLowerCase();
+            return cell.includes(fv);
+          });
+        });
+      }
+
+      document.querySelectorAll(".hc-col-filter").forEach(function(inp) {
+        inp.addEventListener("input", function() {
+          const key = "default";
+          renderTable(key);
+        });
+      });
+       renderTable("default"); 
+      const exportColLabels = ["Institusjon","Nøkkeltall","2020","2021","2022","2023","2024","2025"];
+
+      function sanitizeFilePart(x) {
+        return String(x).trim().replace(/[\\/:*?"<>|]+/g, "-").replace(/\s+/g, "_");
+      }
+      function fileNameForExport(ext) {
+        if (false) return "grunndata_" + sanitizeFilePart(document.getElementById("grp-select").value) + "." + ext;
+        return "grunndata." + ext;
+      }
+      function getCurrentVisibleRows() {
+        const key     = false ? document.getElementById("grp-select").value : "default";
+        const rawRows = allData[key] || [];
+        return (typeof applyFilters === "function") ? applyFilters(rawRows) : rawRows;
+      }
+      function downloadXLSX() {
+        const rows = getCurrentVisibleRows();
+        const aoa  = [ exportColLabels, ...rows.map(r => exportColLabels.map(lbl => r[lbl])) ];
+        const ws   = XLSX.utils.aoa_to_sheet(aoa);
+        const wb   = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Tabell");
+        XLSX.writeFile(wb, fileNameForExport("xlsx"));
+      }
+
+      const exportBtn     = document.getElementById("hc-export-btn");
+      const exportMenu    = document.getElementById("hc-export-menu");
+      const exportXlsxBtn = document.getElementById("hc-export-xlsx");
+
+      exportBtn.addEventListener("click", function(e) { e.stopPropagation(); exportMenu.classList.toggle("open"); });
+      exportXlsxBtn.addEventListener("click", function() { downloadXLSX(); exportMenu.classList.remove("open"); });
+      document.addEventListener("click", function(e) {
+        if (!document.getElementById("hc-export-btn").contains(e.target) &&
+            !document.getElementById("hc-export-menu").contains(e.target)) {
+          exportMenu.classList.remove("open");
+        }
+      });
+      </script>
+  </body>
+</html>
+</html>

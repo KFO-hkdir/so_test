@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+
+  <meta charset="utf-8"/>
+  <script src="https://cdn.jsdelivr.net/npm/@highcharts/grid-lite/grid-lite.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@highcharts/grid-lite/css/grid-lite.css"/>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <style>
+        html { height: 100%; overflow: hidden; margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+          height: 100%;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          font-family: sans-serif;
+          max-width: 1100px;
+          margin: 0 auto;
+          padding: 8px 16px;
+          font-size: 11px;
+          box-sizing: border-box;
+        }
+        h4 { font-size: 13px; margin: 0 0 12px 0; line-height: 1.25; }
+
+        .hc-table-controls {
+          display: flex; align-items: center; gap: 6px;
+          margin-bottom: 10px; width: 100%; box-sizing: border-box;
+        }
+        .hc-table-select-wrap { flex: 1 1 auto; min-width: 0; }
+        .hc-table-select-wrap select {
+          font-size: 11px; padding: 4px 7px;
+          border: 1px solid #ccc; border-radius: 4px;
+          width: 100%; box-sizing: border-box; background: white;
+        }
+        .hc-table-export-wrap { flex: 0 0 auto;   margin-left: auto;}
+
+        /* Filter row — no gap, no scroll; inputs are flush with column edges */
+        .hc-filter-row {
+          display: flex; gap: 0; margin-bottom: 8px;
+          flex-wrap: nowrap; overflow: hidden;
+        }
+        .hc-filter-row input.hc-col-filter {
+          flex: 1 1 0; min-width: 0;
+          font-size: 11px; padding: 4px 6px;
+          border: 1px solid #ccc; border-right-width: 0;
+          box-sizing: border-box; background: #fafafa;
+        }
+        .hc-filter-row input.hc-col-filter:last-child { border-right-width: 1px; }
+        .hc-filter-row input.hc-col-filter:focus { outline: none; border-color: #F58220; background: #fff; }
+
+        /* Per-column filter widths */
+  .hc-filter-row input.hc-col-filter:nth-child(1) { flex: 0 0 362px !important; width: 362px !important; min-width: 362px !important; max-width: 362px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(2) { flex: 0 0 255px !important; width: 255px !important; min-width: 255px !important; max-width: 255px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(3) { flex: 0 0 74px !important; width: 74px !important; min-width: 74px !important; max-width: 74px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(4) { flex: 0 0 74px !important; width: 74px !important; min-width: 74px !important; max-width: 74px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(5) { flex: 0 0 74px !important; width: 74px !important; min-width: 74px !important; max-width: 74px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(6) { flex: 0 0 74px !important; width: 74px !important; min-width: 74px !important; max-width: 74px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(7) { flex: 0 0 74px !important; width: 74px !important; min-width: 74px !important; max-width: 74px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(8) { flex: 0 0 79px !important; width: 79px !important; min-width: 79px !important; max-width: 79px !important; }
+
+        .hc-export-wrap { position: relative; display: inline-block; }
+        .hc-export-btn {
+          width: 26px; height: 26px; border: 1px solid #ccc; border-radius: 4px;
+          background: white; cursor: pointer; font-size: 11px; line-height: 1; padding: 0;
+        }
+        .hc-export-btn:hover { background: #f6f6f6; }
+        .hc-export-menu {
+          display: none; position: absolute; right: 0; top: calc(100% + 4px);
+          min-width: 140px; background: white; border: 1px solid #ccc;
+          border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); z-index: 9999; overflow: hidden;
+        }
+        .hc-export-menu.open { display: block; }
+        .hc-export-item {
+          display: block; width: 100%; border: 0; background: white;
+          text-align: left; padding: 8px 10px; cursor: pointer; font-size: 11px;
+        }
+        .hc-export-item:hover { background: #f6f6f6; }
+
+        #datagrid-container { width: 100%; flex: 1 1 0; min-height: 0; overflow: hidden; }
+        .hcg-container { width: 100% !important; height: 100% !important; }
+
+        .hcg-custom-theme {
+          --hcg-font-size:           11px;
+          --hcg-font-family:         sans-serif;
+          --hcg-padding:             3px 6px;
+          --hcg-header-background:   #F58220;
+          --hcg-header-color:        #ffffff;
+          --hcg-header-font-size:    11px;
+          --hcg-header-font-weight:  bold;
+          --hcg-header-padding:      3px 6px;
+          --hcg-row-odd-background:  #ffffff;
+          --hcg-row-even-background: #fde9d9;
+          width: 100% !important;
+        }
+        .hcg-custom-theme th { padding-left: 14px !important; padding-right: 14px !important; }
+        .hcg-custom-theme th:not(:first-child),
+        .hcg-custom-theme td:not(:first-child) { text-align: right !important; white-space: nowrap; }
+        .hcg-custom-theme th:first-child,
+        .hcg-custom-theme td:first-child { text-align: left !important; white-space: nowrap; }
+        .hcg-custom-theme th:not(:first-child) > *,
+        .hcg-custom-theme th:not(:first-child) button,
+        .hcg-custom-theme th:not(:first-child) span { text-align: right !important; justify-content: flex-end !important; }
+
+        /* Per-column cell widths */
+  .hcg-container th:nth-child(1),
+  .hcg-container td:nth-child(1) { width: 362px !important; min-width: 362px !important; max-width: 362px !important; }
+  .hcg-container th:nth-child(2),
+  .hcg-container td:nth-child(2) { width: 255px !important; min-width: 255px !important; max-width: 255px !important; }
+  .hcg-container th:nth-child(3),
+  .hcg-container td:nth-child(3) { width: 74px !important; min-width: 74px !important; max-width: 74px !important; }
+  .hcg-container th:nth-child(4),
+  .hcg-container td:nth-child(4) { width: 74px !important; min-width: 74px !important; max-width: 74px !important; }
+  .hcg-container th:nth-child(5),
+  .hcg-container td:nth-child(5) { width: 74px !important; min-width: 74px !important; max-width: 74px !important; }
+  .hcg-container th:nth-child(6),
+  .hcg-container td:nth-child(6) { width: 74px !important; min-width: 74px !important; max-width: 74px !important; }
+  .hcg-container th:nth-child(7),
+  .hcg-container td:nth-child(7) { width: 74px !important; min-width: 74px !important; max-width: 74px !important; }
+  .hcg-container th:nth-child(8),
+  .hcg-container td:nth-child(8) { width: 79px !important; min-width: 79px !important; max-width: 79px !important; }
+
+        /* Scroll height */
+        #datagrid-container { flex: 0 0 600px !important; }
+        </style>
+</head>
+<html>
+  <body>
+    <h4>Nøkkeltall utdanningsområdenivå - tidsserier</h4>
+    <div class="hc-table-controls">
+      <div class="hc-table-export-wrap">
+        <div class="hc-export-wrap">
+          <button id="hc-export-btn" class="hc-export-btn" type="button" aria-label="Last ned XLSX">&#9776;</button>
+          <div id="hc-export-menu" class="hc-export-menu">
+            <button id="hc-export-xlsx" class="hc-export-item" type="button">Last ned XLSX</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hc-filter-row">
+      <input type="text" class="hc-col-filter" data-label="Institusjon" placeholder="Søk Institusjon…" step="any" />
+      <input type="text" class="hc-col-filter" data-label="Nøkkeltall" placeholder="Søk Nøkkeltall…" step="any" />
+      <input type="text" class="hc-col-filter" data-label="2020" placeholder="Søk 2020…" step="any" />
+      <input type="text" class="hc-col-filter" data-label="2021" placeholder="Søk 2021…" step="any" />
+      <input type="text" class="hc-col-filter" data-label="2022" placeholder="Søk 2022…" step="any" />
+      <input type="text" class="hc-col-filter" data-label="2023" placeholder="Søk 2023…" step="any" />
+      <input type="text" class="hc-col-filter" data-label="2024" placeholder="Søk 2024…" step="any" />
+      <input type="text" class="hc-col-filter" data-label="2025" placeholder="Søk 2025…" step="any" />
+    </div>
+    <div id="datagrid-container"></div>
+    <script>const allData = {"default":[{"Institusjon":"Estetiske fag","Nøkkeltall":"Alle søkere","2020":"  318","2021":"  425","2022":"  442","2023":"  308","2024":"  557","2025":"  336"},{"Institusjon":"Estetiske fag","Nøkkeltall":"Førstevalgssøkere","2020":"  289","2021":"  382","2022":"  358","2023":"  272","2024":"  454","2025":"  273"},{"Institusjon":"Estetiske fag","Nøkkeltall":"Studieplasser","2020":"  162","2021":"  207","2022":"  250","2023":"  217","2024":"  288","2025":"  195"},{"Institusjon":"Helsefag","Nøkkeltall":"Alle søkere","2020":"2 270","2021":"3 627","2022":"2 954","2023":"3 087","2024":"3 477","2025":"3 095"},{"Institusjon":"Helsefag","Nøkkeltall":"Førstevalgssøkere","2020":"2 130","2021":"3 323","2022":"2 682","2023":"2 824","2024":"3 145","2025":"2 779"},{"Institusjon":"Helsefag","Nøkkeltall":"Studieplasser","2020":"2 196","2021":"4 006","2022":"3 143","2023":"3 226","2024":"3 978","2025":"3 245"},{"Institusjon":"Informasjonsteknologi","Nøkkeltall":"Alle søkere","2020":"  552","2021":"  886","2022":"  879","2023":"  965","2024":"1 084","2025":"1 416"},{"Institusjon":"Informasjonsteknologi","Nøkkeltall":"Førstevalgssøkere","2020":"  398","2021":"  608","2022":"  591","2023":"  728","2024":"  811","2025":"1 020"},{"Institusjon":"Informasjonsteknologi","Nøkkeltall":"Studieplasser","2020":"  406","2021":"  560","2022":"  611","2023":"  626","2024":"  614","2025":"  829"},{"Institusjon":"Land- og havbruk","Nøkkeltall":"Alle søkere","2020":"  345","2021":"  431","2022":"  510","2023":"  313","2024":"  353","2025":"  213"},{"Institusjon":"Land- og havbruk","Nøkkeltall":"Førstevalgssøkere","2020":"  302","2021":"  368","2022":"  411","2023":"  255","2024":"  292","2025":"  144"},{"Institusjon":"Land- og havbruk","Nøkkeltall":"Studieplasser","2020":"  225","2021":"  335","2022":"  453","2023":"  240","2024":"  377","2025":"  154"},{"Institusjon":"Matfag","Nøkkeltall":"Alle søkere","2020":"  167","2021":"  207","2022":"  258","2023":"  182","2024":"  198","2025":"  207"},{"Institusjon":"Matfag","Nøkkeltall":"Førstevalgssøkere","2020":"  138","2021":"  166","2022":"  220","2023":"  154","2024":"  156","2025":"  160"},{"Institusjon":"Matfag","Nøkkeltall":"Studieplasser","2020":"  165","2021":"  199","2022":"  250","2023":"  240","2024":"  175","2025":"  161"},{"Institusjon":"Pedagogiske fag","Nøkkeltall":"Alle søkere","2020":"  192","2021":"  407","2022":"  342","2023":"  328","2024":"  472","2025":"  433"},{"Institusjon":"Pedagogiske fag","Nøkkeltall":"Førstevalgssøkere","2020":"  107","2021":"  230","2022":"  227","2023":"  209","2024":"  282","2025":"  269"},{"Institusjon":"Pedagogiske fag","Nøkkeltall":"Studieplasser","2020":"  155","2021":"  405","2022":"  355","2023":"  305","2024":"  483","2025":"  330"},{"Institusjon":"Reiseliv","Nøkkeltall":"Alle søkere","2020":"  151","2021":"  172","2022":"  169","2023":"  111","2024":"   80","2025":"  135"},{"Institusjon":"Reiseliv","Nøkkeltall":"Førstevalgssøkere","2020":"  116","2021":"  119","2022":"  113","2023":"   55","2024":"   34","2025":"   72"},{"Institusjon":"Reiseliv","Nøkkeltall":"Studieplasser","2020":"  265","2021":"  290","2022":"  284","2023":"  175","2024":"   95","2025":"  180"},{"Institusjon":"Teknologiske fag","Nøkkeltall":"Alle søkere","2020":"5 840","2021":"6 885","2022":"6 944","2023":"8 144","2024":"9 566","2025":"9 424"},{"Institusjon":"Teknologiske fag","Nøkkeltall":"Førstevalgssøkere","2020":"5 679","2021":"6 559","2022":"6 637","2023":"7 844","2024":"9 221","2025":"9 046"},{"Institusjon":"Teknologiske fag","Nøkkeltall":"Studieplasser","2020":"5 063","2021":"5 844","2022":"5 840","2023":"6 577","2024":"6 585","2025":"6 878"},{"Institusjon":"Økonomisk-administrative fag","Nøkkeltall":"Alle søkere","2020":"  266","2021":"1 414","2022":"1 262","2023":"1 386","2024":"1 683","2025":"1 804"},{"Institusjon":"Økonomisk-administrative fag","Nøkkeltall":"Førstevalgssøkere","2020":"  160","2021":"1 017","2022":"  931","2023":"1 049","2024":"1 281","2025":"1 306"},{"Institusjon":"Økonomisk-administrative fag","Nøkkeltall":"Studieplasser","2020":"  180","2021":"1 185","2022":"  930","2023":"1 110","2024":"1 642","2025":"1 337"},{"Institusjon":"Mediefag","Nøkkeltall":"Alle søkere","2020":"   NA","2021":"   50","2022":"  115","2023":"  104","2024":"  116","2025":"  172"},{"Institusjon":"Mediefag","Nøkkeltall":"Førstevalgssøkere","2020":"   NA","2021":"   34","2022":"   76","2023":"   63","2024":"   66","2025":"  127"},{"Institusjon":"Mediefag","Nøkkeltall":"Studieplasser","2020":"   NA","2021":"   30","2022":"   70","2023":"   70","2024":"   50","2025":"   60"}]}; let grid = null; 
+    function renderTable(key) {
+      const rawRows      = allData[key] || [];
+      const filteredRows = (typeof applyFilters === "function") ? applyFilters(rawRows) : rawRows;
+      const cols = { 'col_1': filteredRows.map(r => r['Institusjon']),
+            'col_2': filteredRows.map(r => r['Nøkkeltall']),
+            'col_3': filteredRows.map(r => r['2020']),
+            'col_4': filteredRows.map(r => r['2021']),
+            'col_5': filteredRows.map(r => r['2022']),
+            'col_6': filteredRows.map(r => r['2023']),
+            'col_7': filteredRows.map(r => r['2024']),
+            'col_8': filteredRows.map(r => r['2025']) };
+
+      if (grid) {
+        grid.update({ dataTable: { columns: cols } });
+      } else {
+        grid = Grid.grid("datagrid-container", {
+          dataTable: { columns: cols },
+          columnDefaults: { resizable: true },
+          columns: [ { id: 'col_1', header: { format: 'Institusjon' }, width: 362 },
+                  { id: 'col_2', header: { format: 'Nøkkeltall' }, width: 255 },
+                  { id: 'col_3', header: { format: '2020' }, width: 74 },
+                  { id: 'col_4', header: { format: '2021' }, width: 74 },
+                  { id: 'col_5', header: { format: '2022' }, width: 74 },
+                  { id: 'col_6', header: { format: '2023' }, width: 74 },
+                  { id: 'col_7', header: { format: '2024' }, width: 74 },
+                  { id: 'col_8', header: { format: '2025' }, width: 79 } ],
+          rendering: { theme: "hcg-theme-default hcg-custom-theme" }
+        });
+      }
+    }
+     
+      document.querySelectorAll(".hc-col-filter").forEach(function(inp) { inp.value = ""; });
+
+      const colLabels = ["Institusjon","Nøkkeltall","2020","2021","2022","2023","2024","2025"];
+
+      function getFilterValues() {
+        const vals = {};
+        document.querySelectorAll(".hc-col-filter").forEach(function(inp) {
+          vals[inp.dataset.label] = inp.value.trim().toLowerCase();
+        });
+        return vals;
+      }
+
+      function applyFilters(rows) {
+        const filters = getFilterValues();
+        return rows.filter(function(row) {
+          return colLabels.every(function(lbl) {
+            const fv   = filters[lbl];
+            if (!fv) return true;
+            const cell = String(row[lbl] == null ? "" : row[lbl]).toLowerCase();
+            return cell.includes(fv);
+          });
+        });
+      }
+
+      document.querySelectorAll(".hc-col-filter").forEach(function(inp) {
+        inp.addEventListener("input", function() {
+          const key = "default";
+          renderTable(key);
+        });
+      });
+       renderTable("default"); 
+      const exportColLabels = ["Institusjon","Nøkkeltall","2020","2021","2022","2023","2024","2025"];
+
+      function sanitizeFilePart(x) {
+        return String(x).trim().replace(/[\\/:*?"<>|]+/g, "-").replace(/\s+/g, "_");
+      }
+      function fileNameForExport(ext) {
+        if (false) return "grunndata_" + sanitizeFilePart(document.getElementById("grp-select").value) + "." + ext;
+        return "grunndata." + ext;
+      }
+      function getCurrentVisibleRows() {
+        const key     = false ? document.getElementById("grp-select").value : "default";
+        const rawRows = allData[key] || [];
+        return (typeof applyFilters === "function") ? applyFilters(rawRows) : rawRows;
+      }
+      function downloadXLSX() {
+        const rows = getCurrentVisibleRows();
+        const aoa  = [ exportColLabels, ...rows.map(r => exportColLabels.map(lbl => r[lbl])) ];
+        const ws   = XLSX.utils.aoa_to_sheet(aoa);
+        const wb   = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Tabell");
+        XLSX.writeFile(wb, fileNameForExport("xlsx"));
+      }
+
+      const exportBtn     = document.getElementById("hc-export-btn");
+      const exportMenu    = document.getElementById("hc-export-menu");
+      const exportXlsxBtn = document.getElementById("hc-export-xlsx");
+
+      exportBtn.addEventListener("click", function(e) { e.stopPropagation(); exportMenu.classList.toggle("open"); });
+      exportXlsxBtn.addEventListener("click", function() { downloadXLSX(); exportMenu.classList.remove("open"); });
+      document.addEventListener("click", function(e) {
+        if (!document.getElementById("hc-export-btn").contains(e.target) &&
+            !document.getElementById("hc-export-menu").contains(e.target)) {
+          exportMenu.classList.remove("open");
+        }
+      });
+      </script>
+  </body>
+</html>
+</html>

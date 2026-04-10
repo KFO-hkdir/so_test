@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+
+  <meta charset="utf-8"/>
+  <script src="https://cdn.jsdelivr.net/npm/@highcharts/grid-lite/grid-lite.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@highcharts/grid-lite/css/grid-lite.css"/>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <style>
+        html { height: 100%; overflow: hidden; margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+          height: 100%;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          font-family: sans-serif;
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 8px 16px;
+          font-size: 13px;
+          box-sizing: border-box;
+        }
+        h4 { font-size: 16px; margin: 0 0 12px 0; line-height: 1.25; }
+
+        .hc-table-controls {
+          display: flex; align-items: center; gap: 8px;
+          margin-bottom: 10px; width: 100%; box-sizing: border-box;
+        }
+        .hc-table-select-wrap { flex: 1 1 auto; min-width: 0; }
+        .hc-table-select-wrap select {
+          font-size: 13px; padding: 6px 10px;
+          border: 1px solid #ccc; border-radius: 4px;
+          width: 100%; box-sizing: border-box; background: white;
+        }
+        .hc-table-export-wrap { flex: 0 0 auto;   margin-left: auto;}
+
+        /* Filter row — no gap, no scroll; inputs are flush with column edges */
+        .hc-filter-row {
+          display: flex; gap: 0; margin-bottom: 8px;
+          flex-wrap: nowrap; overflow: hidden;
+        }
+        .hc-filter-row input.hc-col-filter {
+          flex: 1 1 0; min-width: 0;
+          font-size: 13px; padding: 4px 6px;
+          border: 1px solid #ccc; border-right-width: 0;
+          box-sizing: border-box; background: #fafafa;
+        }
+        .hc-filter-row input.hc-col-filter:last-child { border-right-width: 1px; }
+        .hc-filter-row input.hc-col-filter:focus { outline: none; border-color: #F58220; background: #fff; }
+
+        /* Per-column filter widths */
+  .hc-filter-row input.hc-col-filter:nth-child(1) { flex: 0 0 641px !important; width: 641px !important; min-width: 641px !important; max-width: 641px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(2) { flex: 0 0 174px !important; width: 174px !important; min-width: 174px !important; max-width: 174px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(3) { flex: 0 0 174px !important; width: 174px !important; min-width: 174px !important; max-width: 174px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(4) { flex: 0 0 177px !important; width: 177px !important; min-width: 177px !important; max-width: 177px !important; }
+
+        .hc-export-wrap { position: relative; display: inline-block; }
+        .hc-export-btn {
+          width: 30px; height: 30px; border: 1px solid #ccc; border-radius: 4px;
+          background: white; cursor: pointer; font-size: 13px; line-height: 1; padding: 0;
+        }
+        .hc-export-btn:hover { background: #f6f6f6; }
+        .hc-export-menu {
+          display: none; position: absolute; right: 0; top: calc(100% + 4px);
+          min-width: 140px; background: white; border: 1px solid #ccc;
+          border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); z-index: 9999; overflow: hidden;
+        }
+        .hc-export-menu.open { display: block; }
+        .hc-export-item {
+          display: block; width: 100%; border: 0; background: white;
+          text-align: left; padding: 8px 10px; cursor: pointer; font-size: 13px;
+        }
+        .hc-export-item:hover { background: #f6f6f6; }
+
+        #datagrid-container { width: 100%; flex: 1 1 0; min-height: 0; overflow: hidden; }
+        .hcg-container { width: 100% !important; height: 100% !important; }
+
+        .hcg-custom-theme {
+          --hcg-font-size:           13px;
+          --hcg-font-family:         sans-serif;
+          --hcg-padding:             6px 10px;
+          --hcg-header-background:   #F58220;
+          --hcg-header-color:        #ffffff;
+          --hcg-header-font-size:    13px;
+          --hcg-header-font-weight:  bold;
+          --hcg-header-padding:      6px 10px;
+          --hcg-row-odd-background:  #ffffff;
+          --hcg-row-even-background: #fde9d9;
+          width: 100% !important;
+        }
+        .hcg-custom-theme th { padding-left: 14px !important; padding-right: 14px !important; }
+        .hcg-custom-theme th:not(:first-child),
+        .hcg-custom-theme td:not(:first-child) { text-align: right !important; white-space: nowrap; }
+        .hcg-custom-theme th:first-child,
+        .hcg-custom-theme td:first-child { text-align: left !important; white-space: nowrap; }
+        .hcg-custom-theme th:not(:first-child) > *,
+        .hcg-custom-theme th:not(:first-child) button,
+        .hcg-custom-theme th:not(:first-child) span { text-align: right !important; justify-content: flex-end !important; }
+
+        /* Per-column cell widths */
+  .hcg-container th:nth-child(1),
+  .hcg-container td:nth-child(1) { width: 641px !important; min-width: 641px !important; max-width: 641px !important; }
+  .hcg-container th:nth-child(2),
+  .hcg-container td:nth-child(2) { width: 174px !important; min-width: 174px !important; max-width: 174px !important; }
+  .hcg-container th:nth-child(3),
+  .hcg-container td:nth-child(3) { width: 174px !important; min-width: 174px !important; max-width: 174px !important; }
+  .hcg-container th:nth-child(4),
+  .hcg-container td:nth-child(4) { width: 177px !important; min-width: 177px !important; max-width: 177px !important; }
+
+        /* Scroll height */
+        #datagrid-container { flex: 0 0 600px !important; }
+        </style>
+</head>
+<html>
+  <body>
+    <h4>Nøkkeltall institusjonsnivå 2025</h4>
+    <div class="hc-table-controls">
+      <div class="hc-table-export-wrap">
+        <div class="hc-export-wrap">
+          <button id="hc-export-btn" class="hc-export-btn" type="button" aria-label="Last ned XLSX">&#9776;</button>
+          <div id="hc-export-menu" class="hc-export-menu">
+            <button id="hc-export-xlsx" class="hc-export-item" type="button">Last ned XLSX</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hc-filter-row">
+      <input type="text" class="hc-col-filter" data-label="Institusjon" placeholder="Søk Institusjon…" step="any" />
+      <input type="text" class="hc-col-filter" data-label="Søkere" placeholder="Søk Søkere…" step="any" />
+      <input type="text" class="hc-col-filter" data-label="Førstevalgs- søkere" placeholder="Søk Førstevalgs- søkere…" step="any" />
+      <input type="text" class="hc-col-filter" data-label="Studieplasser" placeholder="Søk Studieplasser…" step="any" />
+    </div>
+    <div id="datagrid-container"></div>
+    <script>const allData = {"default":[{"Institusjon":"Asker Kunstfagskole","Søkere":"   55","Førstevalgs- søkere":"   24","Studieplasser":"   20"},{"Institusjon":"Brann- og redningsskolen","Søkere":"  865","Førstevalgs- søkere":"  823","Studieplasser":"  160"},{"Institusjon":"Centric IT Academy","Søkere":"  515","Førstevalgs- søkere":"  368","Studieplasser":"  229"},{"Institusjon":"Einar Granum Kunstfagskole","Søkere":"  145","Førstevalgs- søkere":"  118","Studieplasser":"   75"},{"Institusjon":"Fagskolen Aldring og Helse","Søkere":"  138","Førstevalgs- søkere":"   74","Studieplasser":"  195"},{"Institusjon":"Fagskolen Diakonova","Søkere":"1 449","Førstevalgs- søkere":"  833","Studieplasser":"  949"},{"Institusjon":"Fagskolen Innlandet","Søkere":"1 858","Førstevalgs- søkere":"1 340","Studieplasser":"1 075"},{"Institusjon":"Fagskolen Møre og Romsdal","Søkere":"  762","Førstevalgs- søkere":"  411","Studieplasser":"  352"},{"Institusjon":"Fagskolen Oslo","Søkere":"1 618","Førstevalgs- søkere":"1 013","Studieplasser":"  714"},{"Institusjon":"Fagskolen Rogaland","Søkere":"2 532","Førstevalgs- søkere":"1 695","Studieplasser":"1 655"},{"Institusjon":"Fagskolen Vestfold og Telemark","Søkere":"1 410","Førstevalgs- søkere":"  916","Studieplasser":"1 030"},{"Institusjon":"Fagskolen Viken","Søkere":"2 764","Førstevalgs- søkere":"1 678","Studieplasser":"2 192"},{"Institusjon":"Fagskolen i Agder","Søkere":"1 216","Førstevalgs- søkere":"  740","Studieplasser":"  770"},{"Institusjon":"Fagskolen i Finnmark","Søkere":"  110","Førstevalgs- søkere":"   36","Studieplasser":"   90"},{"Institusjon":"Fagskolen i Nord","Søkere":"  764","Førstevalgs- søkere":"  479","Studieplasser":"  971"},{"Institusjon":"Fagskulen Vestland","Søkere":"2 170","Førstevalgs- søkere":"1 496","Studieplasser":"1 123"},{"Institusjon":"Høgskulen på Vestlandet","Søkere":"  146","Førstevalgs- søkere":"  101","Studieplasser":"   20"},{"Institusjon":"Kunstskolen i Stavanger","Søkere":"   51","Førstevalgs- søkere":"   34","Studieplasser":"   24"},{"Institusjon":"Nordland fagskole","Søkere":"  619","Førstevalgs- søkere":"  364","Studieplasser":"  385"},{"Institusjon":"Norges grønne fagskole - Vea","Søkere":"  266","Førstevalgs- søkere":"  212","Studieplasser":"  174"},{"Institusjon":"Norsk Fotofagskole","Søkere":"  207","Førstevalgs- søkere":"  173","Studieplasser":"   50"},{"Institusjon":"Norsk fagskole for lokomotivførere","Søkere":"1 282","Førstevalgs- søkere":"1 216","Studieplasser":"  120"},{"Institusjon":"Trøndelag høyere yrkesfagskole","Søkere":"1 646","Førstevalgs- søkere":"1 042","Studieplasser":"  961"},{"Institusjon":"Ytre Kunstfagskole","Søkere":"   26","Førstevalgs- søkere":"   10","Studieplasser":"   35"}]}; let grid = null; 
+    function renderTable(key) {
+      const rawRows      = allData[key] || [];
+      const filteredRows = (typeof applyFilters === "function") ? applyFilters(rawRows) : rawRows;
+      const cols = { 'col_1': filteredRows.map(r => r['Institusjon']),
+            'col_2': filteredRows.map(r => r['Søkere']),
+            'col_3': filteredRows.map(r => r['Førstevalgs- søkere']),
+            'col_4': filteredRows.map(r => r['Studieplasser']) };
+
+      if (grid) {
+        grid.update({ dataTable: { columns: cols } });
+      } else {
+        grid = Grid.grid("datagrid-container", {
+          dataTable: { columns: cols },
+          columnDefaults: { resizable: true },
+          columns: [ { id: 'col_1', header: { format: 'Institusjon' }, width: 641 },
+                  { id: 'col_2', header: { format: 'Søkere' }, width: 174 },
+                  { id: 'col_3', header: { format: 'Førstevalgs-<br>søkere' }, width: 174 },
+                  { id: 'col_4', header: { format: 'Studieplasser' }, width: 177 } ],
+          rendering: { theme: "hcg-theme-default hcg-custom-theme" }
+        });
+      }
+    }
+     
+      document.querySelectorAll(".hc-col-filter").forEach(function(inp) { inp.value = ""; });
+
+      const colLabels = ["Institusjon","Søkere","Førstevalgs- søkere","Studieplasser"];
+
+      function getFilterValues() {
+        const vals = {};
+        document.querySelectorAll(".hc-col-filter").forEach(function(inp) {
+          vals[inp.dataset.label] = inp.value.trim().toLowerCase();
+        });
+        return vals;
+      }
+
+      function applyFilters(rows) {
+        const filters = getFilterValues();
+        return rows.filter(function(row) {
+          return colLabels.every(function(lbl) {
+            const fv   = filters[lbl];
+            if (!fv) return true;
+            const cell = String(row[lbl] == null ? "" : row[lbl]).toLowerCase();
+            return cell.includes(fv);
+          });
+        });
+      }
+
+      document.querySelectorAll(".hc-col-filter").forEach(function(inp) {
+        inp.addEventListener("input", function() {
+          const key = "default";
+          renderTable(key);
+        });
+      });
+       renderTable("default"); 
+      const exportColLabels = ["Institusjon","Søkere","Førstevalgs- søkere","Studieplasser"];
+
+      function sanitizeFilePart(x) {
+        return String(x).trim().replace(/[\\/:*?"<>|]+/g, "-").replace(/\s+/g, "_");
+      }
+      function fileNameForExport(ext) {
+        if (false) return "grunndata_" + sanitizeFilePart(document.getElementById("grp-select").value) + "." + ext;
+        return "grunndata." + ext;
+      }
+      function getCurrentVisibleRows() {
+        const key     = false ? document.getElementById("grp-select").value : "default";
+        const rawRows = allData[key] || [];
+        return (typeof applyFilters === "function") ? applyFilters(rawRows) : rawRows;
+      }
+      function downloadXLSX() {
+        const rows = getCurrentVisibleRows();
+        const aoa  = [ exportColLabels, ...rows.map(r => exportColLabels.map(lbl => r[lbl])) ];
+        const ws   = XLSX.utils.aoa_to_sheet(aoa);
+        const wb   = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Tabell");
+        XLSX.writeFile(wb, fileNameForExport("xlsx"));
+      }
+
+      const exportBtn     = document.getElementById("hc-export-btn");
+      const exportMenu    = document.getElementById("hc-export-menu");
+      const exportXlsxBtn = document.getElementById("hc-export-xlsx");
+
+      exportBtn.addEventListener("click", function(e) { e.stopPropagation(); exportMenu.classList.toggle("open"); });
+      exportXlsxBtn.addEventListener("click", function() { downloadXLSX(); exportMenu.classList.remove("open"); });
+      document.addEventListener("click", function(e) {
+        if (!document.getElementById("hc-export-btn").contains(e.target) &&
+            !document.getElementById("hc-export-menu").contains(e.target)) {
+          exportMenu.classList.remove("open");
+        }
+      });
+      </script>
+  </body>
+</html>
+</html>
