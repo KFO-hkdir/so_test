@@ -16,7 +16,7 @@
           display: flex;
           flex-direction: column;
           font-family: sans-serif;
-          max-width: 1200px;
+          max-width: 1400px;
           margin: 0 auto;
           padding: 8px 16px;
           font-size: 13px;
@@ -51,10 +51,10 @@
         .hc-filter-row input.hc-col-filter:focus { outline: none; border-color: #F58220; background: #fff; }
 
         /* Per-column filter widths */
-  .hc-filter-row input.hc-col-filter:nth-child(1) { flex: 0 0 641px !important; width: 641px !important; min-width: 641px !important; max-width: 641px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(2) { flex: 0 0 174px !important; width: 174px !important; min-width: 174px !important; max-width: 174px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(3) { flex: 0 0 174px !important; width: 174px !important; min-width: 174px !important; max-width: 174px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(4) { flex: 0 0 177px !important; width: 177px !important; min-width: 177px !important; max-width: 177px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(1) { flex: 0 0 751px !important; width: 751px !important; min-width: 751px !important; max-width: 751px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(2) { flex: 0 0 204px !important; width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(3) { flex: 0 0 204px !important; width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(4) { flex: 0 0 207px !important; width: 207px !important; min-width: 207px !important; max-width: 207px !important; }
 
         .hc-export-wrap { position: relative; display: inline-block; }
         .hc-export-btn {
@@ -101,13 +101,13 @@
 
         /* Per-column cell widths */
   .hcg-container th:nth-child(1),
-  .hcg-container td:nth-child(1) { width: 641px !important; min-width: 641px !important; max-width: 641px !important; }
+  .hcg-container td:nth-child(1) { width: 751px !important; min-width: 751px !important; max-width: 751px !important; }
   .hcg-container th:nth-child(2),
-  .hcg-container td:nth-child(2) { width: 174px !important; min-width: 174px !important; max-width: 174px !important; }
+  .hcg-container td:nth-child(2) { width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
   .hcg-container th:nth-child(3),
-  .hcg-container td:nth-child(3) { width: 174px !important; min-width: 174px !important; max-width: 174px !important; }
+  .hcg-container td:nth-child(3) { width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
   .hcg-container th:nth-child(4),
-  .hcg-container td:nth-child(4) { width: 177px !important; min-width: 177px !important; max-width: 177px !important; }
+  .hcg-container td:nth-child(4) { width: 207px !important; min-width: 207px !important; max-width: 207px !important; }
 
         /* Scroll height */
         #datagrid-container { flex: 0 0 600px !important; }
@@ -148,10 +148,10 @@
         grid = Grid.grid("datagrid-container", {
           dataTable: { columns: cols },
           columnDefaults: { resizable: true },
-          columns: [ { id: 'col_1', header: { format: 'Institusjon' }, width: 641 },
-                  { id: 'col_2', header: { format: 'Søkere' }, width: 174 },
-                  { id: 'col_3', header: { format: 'Førstevalgs-<br>søkere' }, width: 174 },
-                  { id: 'col_4', header: { format: 'Studieplasser' }, width: 177 } ],
+          columns: [ { id: 'col_1', header: { format: 'Institusjon' }, width: 751 },
+                  { id: 'col_2', header: { format: 'Søkere' }, width: 204 },
+                  { id: 'col_3', header: { format: 'Førstevalgs-<br>søkere' }, width: 204 },
+                  { id: 'col_4', header: { format: 'Studieplasser' }, width: 207 } ],
           rendering: { theme: "hcg-theme-default hcg-custom-theme" }
         });
       }
