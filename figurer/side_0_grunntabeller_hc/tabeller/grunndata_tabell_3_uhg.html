@@ -16,7 +16,7 @@
           display: flex;
           flex-direction: column;
           font-family: sans-serif;
-          max-width: 1200px;
+          max-width: 1400px;
           margin: 0 auto;
           padding: 8px 16px;
           font-size: 13px;
@@ -51,10 +51,11 @@
         .hc-filter-row input.hc-col-filter:focus { outline: none; border-color: #F58220; background: #fff; }
 
         /* Per-column filter widths */
-  .hc-filter-row input.hc-col-filter:nth-child(1) { flex: 0 0 641px !important; width: 641px !important; min-width: 641px !important; max-width: 641px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(2) { flex: 0 0 174px !important; width: 174px !important; min-width: 174px !important; max-width: 174px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(3) { flex: 0 0 174px !important; width: 174px !important; min-width: 174px !important; max-width: 174px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(4) { flex: 0 0 177px !important; width: 177px !important; min-width: 177px !important; max-width: 177px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(1) { flex: 0 0 546px !important; width: 546px !important; min-width: 546px !important; max-width: 546px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(2) { flex: 0 0 204px !important; width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(3) { flex: 0 0 204px !important; width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(4) { flex: 0 0 204px !important; width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(5) { flex: 0 0 208px !important; width: 208px !important; min-width: 208px !important; max-width: 208px !important; }
 
         .hc-export-wrap { position: relative; display: inline-block; }
         .hc-export-btn {
@@ -101,13 +102,15 @@
 
         /* Per-column cell widths */
   .hcg-container th:nth-child(1),
-  .hcg-container td:nth-child(1) { width: 641px !important; min-width: 641px !important; max-width: 641px !important; }
+  .hcg-container td:nth-child(1) { width: 546px !important; min-width: 546px !important; max-width: 546px !important; }
   .hcg-container th:nth-child(2),
-  .hcg-container td:nth-child(2) { width: 174px !important; min-width: 174px !important; max-width: 174px !important; }
+  .hcg-container td:nth-child(2) { width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
   .hcg-container th:nth-child(3),
-  .hcg-container td:nth-child(3) { width: 174px !important; min-width: 174px !important; max-width: 174px !important; }
+  .hcg-container td:nth-child(3) { width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
   .hcg-container th:nth-child(4),
-  .hcg-container td:nth-child(4) { width: 177px !important; min-width: 177px !important; max-width: 177px !important; }
+  .hcg-container td:nth-child(4) { width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
+  .hcg-container th:nth-child(5),
+  .hcg-container td:nth-child(5) { width: 208px !important; min-width: 208px !important; max-width: 208px !important; }
 
         /* Scroll height */
         #datagrid-container { flex: 0 0 600px !important; }
@@ -115,7 +118,7 @@
 </head>
 <html>
   <body>
-    <h4>Nøkkeltall institusjonsnivå 2025</h4>
+    <h4></h4>
     <div class="hc-table-controls">
       <div class="hc-table-export-wrap">
         <div class="hc-export-wrap">
@@ -131,16 +134,18 @@
       <input type="text" class="hc-col-filter" data-label="Søkere" placeholder="Søk Søkere…" step="any" />
       <input type="text" class="hc-col-filter" data-label="Førstevalgs- søkere" placeholder="Søk Førstevalgs- søkere…" step="any" />
       <input type="text" class="hc-col-filter" data-label="Studieplasser" placeholder="Søk Studieplasser…" step="any" />
+      <input type="text" class="hc-col-filter" data-label="Andel kvinnelige førstevalgs- søkere" placeholder="Søk Andel kvinnelige førstevalgs- søkere…" step="any" />
     </div>
     <div id="datagrid-container"></div>
-    <script>const allData = {"default":[{"Institusjon":"Ansgar høyskole","Søkere":" 1 971","Førstevalgs- søkere":"   264","Studieplasser":"  240"},{"Institusjon":"Arkitektur- og designhøgskolen i Oslo","Søkere":" 1 812","Førstevalgs- søkere":"   972","Studieplasser":"  110"},{"Institusjon":"Dronning Mauds Minne Høgskole for barnehagelærerutdanning","Søkere":" 1 055","Førstevalgs- søkere":"   291","Studieplasser":"  350"},{"Institusjon":"Fjellhaug Internasjonale Høgskole","Søkere":"   713","Førstevalgs- søkere":"   157","Studieplasser":"  115"},{"Institusjon":"Høgskolen i Molde, Vitenskaplig høgskole i logistikk","Søkere":" 8 995","Førstevalgs- søkere":" 2 115","Studieplasser":"1 225"},{"Institusjon":"Høgskolen i Østfold","Søkere":" 9 177","Førstevalgs- søkere":" 3 222","Studieplasser":"2 139"},{"Institusjon":"Høgskulen i Volda","Søkere":" 3 848","Førstevalgs- søkere":"   950","Studieplasser":"  886"},{"Institusjon":"Høgskulen på Vestlandet","Søkere":"26 710","Førstevalgs- søkere":" 9 139","Studieplasser":"4 003"},{"Institusjon":"Lovisenberg diakonale høgskole","Søkere":" 3 909","Førstevalgs- søkere":"   871","Studieplasser":"  270"},{"Institusjon":"MF vitenskapelig høyskole","Søkere":" 1 162","Førstevalgs- søkere":"   154","Studieplasser":"  245"},{"Institusjon":"NLA Høgskolen","Søkere":"13 480","Førstevalgs- søkere":" 2 175","Studieplasser":"1 342"},{"Institusjon":"Nord universitet","Søkere":"14 598","Førstevalgs- søkere":" 5 062","Studieplasser":"2 934"},{"Institusjon":"Norges Handelshøyskole","Søkere":" 5 144","Førstevalgs- søkere":" 2 407","Studieplasser":"  500"},{"Institusjon":"Norges idrettshøgskole","Søkere":" 4 704","Førstevalgs- søkere":" 1 192","Studieplasser":"  365"},{"Institusjon":"Norges miljø- og biovitenskapelige universitet","Søkere":"11 797","Førstevalgs- søkere":" 3 783","Studieplasser":"2 213"},{"Institusjon":"Norges teknisk-naturvitenskapelige universitet","Søkere":"51 334","Førstevalgs- søkere":"24 279","Studieplasser":"9 545"},{"Institusjon":"OsloMet - storbyuniversitetet","Søkere":"38 900","Førstevalgs- søkere":"14 129","Studieplasser":"5 455"},{"Institusjon":"Politihøgskolen","Søkere":" 2 496","Førstevalgs- søkere":" 1 834","Studieplasser":"  524"},{"Institusjon":"Sámi allaskuvla / Sámi University of Applied Sciences","Søkere":"    95","Førstevalgs- søkere":"    55","Studieplasser":"  115"},{"Institusjon":"UiT Norges arktiske universitet","Søkere":"25 616","Førstevalgs- søkere":" 8 417","Studieplasser":"5 117"},{"Institusjon":"Universitetet i Agder","Søkere":"18 859","Førstevalgs- søkere":" 6 327","Studieplasser":"3 418"},{"Institusjon":"Universitetet i Bergen","Søkere":"31 193","Førstevalgs- søkere":"10 588","Studieplasser":"4 184"},{"Institusjon":"Universitetet i Innlandet","Søkere":"24 607","Førstevalgs- søkere":" 8 590","Studieplasser":"4 674"},{"Institusjon":"Universitetet i Oslo","Søkere":"42 280","Førstevalgs- søkere":"18 585","Studieplasser":"6 467"},{"Institusjon":"Universitetet i Stavanger","Søkere":"20 303","Førstevalgs- søkere":" 6 513","Studieplasser":"2 495"},{"Institusjon":"Universitetet i Sørøst-Norge","Søkere":"21 711","Førstevalgs- søkere":" 7 681","Studieplasser":"4 507"},{"Institusjon":"VID vitenskapelige høgskole","Søkere":"11 378","Førstevalgs- søkere":" 2 252","Studieplasser":"1 104"}]}; let grid = null; 
+    <script>const allData = {"default":[{"Institusjon":"Ansgar høyskole","Søkere":"1 971","Førstevalgs- søkere":"264","Studieplasser":"240","Andel kvinnelige førstevalgs- søkere":"62,1 %"},{"Institusjon":"Arkitektur- og designhøgskolen i Oslo","Søkere":"1 812","Førstevalgs- søkere":"972","Studieplasser":"110","Andel kvinnelige førstevalgs- søkere":"62,8 %"},{"Institusjon":"Dronning Mauds Minne Høgskole for barnehagelærerutdanning","Søkere":"1 055","Førstevalgs- søkere":"291","Studieplasser":"350","Andel kvinnelige førstevalgs- søkere":"83,8 %"},{"Institusjon":"Fjellhaug Internasjonale Høgskole","Søkere":"713","Førstevalgs- søkere":"157","Studieplasser":"115","Andel kvinnelige førstevalgs- søkere":"62,4 %"},{"Institusjon":"Høgskolen i Molde, Vitenskaplig høgskole i logistikk","Søkere":"8 995","Førstevalgs- søkere":"2 115","Studieplasser":"1 225","Andel kvinnelige førstevalgs- søkere":"52,8 %"},{"Institusjon":"Høgskolen i Østfold","Søkere":"9 177","Førstevalgs- søkere":"3 222","Studieplasser":"2 139","Andel kvinnelige førstevalgs- søkere":"62,2 %"},{"Institusjon":"Høgskulen i Volda","Søkere":"3 848","Førstevalgs- søkere":"950","Studieplasser":"886","Andel kvinnelige førstevalgs- søkere":"65,2 %"},{"Institusjon":"Høgskulen på Vestlandet","Søkere":"26 710","Førstevalgs- søkere":"9 139","Studieplasser":"4 003","Andel kvinnelige førstevalgs- søkere":"63,1 %"},{"Institusjon":"Lovisenberg diakonale høgskole","Søkere":"3 909","Førstevalgs- søkere":"871","Studieplasser":"270","Andel kvinnelige førstevalgs- søkere":"83,6 %"},{"Institusjon":"MF vitenskapelig høyskole","Søkere":"1 162","Førstevalgs- søkere":"154","Studieplasser":"245","Andel kvinnelige førstevalgs- søkere":"63,0 %"},{"Institusjon":"NLA Høgskolen","Søkere":"13 480","Førstevalgs- søkere":"2 175","Studieplasser":"1 342","Andel kvinnelige førstevalgs- søkere":"56,8 %"},{"Institusjon":"Nord universitet","Søkere":"14 598","Førstevalgs- søkere":"5 062","Studieplasser":"2 934","Andel kvinnelige førstevalgs- søkere":"61,9 %"},{"Institusjon":"Norges Handelshøyskole","Søkere":"5 144","Førstevalgs- søkere":"2 407","Studieplasser":"500","Andel kvinnelige førstevalgs- søkere":"33,7 %"},{"Institusjon":"Norges idrettshøgskole","Søkere":"4 704","Førstevalgs- søkere":"1 192","Studieplasser":"365","Andel kvinnelige førstevalgs- søkere":"38,8 %"},{"Institusjon":"Norges miljø- og biovitenskapelige universitet","Søkere":"11 797","Førstevalgs- søkere":"3 783","Studieplasser":"2 213","Andel kvinnelige førstevalgs- søkere":"61,7 %"},{"Institusjon":"Norges teknisk-naturvitenskapelige universitet","Søkere":"51 334","Førstevalgs- søkere":"24 279","Studieplasser":"9 545","Andel kvinnelige førstevalgs- søkere":"53,7 %"},{"Institusjon":"OsloMet - storbyuniversitetet","Søkere":"38 900","Førstevalgs- søkere":"14 129","Studieplasser":"5 455","Andel kvinnelige førstevalgs- søkere":"64,0 %"},{"Institusjon":"Politihøgskolen","Søkere":"2 496","Førstevalgs- søkere":"1 834","Studieplasser":"524","Andel kvinnelige førstevalgs- søkere":"48,5 %"},{"Institusjon":"Sámi allaskuvla / Sámi University of Applied Sciences","Søkere":"95","Førstevalgs- søkere":"55","Studieplasser":"115","Andel kvinnelige førstevalgs- søkere":"74,5 %"},{"Institusjon":"UiT Norges arktiske universitet","Søkere":"25 616","Førstevalgs- søkere":"8 417","Studieplasser":"5 117","Andel kvinnelige førstevalgs- søkere":"60,4 %"},{"Institusjon":"Universitetet i Agder","Søkere":"18 859","Førstevalgs- søkere":"6 327","Studieplasser":"3 418","Andel kvinnelige førstevalgs- søkere":"62,1 %"},{"Institusjon":"Universitetet i Bergen","Søkere":"31 193","Førstevalgs- søkere":"10 588","Studieplasser":"4 184","Andel kvinnelige førstevalgs- søkere":"65,8 %"},{"Institusjon":"Universitetet i Innlandet","Søkere":"24 607","Førstevalgs- søkere":"8 590","Studieplasser":"4 674","Andel kvinnelige førstevalgs- søkere":"65,2 %"},{"Institusjon":"Universitetet i Oslo","Søkere":"42 280","Førstevalgs- søkere":"18 585","Studieplasser":"6 467","Andel kvinnelige førstevalgs- søkere":"65,0 %"},{"Institusjon":"Universitetet i Stavanger","Søkere":"20 303","Førstevalgs- søkere":"6 513","Studieplasser":"2 495","Andel kvinnelige førstevalgs- søkere":"60,5 %"},{"Institusjon":"Universitetet i Sørøst-Norge","Søkere":"21 711","Førstevalgs- søkere":"7 681","Studieplasser":"4 507","Andel kvinnelige førstevalgs- søkere":"61,2 %"},{"Institusjon":"VID vitenskapelige høgskole","Søkere":"11 378","Førstevalgs- søkere":"2 252","Studieplasser":"1 104","Andel kvinnelige førstevalgs- søkere":"76,6 %"}]}; let grid = null; 
     function renderTable(key) {
       const rawRows      = allData[key] || [];
       const filteredRows = (typeof applyFilters === "function") ? applyFilters(rawRows) : rawRows;
       const cols = { 'col_1': filteredRows.map(r => r['Institusjon']),
             'col_2': filteredRows.map(r => r['Søkere']),
             'col_3': filteredRows.map(r => r['Førstevalgs- søkere']),
-            'col_4': filteredRows.map(r => r['Studieplasser']) };
+            'col_4': filteredRows.map(r => r['Studieplasser']),
+            'col_5': filteredRows.map(r => r['Andel kvinnelige førstevalgs- søkere']) };
 
       if (grid) {
         grid.update({ dataTable: { columns: cols } });
@@ -148,10 +153,11 @@
         grid = Grid.grid("datagrid-container", {
           dataTable: { columns: cols },
           columnDefaults: { resizable: true },
-          columns: [ { id: 'col_1', header: { format: 'Institusjon' }, width: 641 },
-                  { id: 'col_2', header: { format: 'Søkere' }, width: 174 },
-                  { id: 'col_3', header: { format: 'Førstevalgs-<br>søkere' }, width: 174 },
-                  { id: 'col_4', header: { format: 'Studieplasser' }, width: 177 } ],
+          columns: [ { id: 'col_1', header: { format: 'Institusjon' }, width: 546 },
+                  { id: 'col_2', header: { format: 'Søkere' }, width: 204 },
+                  { id: 'col_3', header: { format: 'Førstevalgs-<br>søkere' }, width: 204 },
+                  { id: 'col_4', header: { format: 'Studieplasser' }, width: 204 },
+                  { id: 'col_5', header: { format: 'Andel<br>kvinnelige<br>førstevalgs-<br>søkere' }, width: 208 } ],
           rendering: { theme: "hcg-theme-default hcg-custom-theme" }
         });
       }
@@ -159,7 +165,7 @@
      
       document.querySelectorAll(".hc-col-filter").forEach(function(inp) { inp.value = ""; });
 
-      const colLabels = ["Institusjon","Søkere","Førstevalgs- søkere","Studieplasser"];
+      const colLabels = ["Institusjon","Søkere","Førstevalgs- søkere","Studieplasser","Andel kvinnelige førstevalgs- søkere"];
 
       function getFilterValues() {
         const vals = {};
@@ -188,7 +194,7 @@
         });
       });
        renderTable("default"); 
-      const exportColLabels = ["Institusjon","Søkere","Førstevalgs- søkere","Studieplasser"];
+      const exportColLabels = ["Institusjon","Søkere","Førstevalgs- søkere","Studieplasser","Andel kvinnelige førstevalgs- søkere"];
 
       function sanitizeFilePart(x) {
         return String(x).trim().replace(/[\\/:*?"<>|]+/g, "-").replace(/\s+/g, "_");

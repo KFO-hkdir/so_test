@@ -51,10 +51,11 @@
         .hc-filter-row input.hc-col-filter:focus { outline: none; border-color: #F58220; background: #fff; }
 
         /* Per-column filter widths */
-  .hc-filter-row input.hc-col-filter:nth-child(1) { flex: 0 0 751px !important; width: 751px !important; min-width: 751px !important; max-width: 751px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(1) { flex: 0 0 546px !important; width: 546px !important; min-width: 546px !important; max-width: 546px !important; }
   .hc-filter-row input.hc-col-filter:nth-child(2) { flex: 0 0 204px !important; width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
   .hc-filter-row input.hc-col-filter:nth-child(3) { flex: 0 0 204px !important; width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(4) { flex: 0 0 207px !important; width: 207px !important; min-width: 207px !important; max-width: 207px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(4) { flex: 0 0 204px !important; width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(5) { flex: 0 0 208px !important; width: 208px !important; min-width: 208px !important; max-width: 208px !important; }
 
         .hc-export-wrap { position: relative; display: inline-block; }
         .hc-export-btn {
@@ -101,13 +102,15 @@
 
         /* Per-column cell widths */
   .hcg-container th:nth-child(1),
-  .hcg-container td:nth-child(1) { width: 751px !important; min-width: 751px !important; max-width: 751px !important; }
+  .hcg-container td:nth-child(1) { width: 546px !important; min-width: 546px !important; max-width: 546px !important; }
   .hcg-container th:nth-child(2),
   .hcg-container td:nth-child(2) { width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
   .hcg-container th:nth-child(3),
   .hcg-container td:nth-child(3) { width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
   .hcg-container th:nth-child(4),
-  .hcg-container td:nth-child(4) { width: 207px !important; min-width: 207px !important; max-width: 207px !important; }
+  .hcg-container td:nth-child(4) { width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
+  .hcg-container th:nth-child(5),
+  .hcg-container td:nth-child(5) { width: 208px !important; min-width: 208px !important; max-width: 208px !important; }
 
         /* Scroll height */
         #datagrid-container { flex: 0 0 490px !important; }
@@ -115,7 +118,7 @@
 </head>
 <html>
   <body>
-    <h4>Nøkkeltall utdanningsområdenivå 2025</h4>
+    <h4></h4>
     <div class="hc-table-controls">
       <div class="hc-table-export-wrap">
         <div class="hc-export-wrap">
@@ -131,16 +134,18 @@
       <input type="text" class="hc-col-filter" data-label="Søkere" placeholder="Søk Søkere…" step="any" />
       <input type="text" class="hc-col-filter" data-label="Førstevalgs- søkere" placeholder="Søk Førstevalgs- søkere…" step="any" />
       <input type="text" class="hc-col-filter" data-label="Studieplasser" placeholder="Søk Studieplasser…" step="any" />
+      <input type="text" class="hc-col-filter" data-label="Andel kvinnelige førstevalgs- søkere" placeholder="Søk Andel kvinnelige førstevalgs- søkere…" step="any" />
     </div>
     <div id="datagrid-container"></div>
-    <script>const allData = {"default":[{"Utdanningsområde":"Estetiske fag","Søkere":" 8 296","Førstevalgs- søkere":" 2 752","Studieplasser":" 1 616"},{"Utdanningsområde":"Helsefag","Søkere":"57 422","Førstevalgs- søkere":"35 245","Studieplasser":"12 426"},{"Utdanningsområde":"Historiefag","Søkere":"15 107","Førstevalgs- søkere":" 3 762","Studieplasser":" 3 071"},{"Utdanningsområde":"Idrettsfag","Søkere":"10 998","Førstevalgs- søkere":" 2 834","Studieplasser":" 1 607"},{"Utdanningsområde":"Informasjonsteknologi","Søkere":"15 719","Førstevalgs- søkere":" 5 598","Studieplasser":" 3 108"},{"Utdanningsområde":"Juridiske fag","Søkere":"19 458","Førstevalgs- søkere":"10 146","Studieplasser":" 2 150"},{"Utdanningsområde":"Land- og havbruk","Søkere":" 3 505","Førstevalgs- søkere":" 1 095","Studieplasser":"   900"},{"Utdanningsområde":"Lærerutdanninger","Søkere":"19 738","Førstevalgs- søkere":" 8 029","Studieplasser":" 7 389"},{"Utdanningsområde":"Mediefag","Søkere":"13 529","Førstevalgs- søkere":" 4 026","Studieplasser":" 1 587"},{"Utdanningsområde":"Pedagogiske fag","Søkere":"11 110","Førstevalgs- søkere":" 2 223","Studieplasser":" 1 571"},{"Utdanningsområde":"Realfag","Søkere":"12 501","Førstevalgs- søkere":" 3 819","Studieplasser":" 2 395"},{"Utdanningsområde":"Reiselivsfag","Søkere":" 2 231","Førstevalgs- søkere":"   410","Studieplasser":"   230"},{"Utdanningsområde":"Samfunnsfag","Søkere":"44 387","Førstevalgs- søkere":"16 619","Studieplasser":" 6 312"},{"Utdanningsområde":"Språkfag","Søkere":"13 597","Førstevalgs- søkere":" 4 628","Studieplasser":" 2 978"},{"Utdanningsområde":"Teknologiske fag","Søkere":"26 607","Førstevalgs- søkere":"14 710","Studieplasser":" 6 954"},{"Utdanningsområde":"Økonomisk-administrative fag","Søkere":"51 688","Førstevalgs- søkere":"26 108","Studieplasser":"10 248"}]}; let grid = null; 
+    <script>const allData = {"default":[{"Utdanningsområde":"Estetiske fag","Søkere":"8 296","Førstevalgs- søkere":"2 752","Studieplasser":"1 616","Andel kvinnelige førstevalgs- søkere":"67,6 %"},{"Utdanningsområde":"Helsefag","Søkere":"57 422","Førstevalgs- søkere":"35 245","Studieplasser":"12 426","Andel kvinnelige førstevalgs- søkere":"78,0 %"},{"Utdanningsområde":"Historiefag","Søkere":"15 107","Førstevalgs- søkere":"3 762","Studieplasser":"3 071","Andel kvinnelige førstevalgs- søkere":"47,7 %"},{"Utdanningsområde":"Idrettsfag","Søkere":"10 998","Førstevalgs- søkere":"2 834","Studieplasser":"1 607","Andel kvinnelige førstevalgs- søkere":"43,1 %"},{"Utdanningsområde":"Informasjonsteknologi","Søkere":"15 719","Førstevalgs- søkere":"5 598","Studieplasser":"3 108","Andel kvinnelige førstevalgs- søkere":"34,7 %"},{"Utdanningsområde":"Juridiske fag","Søkere":"19 458","Førstevalgs- søkere":"10 146","Studieplasser":"2 150","Andel kvinnelige førstevalgs- søkere":"65,4 %"},{"Utdanningsområde":"Land- og havbruk","Søkere":"3 505","Førstevalgs- søkere":"1 095","Studieplasser":"900","Andel kvinnelige førstevalgs- søkere":"55,0 %"},{"Utdanningsområde":"Lærerutdanninger","Søkere":"19 738","Førstevalgs- søkere":"8 029","Studieplasser":"7 389","Andel kvinnelige førstevalgs- søkere":"66,9 %"},{"Utdanningsområde":"Mediefag","Søkere":"13 529","Førstevalgs- søkere":"4 026","Studieplasser":"1 587","Andel kvinnelige førstevalgs- søkere":"65,5 %"},{"Utdanningsområde":"Pedagogiske fag","Søkere":"11 110","Førstevalgs- søkere":"2 223","Studieplasser":"1 571","Andel kvinnelige førstevalgs- søkere":"75,5 %"},{"Utdanningsområde":"Realfag","Søkere":"12 501","Førstevalgs- søkere":"3 819","Studieplasser":"2 395","Andel kvinnelige førstevalgs- søkere":"51,7 %"},{"Utdanningsområde":"Reiselivsfag","Søkere":"2 231","Førstevalgs- søkere":"410","Studieplasser":"230","Andel kvinnelige førstevalgs- søkere":"61,5 %"},{"Utdanningsområde":"Samfunnsfag","Søkere":"44 387","Førstevalgs- søkere":"16 619","Studieplasser":"6 312","Andel kvinnelige førstevalgs- søkere":"73,3 %"},{"Utdanningsområde":"Språkfag","Søkere":"13 597","Førstevalgs- søkere":"4 628","Studieplasser":"2 978","Andel kvinnelige førstevalgs- søkere":"65,2 %"},{"Utdanningsområde":"Teknologiske fag","Søkere":"26 607","Førstevalgs- søkere":"14 710","Studieplasser":"6 954","Andel kvinnelige førstevalgs- søkere":"32,9 %"},{"Utdanningsområde":"Økonomisk-administrative fag","Søkere":"51 688","Førstevalgs- søkere":"26 108","Studieplasser":"10 248","Andel kvinnelige førstevalgs- søkere":"49,6 %"}]}; let grid = null; 
     function renderTable(key) {
       const rawRows      = allData[key] || [];
       const filteredRows = (typeof applyFilters === "function") ? applyFilters(rawRows) : rawRows;
       const cols = { 'col_1': filteredRows.map(r => r['Utdanningsområde']),
             'col_2': filteredRows.map(r => r['Søkere']),
             'col_3': filteredRows.map(r => r['Førstevalgs- søkere']),
-            'col_4': filteredRows.map(r => r['Studieplasser']) };
+            'col_4': filteredRows.map(r => r['Studieplasser']),
+            'col_5': filteredRows.map(r => r['Andel kvinnelige førstevalgs- søkere']) };
 
       if (grid) {
         grid.update({ dataTable: { columns: cols } });
@@ -148,10 +153,11 @@
         grid = Grid.grid("datagrid-container", {
           dataTable: { columns: cols },
           columnDefaults: { resizable: true },
-          columns: [ { id: 'col_1', header: { format: 'Utdanningsområde' }, width: 751 },
+          columns: [ { id: 'col_1', header: { format: 'Utdanningsområde' }, width: 546 },
                   { id: 'col_2', header: { format: 'Søkere' }, width: 204 },
                   { id: 'col_3', header: { format: 'Førstevalgs-<br>søkere' }, width: 204 },
-                  { id: 'col_4', header: { format: 'Studieplasser' }, width: 207 } ],
+                  { id: 'col_4', header: { format: 'Studieplasser' }, width: 204 },
+                  { id: 'col_5', header: { format: 'Andel<br>kvinnelige<br>førstevalgs-<br>søkere' }, width: 208 } ],
           rendering: { theme: "hcg-theme-default hcg-custom-theme" }
         });
       }
@@ -159,7 +165,7 @@
      
       document.querySelectorAll(".hc-col-filter").forEach(function(inp) { inp.value = ""; });
 
-      const colLabels = ["Utdanningsområde","Søkere","Førstevalgs- søkere","Studieplasser"];
+      const colLabels = ["Utdanningsområde","Søkere","Førstevalgs- søkere","Studieplasser","Andel kvinnelige førstevalgs- søkere"];
 
       function getFilterValues() {
         const vals = {};
@@ -188,7 +194,7 @@
         });
       });
        renderTable("default"); 
-      const exportColLabels = ["Utdanningsområde","Søkere","Førstevalgs- søkere","Studieplasser"];
+      const exportColLabels = ["Utdanningsområde","Søkere","Førstevalgs- søkere","Studieplasser","Andel kvinnelige førstevalgs- søkere"];
 
       function sanitizeFilePart(x) {
         return String(x).trim().replace(/[\\/:*?"<>|]+/g, "-").replace(/\s+/g, "_");

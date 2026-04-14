@@ -51,8 +51,8 @@
         .hc-filter-row input.hc-col-filter:focus { outline: none; border-color: #F58220; background: #fff; }
 
         /* Per-column filter widths */
-  .hc-filter-row input.hc-col-filter:nth-child(1) { flex: 0 0 464px !important; width: 464px !important; min-width: 464px !important; max-width: 464px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(2) { flex: 0 0 327px !important; width: 327px !important; min-width: 327px !important; max-width: 327px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(1) { flex: 0 0 382px !important; width: 382px !important; min-width: 382px !important; max-width: 382px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(2) { flex: 0 0 409px !important; width: 409px !important; min-width: 409px !important; max-width: 409px !important; }
   .hc-filter-row input.hc-col-filter:nth-child(3) { flex: 0 0 95px !important; width: 95px !important; min-width: 95px !important; max-width: 95px !important; }
   .hc-filter-row input.hc-col-filter:nth-child(4) { flex: 0 0 95px !important; width: 95px !important; min-width: 95px !important; max-width: 95px !important; }
   .hc-filter-row input.hc-col-filter:nth-child(5) { flex: 0 0 95px !important; width: 95px !important; min-width: 95px !important; max-width: 95px !important; }
@@ -105,9 +105,9 @@
 
         /* Per-column cell widths */
   .hcg-container th:nth-child(1),
-  .hcg-container td:nth-child(1) { width: 464px !important; min-width: 464px !important; max-width: 464px !important; }
+  .hcg-container td:nth-child(1) { width: 382px !important; min-width: 382px !important; max-width: 382px !important; }
   .hcg-container th:nth-child(2),
-  .hcg-container td:nth-child(2) { width: 327px !important; min-width: 327px !important; max-width: 327px !important; }
+  .hcg-container td:nth-child(2) { width: 409px !important; min-width: 409px !important; max-width: 409px !important; }
   .hcg-container th:nth-child(3),
   .hcg-container td:nth-child(3) { width: 95px !important; min-width: 95px !important; max-width: 95px !important; }
   .hcg-container th:nth-child(4),
@@ -127,7 +127,7 @@
 </head>
 <html>
   <body>
-    <h4>Nøkkeltall utdanningsområdenivå - tidsserier</h4>
+    <h4></h4>
     <div class="hc-table-controls">
       <div class="hc-table-export-wrap">
         <div class="hc-export-wrap">
@@ -139,7 +139,7 @@
       </div>
     </div>
     <div class="hc-filter-row">
-      <input type="text" class="hc-col-filter" data-label="Institusjon" placeholder="Søk Institusjon…" step="any" />
+      <input type="text" class="hc-col-filter" data-label="Utdanningsområde" placeholder="Søk Utdanningsområde…" step="any" />
       <input type="text" class="hc-col-filter" data-label="Nøkkeltall" placeholder="Søk Nøkkeltall…" step="any" />
       <input type="text" class="hc-col-filter" data-label="2020" placeholder="Søk 2020…" step="any" />
       <input type="text" class="hc-col-filter" data-label="2021" placeholder="Søk 2021…" step="any" />
@@ -149,11 +149,11 @@
       <input type="text" class="hc-col-filter" data-label="2025" placeholder="Søk 2025…" step="any" />
     </div>
     <div id="datagrid-container"></div>
-    <script>const allData = {"default":[{"Institusjon":"Estetiske fag","Nøkkeltall":"Alle søkere","2020":"  318","2021":"  425","2022":"  442","2023":"  308","2024":"  557","2025":"  336"},{"Institusjon":"Estetiske fag","Nøkkeltall":"Førstevalgssøkere","2020":"  289","2021":"  382","2022":"  358","2023":"  272","2024":"  454","2025":"  273"},{"Institusjon":"Estetiske fag","Nøkkeltall":"Studieplasser","2020":"  162","2021":"  207","2022":"  250","2023":"  217","2024":"  288","2025":"  195"},{"Institusjon":"Helsefag","Nøkkeltall":"Alle søkere","2020":"2 270","2021":"3 627","2022":"2 954","2023":"3 087","2024":"3 477","2025":"3 095"},{"Institusjon":"Helsefag","Nøkkeltall":"Førstevalgssøkere","2020":"2 130","2021":"3 323","2022":"2 682","2023":"2 824","2024":"3 145","2025":"2 779"},{"Institusjon":"Helsefag","Nøkkeltall":"Studieplasser","2020":"2 196","2021":"4 006","2022":"3 143","2023":"3 226","2024":"3 978","2025":"3 245"},{"Institusjon":"Informasjonsteknologi","Nøkkeltall":"Alle søkere","2020":"  552","2021":"  886","2022":"  879","2023":"  965","2024":"1 084","2025":"1 416"},{"Institusjon":"Informasjonsteknologi","Nøkkeltall":"Førstevalgssøkere","2020":"  398","2021":"  608","2022":"  591","2023":"  728","2024":"  811","2025":"1 020"},{"Institusjon":"Informasjonsteknologi","Nøkkeltall":"Studieplasser","2020":"  406","2021":"  560","2022":"  611","2023":"  626","2024":"  614","2025":"  829"},{"Institusjon":"Land- og havbruk","Nøkkeltall":"Alle søkere","2020":"  345","2021":"  431","2022":"  510","2023":"  313","2024":"  353","2025":"  213"},{"Institusjon":"Land- og havbruk","Nøkkeltall":"Førstevalgssøkere","2020":"  302","2021":"  368","2022":"  411","2023":"  255","2024":"  292","2025":"  144"},{"Institusjon":"Land- og havbruk","Nøkkeltall":"Studieplasser","2020":"  225","2021":"  335","2022":"  453","2023":"  240","2024":"  377","2025":"  154"},{"Institusjon":"Matfag","Nøkkeltall":"Alle søkere","2020":"  167","2021":"  207","2022":"  258","2023":"  182","2024":"  198","2025":"  207"},{"Institusjon":"Matfag","Nøkkeltall":"Førstevalgssøkere","2020":"  138","2021":"  166","2022":"  220","2023":"  154","2024":"  156","2025":"  160"},{"Institusjon":"Matfag","Nøkkeltall":"Studieplasser","2020":"  165","2021":"  199","2022":"  250","2023":"  240","2024":"  175","2025":"  161"},{"Institusjon":"Pedagogiske fag","Nøkkeltall":"Alle søkere","2020":"  192","2021":"  407","2022":"  342","2023":"  328","2024":"  472","2025":"  433"},{"Institusjon":"Pedagogiske fag","Nøkkeltall":"Førstevalgssøkere","2020":"  107","2021":"  230","2022":"  227","2023":"  209","2024":"  282","2025":"  269"},{"Institusjon":"Pedagogiske fag","Nøkkeltall":"Studieplasser","2020":"  155","2021":"  405","2022":"  355","2023":"  305","2024":"  483","2025":"  330"},{"Institusjon":"Reiseliv","Nøkkeltall":"Alle søkere","2020":"  151","2021":"  172","2022":"  169","2023":"  111","2024":"   80","2025":"  135"},{"Institusjon":"Reiseliv","Nøkkeltall":"Førstevalgssøkere","2020":"  116","2021":"  119","2022":"  113","2023":"   55","2024":"   34","2025":"   72"},{"Institusjon":"Reiseliv","Nøkkeltall":"Studieplasser","2020":"  265","2021":"  290","2022":"  284","2023":"  175","2024":"   95","2025":"  180"},{"Institusjon":"Teknologiske fag","Nøkkeltall":"Alle søkere","2020":"5 840","2021":"6 885","2022":"6 944","2023":"8 144","2024":"9 566","2025":"9 424"},{"Institusjon":"Teknologiske fag","Nøkkeltall":"Førstevalgssøkere","2020":"5 679","2021":"6 559","2022":"6 637","2023":"7 844","2024":"9 221","2025":"9 046"},{"Institusjon":"Teknologiske fag","Nøkkeltall":"Studieplasser","2020":"5 063","2021":"5 844","2022":"5 840","2023":"6 577","2024":"6 585","2025":"6 878"},{"Institusjon":"Økonomisk-administrative fag","Nøkkeltall":"Alle søkere","2020":"  266","2021":"1 414","2022":"1 262","2023":"1 386","2024":"1 683","2025":"1 804"},{"Institusjon":"Økonomisk-administrative fag","Nøkkeltall":"Førstevalgssøkere","2020":"  160","2021":"1 017","2022":"  931","2023":"1 049","2024":"1 281","2025":"1 306"},{"Institusjon":"Økonomisk-administrative fag","Nøkkeltall":"Studieplasser","2020":"  180","2021":"1 185","2022":"  930","2023":"1 110","2024":"1 642","2025":"1 337"},{"Institusjon":"Mediefag","Nøkkeltall":"Alle søkere","2020":"   NA","2021":"   50","2022":"  115","2023":"  104","2024":"  116","2025":"  172"},{"Institusjon":"Mediefag","Nøkkeltall":"Førstevalgssøkere","2020":"   NA","2021":"   34","2022":"   76","2023":"   63","2024":"   66","2025":"  127"},{"Institusjon":"Mediefag","Nøkkeltall":"Studieplasser","2020":"   NA","2021":"   30","2022":"   70","2023":"   70","2024":"   50","2025":"   60"}]}; let grid = null; 
+    <script>const allData = {"default":[{"Utdanningsområde":"Estetiske fag","Nøkkeltall":"Alle søkere","2020":"318","2021":"425","2022":"442","2023":"308","2024":"557","2025":"336"},{"Utdanningsområde":"Estetiske fag","Nøkkeltall":"Førstevalgssøkere","2020":"289","2021":"382","2022":"358","2023":"272","2024":"454","2025":"273"},{"Utdanningsområde":"Estetiske fag","Nøkkeltall":"Studieplasser","2020":"162","2021":"207","2022":"250","2023":"217","2024":"288","2025":"195"},{"Utdanningsområde":"Estetiske fag","Nøkkeltall":"Andel kvinnelige førstevalgssøkere","2020":"74,0 %","2021":"68,1 %","2022":"71,8 %","2023":"76,1 %","2024":"71,8 %","2025":"73,6 %"},{"Utdanningsområde":"Helsefag","Nøkkeltall":"Alle søkere","2020":"2 270","2021":"3 627","2022":"2 954","2023":"3 087","2024":"3 477","2025":"3 095"},{"Utdanningsområde":"Helsefag","Nøkkeltall":"Førstevalgssøkere","2020":"2 130","2021":"3 323","2022":"2 682","2023":"2 824","2024":"3 145","2025":"2 779"},{"Utdanningsområde":"Helsefag","Nøkkeltall":"Studieplasser","2020":"2 196","2021":"4 006","2022":"3 143","2023":"3 226","2024":"3 978","2025":"3 245"},{"Utdanningsområde":"Helsefag","Nøkkeltall":"Andel kvinnelige førstevalgssøkere","2020":"85,2 %","2021":"83,6 %","2022":"84,9 %","2023":"83,9 %","2024":"86,6 %","2025":"84,8 %"},{"Utdanningsområde":"Informasjonsteknologi","Nøkkeltall":"Alle søkere","2020":"552","2021":"886","2022":"879","2023":"965","2024":"1 084","2025":"1 416"},{"Utdanningsområde":"Informasjonsteknologi","Nøkkeltall":"Førstevalgssøkere","2020":"398","2021":"608","2022":"591","2023":"728","2024":"811","2025":"1 020"},{"Utdanningsområde":"Informasjonsteknologi","Nøkkeltall":"Studieplasser","2020":"406","2021":"560","2022":"611","2023":"626","2024":"614","2025":"829"},{"Utdanningsområde":"Informasjonsteknologi","Nøkkeltall":"Andel kvinnelige førstevalgssøkere","2020":"7,5 %","2021":"11,5 %","2022":"15,7 %","2023":"14,8 %","2024":"18,4 %","2025":"22,4 %"},{"Utdanningsområde":"Land- og havbruk","Nøkkeltall":"Alle søkere","2020":"345","2021":"431","2022":"510","2023":"313","2024":"353","2025":"213"},{"Utdanningsområde":"Land- og havbruk","Nøkkeltall":"Førstevalgssøkere","2020":"302","2021":"368","2022":"411","2023":"255","2024":"292","2025":"144"},{"Utdanningsområde":"Land- og havbruk","Nøkkeltall":"Studieplasser","2020":"225","2021":"335","2022":"453","2023":"240","2024":"377","2025":"154"},{"Utdanningsområde":"Land- og havbruk","Nøkkeltall":"Andel kvinnelige førstevalgssøkere","2020":"50,0 %","2021":"43,5 %","2022":"41,6 %","2023":"53,3 %","2024":"58,6 %","2025":"61,1 %"},{"Utdanningsområde":"Matfag","Nøkkeltall":"Alle søkere","2020":"167","2021":"207","2022":"258","2023":"182","2024":"198","2025":"207"},{"Utdanningsområde":"Matfag","Nøkkeltall":"Førstevalgssøkere","2020":"138","2021":"166","2022":"220","2023":"154","2024":"156","2025":"160"},{"Utdanningsområde":"Matfag","Nøkkeltall":"Studieplasser","2020":"165","2021":"199","2022":"250","2023":"240","2024":"175","2025":"161"},{"Utdanningsområde":"Matfag","Nøkkeltall":"Andel kvinnelige førstevalgssøkere","2020":"41,3 %","2021":"44,6 %","2022":"57,7 %","2023":"61,0 %","2024":"58,3 %","2025":"58,1 %"},{"Utdanningsområde":"Pedagogiske fag","Nøkkeltall":"Alle søkere","2020":"192","2021":"407","2022":"342","2023":"328","2024":"472","2025":"433"},{"Utdanningsområde":"Pedagogiske fag","Nøkkeltall":"Førstevalgssøkere","2020":"107","2021":"230","2022":"227","2023":"209","2024":"282","2025":"269"},{"Utdanningsområde":"Pedagogiske fag","Nøkkeltall":"Studieplasser","2020":"155","2021":"405","2022":"355","2023":"305","2024":"483","2025":"330"},{"Utdanningsområde":"Pedagogiske fag","Nøkkeltall":"Andel kvinnelige førstevalgssøkere","2020":"74,8 %","2021":"74,8 %","2022":"81,1 %","2023":"83,7 %","2024":"82,3 %","2025":"78,8 %"},{"Utdanningsområde":"Reiseliv","Nøkkeltall":"Alle søkere","2020":"151","2021":"172","2022":"169","2023":"111","2024":"80","2025":"135"},{"Utdanningsområde":"Reiseliv","Nøkkeltall":"Førstevalgssøkere","2020":"116","2021":"119","2022":"113","2023":"55","2024":"34","2025":"72"},{"Utdanningsområde":"Reiseliv","Nøkkeltall":"Studieplasser","2020":"265","2021":"290","2022":"284","2023":"175","2024":"95","2025":"180"},{"Utdanningsområde":"Reiseliv","Nøkkeltall":"Andel kvinnelige førstevalgssøkere","2020":"65,5 %","2021":"70,6 %","2022":"66,4 %","2023":"69,1 %","2024":"67,6 %","2025":"77,8 %"},{"Utdanningsområde":"Teknologiske fag","Nøkkeltall":"Alle søkere","2020":"5 840","2021":"6 885","2022":"6 944","2023":"8 144","2024":"9 566","2025":"9 424"},{"Utdanningsområde":"Teknologiske fag","Nøkkeltall":"Førstevalgssøkere","2020":"5 679","2021":"6 559","2022":"6 637","2023":"7 844","2024":"9 221","2025":"9 046"},{"Utdanningsområde":"Teknologiske fag","Nøkkeltall":"Studieplasser","2020":"5 063","2021":"5 844","2022":"5 840","2023":"6 577","2024":"6 585","2025":"6 878"},{"Utdanningsområde":"Teknologiske fag","Nøkkeltall":"Andel kvinnelige førstevalgssøkere","2020":"8,0 %","2021":"8,1 %","2022":"8,3 %","2023":"10,8 %","2024":"12,6 %","2025":"11,4 %"},{"Utdanningsområde":"Økonomisk-administrative fag","Nøkkeltall":"Alle søkere","2020":"266","2021":"1 414","2022":"1 262","2023":"1 386","2024":"1 683","2025":"1 804"},{"Utdanningsområde":"Økonomisk-administrative fag","Nøkkeltall":"Førstevalgssøkere","2020":"160","2021":"1 017","2022":"931","2023":"1 049","2024":"1 281","2025":"1 306"},{"Utdanningsområde":"Økonomisk-administrative fag","Nøkkeltall":"Studieplasser","2020":"180","2021":"1 185","2022":"930","2023":"1 110","2024":"1 642","2025":"1 337"},{"Utdanningsområde":"Økonomisk-administrative fag","Nøkkeltall":"Andel kvinnelige førstevalgssøkere","2020":"48,1 %","2021":"57,7 %","2022":"56,3 %","2023":"58,2 %","2024":"60,3 %","2025":"60,3 %"},{"Utdanningsområde":"Mediefag","Nøkkeltall":"Alle søkere","2020":null,"2021":"50","2022":"115","2023":"104","2024":"116","2025":"172"},{"Utdanningsområde":"Mediefag","Nøkkeltall":"Førstevalgssøkere","2020":null,"2021":"34","2022":"76","2023":"63","2024":"66","2025":"127"},{"Utdanningsområde":"Mediefag","Nøkkeltall":"Studieplasser","2020":null,"2021":"30","2022":"70","2023":"70","2024":"50","2025":"60"},{"Utdanningsområde":"Mediefag","Nøkkeltall":"Andel kvinnelige førstevalgssøkere","2020":null,"2021":"26,5 %","2022":"50,0 %","2023":"47,6 %","2024":"53,0 %","2025":"62,2 %"}]}; let grid = null; 
     function renderTable(key) {
       const rawRows      = allData[key] || [];
       const filteredRows = (typeof applyFilters === "function") ? applyFilters(rawRows) : rawRows;
-      const cols = { 'col_1': filteredRows.map(r => r['Institusjon']),
+      const cols = { 'col_1': filteredRows.map(r => r['Utdanningsområde']),
             'col_2': filteredRows.map(r => r['Nøkkeltall']),
             'col_3': filteredRows.map(r => r['2020']),
             'col_4': filteredRows.map(r => r['2021']),
@@ -168,8 +168,8 @@
         grid = Grid.grid("datagrid-container", {
           dataTable: { columns: cols },
           columnDefaults: { resizable: true },
-          columns: [ { id: 'col_1', header: { format: 'Institusjon' }, width: 464 },
-                  { id: 'col_2', header: { format: 'Nøkkeltall' }, width: 327 },
+          columns: [ { id: 'col_1', header: { format: 'Utdanningsområde' }, width: 382 },
+                  { id: 'col_2', header: { format: 'Nøkkeltall' }, width: 409 },
                   { id: 'col_3', header: { format: '2020' }, width: 95 },
                   { id: 'col_4', header: { format: '2021' }, width: 95 },
                   { id: 'col_5', header: { format: '2022' }, width: 95 },
@@ -183,7 +183,7 @@
      
       document.querySelectorAll(".hc-col-filter").forEach(function(inp) { inp.value = ""; });
 
-      const colLabels = ["Institusjon","Nøkkeltall","2020","2021","2022","2023","2024","2025"];
+      const colLabels = ["Utdanningsområde","Nøkkeltall","2020","2021","2022","2023","2024","2025"];
 
       function getFilterValues() {
         const vals = {};
@@ -212,7 +212,7 @@
         });
       });
        renderTable("default"); 
-      const exportColLabels = ["Institusjon","Nøkkeltall","2020","2021","2022","2023","2024","2025"];
+      const exportColLabels = ["Utdanningsområde","Nøkkeltall","2020","2021","2022","2023","2024","2025"];
 
       function sanitizeFilePart(x) {
         return String(x).trim().replace(/[\\/:*?"<>|]+/g, "-").replace(/\s+/g, "_");
