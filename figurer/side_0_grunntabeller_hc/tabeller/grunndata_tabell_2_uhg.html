@@ -34,7 +34,7 @@
           border: 1px solid #ccc; border-radius: 4px;
           width: 100%; box-sizing: border-box; background: white;
         }
-        .hc-table-export-wrap { flex: 0 0 auto;   margin-left: auto;}
+        .hc-table-export-wrap { flex: 0 0 auto; margin-left: auto; }
 
         /* Filter row — no gap, no scroll; inputs are flush with column edges */
         .hc-filter-row {
@@ -50,19 +50,19 @@
         .hc-filter-row input.hc-col-filter:last-child { border-right-width: 1px; }
         .hc-filter-row input.hc-col-filter:focus { outline: none; border-color: #F58220; background: #fff; }
 
-        /* Per-column filter widths */
-  .hc-filter-row input.hc-col-filter:nth-child(1) { flex: 0 0 218px !important; width: 218px !important; min-width: 218px !important; max-width: 218px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(2) { flex: 0 0 95px !important; width: 95px !important; min-width: 95px !important; max-width: 95px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(3) { flex: 0 0 204px !important; width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(4) { flex: 0 0 95px !important; width: 95px !important; min-width: 95px !important; max-width: 95px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(5) { flex: 0 0 204px !important; width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(6) { flex: 0 0 136px !important; width: 136px !important; min-width: 136px !important; max-width: 136px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(7) { flex: 0 0 68px !important; width: 68px !important; min-width: 68px !important; max-width: 68px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(8) { flex: 0 0 68px !important; width: 68px !important; min-width: 68px !important; max-width: 68px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(9) { flex: 0 0 68px !important; width: 68px !important; min-width: 68px !important; max-width: 68px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(10) { flex: 0 0 68px !important; width: 68px !important; min-width: 68px !important; max-width: 68px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(11) { flex: 0 0 68px !important; width: 68px !important; min-width: 68px !important; max-width: 68px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(12) { flex: 0 0 74px !important; width: 74px !important; min-width: 74px !important; max-width: 74px !important; }
+        /* Per-column filter widths (flex-basis only — no width/max-width) */
+  .hc-filter-row input.hc-col-filter:nth-child(1) { flex: 0 0 191px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(2) { flex: 0 0 95px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(3) { flex: 0 0 204px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(4) { flex: 0 0 95px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(5) { flex: 0 0 177px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(6) { flex: 0 0 191px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(7) { flex: 0 0 68px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(8) { flex: 0 0 68px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(9) { flex: 0 0 68px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(10) { flex: 0 0 68px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(11) { flex: 0 0 68px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(12) { flex: 0 0 73px !important; }
 
         .hc-export-wrap { position: relative; display: inline-block; }
         .hc-export-btn {
@@ -106,32 +106,6 @@
         .hcg-custom-theme th:not(:first-child) > *,
         .hcg-custom-theme th:not(:first-child) button,
         .hcg-custom-theme th:not(:first-child) span { text-align: right !important; justify-content: flex-end !important; }
-
-        /* Per-column cell widths */
-  .hcg-container th:nth-child(1),
-  .hcg-container td:nth-child(1) { width: 218px !important; min-width: 218px !important; max-width: 218px !important; }
-  .hcg-container th:nth-child(2),
-  .hcg-container td:nth-child(2) { width: 95px !important; min-width: 95px !important; max-width: 95px !important; }
-  .hcg-container th:nth-child(3),
-  .hcg-container td:nth-child(3) { width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
-  .hcg-container th:nth-child(4),
-  .hcg-container td:nth-child(4) { width: 95px !important; min-width: 95px !important; max-width: 95px !important; }
-  .hcg-container th:nth-child(5),
-  .hcg-container td:nth-child(5) { width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
-  .hcg-container th:nth-child(6),
-  .hcg-container td:nth-child(6) { width: 136px !important; min-width: 136px !important; max-width: 136px !important; }
-  .hcg-container th:nth-child(7),
-  .hcg-container td:nth-child(7) { width: 68px !important; min-width: 68px !important; max-width: 68px !important; }
-  .hcg-container th:nth-child(8),
-  .hcg-container td:nth-child(8) { width: 68px !important; min-width: 68px !important; max-width: 68px !important; }
-  .hcg-container th:nth-child(9),
-  .hcg-container td:nth-child(9) { width: 68px !important; min-width: 68px !important; max-width: 68px !important; }
-  .hcg-container th:nth-child(10),
-  .hcg-container td:nth-child(10) { width: 68px !important; min-width: 68px !important; max-width: 68px !important; }
-  .hcg-container th:nth-child(11),
-  .hcg-container td:nth-child(11) { width: 68px !important; min-width: 68px !important; max-width: 68px !important; }
-  .hcg-container th:nth-child(12),
-  .hcg-container td:nth-child(12) { width: 74px !important; min-width: 74px !important; max-width: 74px !important; }
 
         /* Scroll height */
         #datagrid-container { flex: 0 0 600px !important; }
@@ -187,19 +161,19 @@
       } else {
         grid = Grid.grid("datagrid-container", {
           dataTable: { columns: cols },
-          columnDefaults: { resizable: true },
-          columns: [ { id: 'col_1', header: { format: 'Institusjon' }, width: 218 },
+          columnDefaults: { resizable: false },
+          columns: [ { id: 'col_1', header: { format: 'Institusjon' }, width: 191 },
                   { id: 'col_2', header: { format: 'Studie-<br>kode' }, width: 95 },
                   { id: 'col_3', header: { format: 'Studienavn' }, width: 204 },
                   { id: 'col_4', header: { format: 'Studie-<br>sted' }, width: 95 },
-                  { id: 'col_5', header: { format: 'Utdannings-<br>type' }, width: 204 },
-                  { id: 'col_6', header: { format: 'Nøkkeltall' }, width: 136 },
+                  { id: 'col_5', header: { format: 'Utdannings-<br>type' }, width: 177 },
+                  { id: 'col_6', header: { format: 'Nøkkeltall' }, width: 191 },
                   { id: 'col_7', header: { format: '2020' }, width: 68 },
                   { id: 'col_8', header: { format: '2021' }, width: 68 },
                   { id: 'col_9', header: { format: '2022' }, width: 68 },
                   { id: 'col_10', header: { format: '2023' }, width: 68 },
                   { id: 'col_11', header: { format: '2024' }, width: 68 },
-                  { id: 'col_12', header: { format: '2025' }, width: 74 } ],
+                  { id: 'col_12', header: { format: '2025' }, width: 73 } ],
           rendering: { theme: "hcg-theme-default hcg-custom-theme" }
         });
       }

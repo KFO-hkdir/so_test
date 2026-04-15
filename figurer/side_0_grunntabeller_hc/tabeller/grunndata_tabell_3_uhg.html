@@ -34,7 +34,7 @@
           border: 1px solid #ccc; border-radius: 4px;
           width: 100%; box-sizing: border-box; background: white;
         }
-        .hc-table-export-wrap { flex: 0 0 auto;   margin-left: auto;}
+        .hc-table-export-wrap { flex: 0 0 auto; margin-left: auto; }
 
         /* Filter row — no gap, no scroll; inputs are flush with column edges */
         .hc-filter-row {
@@ -50,12 +50,12 @@
         .hc-filter-row input.hc-col-filter:last-child { border-right-width: 1px; }
         .hc-filter-row input.hc-col-filter:focus { outline: none; border-color: #F58220; background: #fff; }
 
-        /* Per-column filter widths */
-  .hc-filter-row input.hc-col-filter:nth-child(1) { flex: 0 0 546px !important; width: 546px !important; min-width: 546px !important; max-width: 546px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(2) { flex: 0 0 204px !important; width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(3) { flex: 0 0 204px !important; width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(4) { flex: 0 0 204px !important; width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(5) { flex: 0 0 208px !important; width: 208px !important; min-width: 208px !important; max-width: 208px !important; }
+        /* Per-column filter widths (flex-basis only — no width/max-width) */
+  .hc-filter-row input.hc-col-filter:nth-child(1) { flex: 0 0 546px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(2) { flex: 0 0 204px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(3) { flex: 0 0 204px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(4) { flex: 0 0 204px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(5) { flex: 0 0 208px !important; }
 
         .hc-export-wrap { position: relative; display: inline-block; }
         .hc-export-btn {
@@ -100,18 +100,6 @@
         .hcg-custom-theme th:not(:first-child) button,
         .hcg-custom-theme th:not(:first-child) span { text-align: right !important; justify-content: flex-end !important; }
 
-        /* Per-column cell widths */
-  .hcg-container th:nth-child(1),
-  .hcg-container td:nth-child(1) { width: 546px !important; min-width: 546px !important; max-width: 546px !important; }
-  .hcg-container th:nth-child(2),
-  .hcg-container td:nth-child(2) { width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
-  .hcg-container th:nth-child(3),
-  .hcg-container td:nth-child(3) { width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
-  .hcg-container th:nth-child(4),
-  .hcg-container td:nth-child(4) { width: 204px !important; min-width: 204px !important; max-width: 204px !important; }
-  .hcg-container th:nth-child(5),
-  .hcg-container td:nth-child(5) { width: 208px !important; min-width: 208px !important; max-width: 208px !important; }
-
         /* Scroll height */
         #datagrid-container { flex: 0 0 600px !important; }
         </style>
@@ -152,7 +140,7 @@
       } else {
         grid = Grid.grid("datagrid-container", {
           dataTable: { columns: cols },
-          columnDefaults: { resizable: true },
+          columnDefaults: { resizable: false },
           columns: [ { id: 'col_1', header: { format: 'Institusjon' }, width: 546 },
                   { id: 'col_2', header: { format: 'Søkere' }, width: 204 },
                   { id: 'col_3', header: { format: 'Førstevalgs-<br>søkere' }, width: 204 },

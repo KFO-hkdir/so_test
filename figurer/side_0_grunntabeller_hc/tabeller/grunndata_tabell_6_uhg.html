@@ -34,7 +34,7 @@
           border: 1px solid #ccc; border-radius: 4px;
           width: 100%; box-sizing: border-box; background: white;
         }
-        .hc-table-export-wrap { flex: 0 0 auto;   margin-left: auto;}
+        .hc-table-export-wrap { flex: 0 0 auto; margin-left: auto; }
 
         /* Filter row — no gap, no scroll; inputs are flush with column edges */
         .hc-filter-row {
@@ -50,15 +50,15 @@
         .hc-filter-row input.hc-col-filter:last-child { border-right-width: 1px; }
         .hc-filter-row input.hc-col-filter:focus { outline: none; border-color: #F58220; background: #fff; }
 
-        /* Per-column filter widths */
-  .hc-filter-row input.hc-col-filter:nth-child(1) { flex: 0 0 382px !important; width: 382px !important; min-width: 382px !important; max-width: 382px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(2) { flex: 0 0 409px !important; width: 409px !important; min-width: 409px !important; max-width: 409px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(3) { flex: 0 0 95px !important; width: 95px !important; min-width: 95px !important; max-width: 95px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(4) { flex: 0 0 95px !important; width: 95px !important; min-width: 95px !important; max-width: 95px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(5) { flex: 0 0 95px !important; width: 95px !important; min-width: 95px !important; max-width: 95px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(6) { flex: 0 0 95px !important; width: 95px !important; min-width: 95px !important; max-width: 95px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(7) { flex: 0 0 95px !important; width: 95px !important; min-width: 95px !important; max-width: 95px !important; }
-  .hc-filter-row input.hc-col-filter:nth-child(8) { flex: 0 0 100px !important; width: 100px !important; min-width: 100px !important; max-width: 100px !important; }
+        /* Per-column filter widths (flex-basis only — no width/max-width) */
+  .hc-filter-row input.hc-col-filter:nth-child(1) { flex: 0 0 382px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(2) { flex: 0 0 409px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(3) { flex: 0 0 95px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(4) { flex: 0 0 95px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(5) { flex: 0 0 95px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(6) { flex: 0 0 95px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(7) { flex: 0 0 95px !important; }
+  .hc-filter-row input.hc-col-filter:nth-child(8) { flex: 0 0 100px !important; }
 
         .hc-export-wrap { position: relative; display: inline-block; }
         .hc-export-btn {
@@ -102,24 +102,6 @@
         .hcg-custom-theme th:not(:first-child) > *,
         .hcg-custom-theme th:not(:first-child) button,
         .hcg-custom-theme th:not(:first-child) span { text-align: right !important; justify-content: flex-end !important; }
-
-        /* Per-column cell widths */
-  .hcg-container th:nth-child(1),
-  .hcg-container td:nth-child(1) { width: 382px !important; min-width: 382px !important; max-width: 382px !important; }
-  .hcg-container th:nth-child(2),
-  .hcg-container td:nth-child(2) { width: 409px !important; min-width: 409px !important; max-width: 409px !important; }
-  .hcg-container th:nth-child(3),
-  .hcg-container td:nth-child(3) { width: 95px !important; min-width: 95px !important; max-width: 95px !important; }
-  .hcg-container th:nth-child(4),
-  .hcg-container td:nth-child(4) { width: 95px !important; min-width: 95px !important; max-width: 95px !important; }
-  .hcg-container th:nth-child(5),
-  .hcg-container td:nth-child(5) { width: 95px !important; min-width: 95px !important; max-width: 95px !important; }
-  .hcg-container th:nth-child(6),
-  .hcg-container td:nth-child(6) { width: 95px !important; min-width: 95px !important; max-width: 95px !important; }
-  .hcg-container th:nth-child(7),
-  .hcg-container td:nth-child(7) { width: 95px !important; min-width: 95px !important; max-width: 95px !important; }
-  .hcg-container th:nth-child(8),
-  .hcg-container td:nth-child(8) { width: 100px !important; min-width: 100px !important; max-width: 100px !important; }
 
         /* Scroll height */
         #datagrid-container { flex: 0 0 600px !important; }
@@ -167,7 +149,7 @@
       } else {
         grid = Grid.grid("datagrid-container", {
           dataTable: { columns: cols },
-          columnDefaults: { resizable: true },
+          columnDefaults: { resizable: false },
           columns: [ { id: 'col_1', header: { format: 'Utdanningsområde' }, width: 382 },
                   { id: 'col_2', header: { format: 'Nøkkeltall' }, width: 409 },
                   { id: 'col_3', header: { format: '2020' }, width: 95 },
